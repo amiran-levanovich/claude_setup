@@ -10,8 +10,10 @@ Enforces a strict, opinionated development workflow: structured greenfield setup
 
 ```
 .claude/
-└── agents/
-    └── rubocop-fixer.md      # Sub-agent: fixes RuboCop offenses rubocop -A can't auto-correct
+├── agents/
+│   └── rubocop-fixer.md      # Sub-agent: fixes RuboCop offenses rubocop -A can't auto-correct
+└── commands/
+    └── transfer-context.md   # Slash command: compress session into a handoff file for a new chat
 
 agent_docs/                   # Knowledge base — agents read these before acting
 ├── building_the_project.md   # 4-phase greenfield initialization playbook
@@ -57,6 +59,8 @@ Then open the project in Claude Code — it will automatically read `CLAUDE.md` 
 | `running_tests.md` | Running or writing specs |
 
 **`rubocop-fixer`** is a scoped sub-agent invoked after `rubocop -A` when residual offenses remain. It fixes what the auto-corrector can't, never disables cops, and flags anything it can't resolve as `UNRESOLVABLE` for human review.
+
+**`/transfer-context`** is a slash command for handing off to a new session when the current one is degraded or hitting context limits. It writes a structured handoff file to `.claude/context-transfers/` and gives you a single line to paste into the new chat — decisions made, traps to avoid, relevant file locations, and open work described as status (not instructions).
 
 ---
 
