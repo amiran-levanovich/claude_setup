@@ -50,10 +50,13 @@ fix(payments): handle nil gateway response on timeout
 ## PHASE 2: THE STRICT TDD CYCLE
 All implementation code must pass through an unyielding Test-Driven Development workflow. Never write production code ahead of its test suite.
 
+> ❌ **Absolute Prohibition:** Writing any implementation file, class, method, or line of production code — in any form — before the corresponding test exists and has been committed is a hard workflow violation. There are no exceptions. If you find yourself opening an implementation file before a spec file, stop immediately and return to Step 1.
+
 [1. Write Test] ──> [2. Verify Failure] ──> [3. Commit Test] ──> [4. Write Code] ──> [5. Commit Pass]
 
 ### Step 1: Write Tests First
 *   Begin by describing the desired functionality and writing tests for a new feature that does not yet exist.
+*   **You must create and save the spec file before any other file is touched.** This is not a suggestion — it is the entry gate to the cycle.
 *   Explicitly state to yourself: *"We are operating under strict TDD rules."* This prevents you from creating mock triumphs or stubbing out imaginary code prematurely.
 
 ### Step 2: Confirm Tests Fail
