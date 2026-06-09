@@ -39,8 +39,19 @@ Before advancing to Phase 1, produce `docs/requirements.md` with this structure:
 ### Plannotator Review (mandatory if installed)
 Before presenting the document to the user, check whether the **Plannotator** plugin is available (it appears as `plannotator-annotate` in your skill list):
 
-*   **If Plannotator is installed:** invoke `/plannotator-annotate docs/requirements.md`. Respond to every annotation — fill gaps, resolve ambiguities, and update the file before proceeding. This step is **not optional**; skipping it when the plugin is present is a workflow violation.
+*   **If Plannotator is installed:** enter the review loop below. This step is **not optional**; skipping it when the plugin is present is a workflow violation.
 *   **If Plannotator is not installed:** note the absence in your response and continue with the inline markdown document.
+
+#### Iterative Review Loop
+Repeat until the user returns no new annotations:
+
+1. Invoke `/plannotator-annotate docs/requirements.md`.
+2. Receive the user's annotations.
+3. If there are **no annotations** — exit the loop and proceed to sign-off.
+4. If there **are annotations** — address every one of them: fill gaps, resolve ambiguities, and update `docs/requirements.md`.
+5. Go back to step 1 with the updated file.
+
+Do not exit the loop early. Every round must be clean (zero annotations) before moving on.
 
 Present the final `docs/requirements.md` to the user and receive explicit sign-off before continuing.
 
