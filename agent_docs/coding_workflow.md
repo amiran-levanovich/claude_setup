@@ -34,6 +34,7 @@ Format: `<type>(<scope>): <description>`
 | `perf` | Performance improvement |
 
 Rules:
+- **Subject line must not exceed 60 characters** (type + scope + description combined). This is a hard limit — reword until it fits.
 - Description is lowercase, imperative mood, no trailing period.
 - Breaking changes: append `!` after type — e.g. `feat(api)!: rename user endpoint`.
 
