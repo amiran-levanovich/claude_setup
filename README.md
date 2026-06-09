@@ -69,6 +69,17 @@ Then open the project in Claude Code — it will automatically read `CLAUDE.md` 
 
 ---
 
+## Recommended: Plannotator plugin
+
+This setup references the **[Plannotator](https://plannotator.com)** Claude Code plugin in two places inside `building_the_project.md`:
+
+- **Phase 2** — the full project setup roadmap is decomposed into isolated sub-tasks using Plannotator before any code is written.
+- **Phase 4** — the architectural diagrams, schema maps, and task roadmaps are compiled into a final presentation via Plannotator for user sign-off.
+
+Install it from the Claude Code plugin registry and it will be available as `plannotator` in your Claude Code sessions. Without it, those two steps fall back to inline markdown task lists — functional but less structured.
+
+---
+
 ## Core mandatory tooling
 
 Every project initialized with this setup ships with:
