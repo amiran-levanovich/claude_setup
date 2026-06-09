@@ -71,8 +71,9 @@ Then open the project in Claude Code — it will automatically read `CLAUDE.md` 
 
 ## Recommended: Plannotator plugin
 
-This setup references the **[Plannotator](https://github.com/backnotprop/plannotator)** Claude Code plugin in two places inside `building_the_project.md`:
+This setup references the **[Plannotator](https://github.com/backnotprop/plannotator)** Claude Code plugin in three places inside `building_the_project.md`:
 
+- **Phase 0** — the requirements document (`docs/requirements.md`) is annotated via Plannotator before user sign-off. **Mandatory when installed** — skipping it is a workflow violation.
 - **Phase 2** — the full project setup roadmap is decomposed into isolated sub-tasks using Plannotator before any code is written.
 - **Phase 4** — the architectural diagrams, schema maps, and task roadmaps are compiled into a final presentation via Plannotator for user sign-off.
 

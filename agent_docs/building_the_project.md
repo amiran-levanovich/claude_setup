@@ -36,7 +36,13 @@ Before advancing to Phase 1, produce `docs/requirements.md` with this structure:
 - Offline behaviour:
 ```
 
-Present this document to the user and receive explicit sign-off before continuing.
+### Plannotator Review (mandatory if installed)
+Before presenting the document to the user, check whether the **Plannotator** plugin is available (it appears as `plannotator-annotate` in your skill list):
+
+*   **If Plannotator is installed:** invoke `/plannotator-annotate docs/requirements.md`. Respond to every annotation — fill gaps, resolve ambiguities, and update the file before proceeding. This step is **not optional**; skipping it when the plugin is present is a workflow violation.
+*   **If Plannotator is not installed:** note the absence in your response and continue with the inline markdown document.
+
+Present the final `docs/requirements.md` to the user and receive explicit sign-off before continuing.
 
 ---
 
