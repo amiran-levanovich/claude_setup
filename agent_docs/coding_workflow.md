@@ -52,6 +52,21 @@ All implementation code must pass through an unyielding Test-Driven Development 
 
 > ❌ **Absolute Prohibition:** Writing any implementation file, class, method, or line of production code — in any form — before the corresponding test exists and has been committed is a hard workflow violation. There are no exceptions. If you find yourself opening an implementation file before a spec file, stop immediately and return to Step 1.
 
+### Feature Planning Gate (mandatory before every feature)
+Before the TDD loop begins for any feature, you must produce a **feature-scoped to-do list**. This is separate from the project-level to-do list produced in Phase 2 of `building_the_project.md`.
+
+Decompose the feature into its atomic implementation tasks and write them as a checklist. A task is atomic when it maps to a single spec and a single production change. Example format:
+
+```
+## Feature: <name>
+- [ ] spec: <what the test covers>
+- [ ] impl: <what the implementation does>
+- [ ] spec: ...
+- [ ] impl: ...
+```
+
+Present this list to the user and receive acknowledgement before proceeding. Mark each item completed as you progress — do not advance to the next item until the current TDD loop (Steps 1–5) is complete.
+
 [1. Write Test] ──> [2. Verify Failure] ──> [3. Commit Test] ──> [4. Write Code] ──> [5. Commit Pass]
 
 ### Step 1: Write Tests First
