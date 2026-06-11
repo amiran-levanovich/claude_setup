@@ -2,7 +2,7 @@
 
 A drop-in Claude Code configuration kit for Ruby / Ruby on Rails projects.
 
-Enforces a strict, opinionated development workflow: structured greenfield setup, TDD lifecycle, database safety standards, and automated code style — all driven by Claude agents reading a shared knowledge base.
+Enforces an opinionated development workflow: structured greenfield setup, TDD lifecycle, database safety standards, and automated code style. Two layers of enforcement: a shared knowledge base (`agent_docs/`) surfaced through auto-triggering skills, and a deterministic pre-commit hook that blocks commits to `main` and commits with RuboCop or Brakeman failures — independent of whether the agent remembers the rules.
 
 ---
 
@@ -46,7 +46,13 @@ cp -r claude_setup/agent_docs your-project/
 cp claude_setup/CLAUDE.md your-project/
 ```
 
-Then open the project in Claude Code — it will automatically read `CLAUDE.md` and pick up the knowledge base.
+Then open the project in Claude Code. On session start it automatically:
+
+- reads `CLAUDE.md` and picks up the `agent_docs/` knowledge base,
+- registers the skills from `.claude/skills/` (they auto-trigger on matching tasks),
+- registers the pre-commit hook from `.claude/settings.json`.
+
+> **Hook requirement:** the commit gate parses hook input with `jq`, falling back to `python3` — at least one must be on `PATH` (virtually always true; without both, the gate degrades to substring matching). The gate only activates in projects with a `Gemfile`, so it is inert in non-Ruby repos.
 
 ---
 
@@ -102,10 +108,10 @@ Install it from the Claude Code plugin registry and it will be available as `pla
 
 Every project initialized with this setup ships with:
 
-| Gem | Purpose |
-|---|---|
-| `bullet ~> 8` | N+1 query detection |
-| `brakeman ~> 7` | Static security analysis |
-| `rubocop ~> 1` | Code style enforcement |
-| `rubocop-rails ~> 2` | Rails-specific cops |
-| `strong_migrations ~> 2` | Zero-downtime migration safety |
+| Gem | Purpose | Enforced by |
+|---|---|---|
+| `bullet ~> 8` | N+1 query detection | Agent — test suite run with bullet enabled before implementation commits |
+| `brakeman ~> 7` | Static security analysis | Hook — blocks `git commit` on warnings |
+| `rubocop ~> 1` | Code style enforcement | Hook — blocks `git commit` on offenses |
+| `rubocop-rails ~> 2` | Rails-specific cops | Hook — runs as part of the RuboCop check |
+| `strong_migrations ~> 2` | Zero-downtime migration safety | Gem itself — raises on unsafe migrations at runtime |
