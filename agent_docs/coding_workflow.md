@@ -29,6 +29,7 @@ Coding is strictly isolated into short-lived, single-purpose feature branches.
 A feature doc (`docs/features/<feature>.md`) is **working state, not documentation** — it exists only while its feature is in flight. When the feature's PR merges:
 
 1. **Promote anything durable.** A decision that future features must honor goes into the project's `CLAUDE.md`; a correction to a playbook goes into the project's `agent_docs/` override of that file. Most entries need no promotion — they only mattered while the work was open.
+    *   **Promote by consolidating, never by appending.** `CLAUDE.md` is loaded into every session — each promotion should rewrite or extend the relevant existing section in a line or two, not add a new block. If a promotion would push `CLAUDE.md` past roughly 100 lines, tighten the file as part of the same edit.
 2. **Delete the doc** in the post-merge cleanup. Git history preserves it permanently (`git log --all -- 'docs/features/<feature>.md'`).
 
 This keeps `docs/features/` listing only in-flight work — it never grows beyond the number of features actually in progress, regardless of project age.
@@ -97,9 +98,11 @@ For a new feature, decompose it into its atomic implementation tasks and write t
 - <unresolved item, and what it blocks>
 ```
 
+Keep the doc tight: one line per decision/trap entry, and when a section grows past ~10 entries, consolidate it — merge related entries and drop ones made irrelevant by later work. A feature doc that needs more than ~80 lines is usually a sign the feature should be split.
+
 Present this list to the user and receive acknowledgement before proceeding. Mark each item completed as you progress — do not advance to the next item until the current TDD loop (Steps 1–5) is complete.
 
-When presenting the list, also ask the user to choose a **review pacing**:
+When presenting the list, also ask the user to choose a **review pacing** (use the AskUserQuestion tool — one question, two options, per-cycle marked as recommended):
 
 1. **Per-cycle review** (default) — pause after each completed TDD loop for user review before starting the next item.
 2. **Autonomous** — work through the whole checklist and present the completed feature at the end. Even in this mode, pause immediately if a task requires significant deviation from the approved list (a new dependency, a schema change not on the list, a changed public interface).
@@ -134,7 +137,7 @@ Before presenting code from Step 1 or Step 4 to the user, verify it — generate
 *   If the loop wrote or changed **specs** — run the Self-Validation Checklist in `running_tests.md`.
 *   Check the conventions in `code_conventions.md` that RuboCop can't enforce (predicate naming, magic-value constants, memoization safety).
 
-Fix violations before presenting — never present code you know fails a checklist. When everything passes, a one-line compliance note is enough; be verbose only when reporting violations and their fixes. If a checklist surfaces a genuine judgment call, present the options with trade-offs instead of silently choosing.
+Fix violations before presenting — never present code you know fails a checklist. When everything passes, a one-line compliance note is enough; be verbose only when reporting violations and their fixes. If a checklist surfaces a genuine judgment call, present the options with trade-offs via the AskUserQuestion tool (recommended option first) instead of silently choosing.
 
 ---
 

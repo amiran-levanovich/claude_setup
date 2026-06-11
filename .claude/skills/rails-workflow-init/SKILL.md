@@ -20,6 +20,8 @@ Audit the current project's readiness for this workflow, report all findings fir
    ```
 7. **Project overrides** — if the project root contains an `agent_docs/` directory, list which playbooks it overrides (project copies take precedence over the plugin's). Purely informational.
 8. **Project identity in CLAUDE.md** — if `CLAUDE.md` exists but contains no project-specific identity (what the app does, its business domain, key models/aggregates, domain vocabulary), offer a short interview — at most six questions: What does the app do and for whom? What are the 3–5 core models and how do they relate? Any domain terms with precise meanings? Any conventions or constraints not visible in the code? — then append the answers as a `## Project Identity` section. This primes every future session with what the project actually is instead of generic Rails assumptions.
+   - **Interview mechanics:** before asking, scan the codebase (models, routes, schema) and pre-fill what it already answers — only ask what the code can't tell you. Use the AskUserQuestion tool with 2–4 concrete options per question where choices are enumerable (derive option candidates from the scan); free-text only for the domain description.
+   - **Size cap:** the section must stay under ~30 lines — `CLAUDE.md` loads into every session. Summarize; don't transcribe the conversation.
 9. **In-flight features** — if `docs/features/` exists, list its docs (each is a feature currently in progress, resumable via the TDD workflow). Purely informational.
 
 ## Output
