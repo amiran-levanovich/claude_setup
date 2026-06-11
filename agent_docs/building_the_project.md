@@ -13,6 +13,14 @@ Before any technical architecture is drafted, you must interactively prompt the 
 *   **Performance Bounds:** Latency thresholds, expected concurrency, and memory footprints.
 *   **Failure Modes:** Edge cases, offline behavior requirements, and network loss patterns.
 
+### Interview mechanics
+Run the discovery as a structured interview using the **AskUserQuestion tool** (multi-choice prompts in the CLI), not as a wall of open-ended questions:
+
+*   One vector at a time, at most two questions per tool call — never all five vectors in one message.
+*   Give each question 2–4 concrete options with the recommended one first, marked "(Recommended)" and justified in its description. The user can always type a custom answer via "Other".
+*   Use free-text prose questions only where options can't be enumerated (e.g., "describe the core workflow").
+*   Follow up on answers that change the architecture (e.g., "offline-first" triggers a sync-strategy question) and skip vectors the user's earlier answers already settled.
+
 ### Phase 0 Output: Requirements Document
 Before advancing to Phase 1, produce `docs/requirements.md` with this structure:
 

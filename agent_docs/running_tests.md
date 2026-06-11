@@ -121,3 +121,24 @@ Always use these direct commands when running tests via your built-in Bash tool:
 When debugging a broken workflow, always append the ``--fail-fast`` flag so the test runner halts on the very first error instead of dragging out execution times across the entire suite:
 
 ``bundle exec rspec spec/system/<feature>_spec.rb --fail-fast``
+
+## SELF-VALIDATION CHECKLIST
+
+STOP after writing or changing specs. Check every item before presenting them. If an item fails, fix it first.
+
+1. **Right level:** Is each behavior tested at the highest-priority level that fits — system spec for user flows (monolith), request spec for API contracts — rather than a low-priority unit test?
+2. **Coverage matrix (APIs):** Does every endpoint assert all three layers — happy path, bad path (422 + payload), and fault tolerance (third-party downtime/timeouts)?
+3. **Error schema:** Do error-path assertions check the exact status code and error payload shape — not merely "doesn't crash"?
+4. **No real network:** Is every third-party call stubbed at the network layer (WebMock/VCR)?
+5. **Factory discipline:** `build` in model/service specs, `create` only where persistence is required, traits instead of duplicated factories?
+6. **Surgical scope:** One happy-path system spec per user flow, with edge cases pushed down to request/service specs?
+
+### Anti-pattern scan
+- [ ] Spec that hits a live external service
+- [ ] Multiple unrelated assertions in one example (unclear which broke)
+- [ ] Near-identical examples copy-pasted with small changes — extract shared setup or use shared examples
+- [ ] `create` where `build` would do
+- [ ] System spec testing an input-validation permutation that belongs in a request spec
+
+### Judgment calls
+When test granularity or mocking depth is genuinely ambiguous (mock a collaborator vs let the call go through; one example with several related assertions vs several examples), present the options instead of silently choosing.

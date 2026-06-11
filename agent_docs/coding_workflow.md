@@ -25,6 +25,15 @@ Coding is strictly isolated into short-lived, single-purpose feature branches.
 *   Keep branches single-purpose and short-lived (days, not weeks). Rebase on `main` if it drifts.
 *   Merge back via pull request only. Never merge locally into `main`. Open the PR when the feature's full TDD loop is complete and the suite is green.
 
+### Feature Doc Close-Out (after the PR merges)
+A feature doc (`docs/features/<feature>.md`) is **working state, not documentation** — it exists only while its feature is in flight. When the feature's PR merges:
+
+1. **Promote anything durable.** A decision that future features must honor goes into the project's `CLAUDE.md`; a correction to a playbook goes into the project's `agent_docs/` override of that file. Most entries need no promotion — they only mattered while the work was open.
+    *   **Promote by consolidating, never by appending.** `CLAUDE.md` is loaded into every session — each promotion should rewrite or extend the relevant existing section in a line or two, not add a new block. If a promotion would push `CLAUDE.md` past roughly 100 lines, tighten the file as part of the same edit.
+2. **Delete the doc** in the post-merge cleanup. Git history preserves it permanently (`git log --all -- 'docs/features/<feature>.md'`).
+
+This keeps `docs/features/` listing only in-flight work — it never grows beyond the number of features actually in progress, regardless of project age.
+
 ### Commit Message Format: Conventional Commits
 All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org) specification.
 
@@ -64,17 +73,41 @@ All implementation code passes through Test-Driven Development. The hard rule of
 ### Feature Planning Gate (mandatory before every feature)
 Before the TDD loop begins for any feature, you must produce a **feature-scoped to-do list**. This is separate from the project-level to-do list produced in Phase 2 of `building_the_project.md`.
 
-Decompose the feature into its atomic implementation tasks and write them as a checklist. A task is atomic when it maps to a single spec and a single production change. Example format:
+**Resume check first:** look in `docs/features/` for an existing doc for this feature. If one exists, load it, honor every logged decision and constraint as an active commitment, and continue from the first unchecked task — do not re-plan from scratch.
+
+For a new feature, decompose it into its atomic implementation tasks and write them to `docs/features/<feature-kebab-name>.md` (create the directory if needed). A task is atomic when it maps to a single spec and a single production change. Template:
 
 ```
 ## Feature: <name>
+**Branch:** <type>/<kebab-description>
+**Review pacing:** per-cycle | autonomous
+
+### Task list
 - [ ] spec: <what the test covers>
 - [ ] impl: <what the implementation does>
 - [ ] spec: ...
 - [ ] impl: ...
+
+### Decisions
+- <decision and why — appended as cycles complete>
+
+### Traps / dead ends
+- <approach that failed and why — so it isn't retried>
+
+### Open questions
+- <unresolved item, and what it blocks>
 ```
 
+Keep the doc tight: one line per decision/trap entry, and when a section grows past ~10 entries, consolidate it — merge related entries and drop ones made irrelevant by later work. A feature doc that needs more than ~80 lines is usually a sign the feature should be split.
+
 Present this list to the user and receive acknowledgement before proceeding. Mark each item completed as you progress — do not advance to the next item until the current TDD loop (Steps 1–5) is complete.
+
+When presenting the list, also ask the user to choose a **review pacing** (use the AskUserQuestion tool — one question, two options, per-cycle marked as recommended):
+
+1. **Per-cycle review** (default) — pause after each completed TDD loop for user review before starting the next item.
+2. **Autonomous** — work through the whole checklist and present the completed feature at the end. Even in this mode, pause immediately if a task requires significant deviation from the approved list (a new dependency, a schema change not on the list, a changed public interface).
+
+Default to per-cycle review if the user expresses no preference.
 
 [1. Write Test] ──> [2. Verify Failure] ──> [3. Commit Test] ──> [4. Write Code] ──> [5. Commit Pass]
 
@@ -95,6 +128,16 @@ Present this list to the user and receive acknowledgement before proceeding. Mar
 
 ### Step 5: Commit Passing Code
 *   Once tests pass, clear the **Pre-Commit Verification Gate** (detailed below) and commit the implementation code, completing the atomic TDD loop.
+*   **Update the feature doc:** mark the completed tasks done in `docs/features/<feature>.md`, and append any decisions made this cycle (library choices, pattern selections, deviations from the plan), failed approaches to Traps, and resolved or new Open Questions. The doc is what lets a future session resume without re-deriving context.
+
+### Pre-Present Verification (every TDD loop)
+Before presenting code from Step 1 or Step 4 to the user, verify it — generate first, then check, then present:
+
+*   If the loop touched a **migration** — run the Self-Validation Checklist in `database_schema.md`.
+*   If the loop wrote or changed **specs** — run the Self-Validation Checklist in `running_tests.md`.
+*   Check the conventions in `code_conventions.md` that RuboCop can't enforce (predicate naming, magic-value constants, memoization safety).
+
+Fix violations before presenting — never present code you know fails a checklist. When everything passes, a one-line compliance note is enough; be verbose only when reporting violations and their fixes. If a checklist surfaces a genuine judgment call, present the options with trade-offs via the AskUserQuestion tool (recommended option first) instead of silently choosing.
 
 ---
 

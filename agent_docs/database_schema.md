@@ -110,3 +110,23 @@ class AddIndexToUsersEmail < ActiveRecord::Migration[7.1]
   end
 end
 ```
+## SELF-VALIDATION CHECKLIST
+
+STOP after writing any migration or schema change. Check every item before presenting it. If an item fails, fix it first.
+
+1. **Non-null:** Does every column that must never be empty have `null: false`?
+2. **Uniqueness:** Does every must-be-unique field have a unique database index?
+3. **FK integrity:** Does every reference use `null: false, foreign_key: true`?
+4. **FK indexes:** Is every foreign key column indexed?
+5. **Filter indexes:** Are columns used in `where`/`find_by`/`order`/`group` indexed — composite where queries combine them, highest-filtering column first?
+6. **Enum safety:** Is every enum string-backed, with `null: false` and a sensible `default:`?
+7. **Zero-downtime:** Indexes added with `algorithm: :concurrently` + `disable_ddl_transaction!`? No default value on `add_column` for large tables? No direct column drops?
+
+### Anti-pattern scan
+- [ ] Validation that exists only in the model with no matching DB constraint
+- [ ] Integer-backed enum
+- [ ] `add_column ... default:` on a table that may be large in production
+- [ ] A `belongs_to` whose column has no index
+
+### Judgment calls
+When a schema decision has multiple defensible options (composite index column order, polymorphic association vs separate tables, soft-delete vs hard-delete), present the options with trade-offs instead of silently choosing.
