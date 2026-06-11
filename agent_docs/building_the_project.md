@@ -1,6 +1,6 @@
 # Project Initialization & Greenfield Setup
 
-This playbook governs the non-negotiable phase sequence required to initialize a brand-new project or major standalone subsystem from scratch. Coding is strictly forbidden until Phase 4 sign-off is completed.
+This playbook governs the phase sequence for initializing a brand-new project or major standalone subsystem from scratch. The one hard gate: no feature code until Phase 4 sign-off is completed.
 
 ---
 
@@ -36,11 +36,11 @@ Before advancing to Phase 1, produce `docs/requirements.md` with this structure:
 - Offline behaviour:
 ```
 
-### Plannotator Review (mandatory if installed)
+### Plannotator Review (strongly recommended when available)
 Before presenting the document to the user, check whether the **Plannotator** plugin is available (it appears as `plannotator-annotate` in your skill list):
 
-*   **If Plannotator is installed:** enter the review loop below. This step is **not optional**; skipping it when the plugin is present is a workflow violation.
-*   **If Plannotator is not installed:** note the absence in your response and continue with the inline markdown document.
+*   **If Plannotator is installed:** use the review loop below — it is the preferred review channel because annotations are precise and per-section.
+*   **If Plannotator is not installed:** note the absence in your response and run the same review iteratively over the inline markdown document instead.
 
 #### Iterative Review Loop
 Repeat until the user returns no new annotations:
@@ -74,9 +74,9 @@ Establish your structural data layer before writing migrations:
 
 ## PHASE 2: STRATEGIC PLANNING & TO-DO ENGINES
 
-### 1. Plannotate Breakdown
+### 1. Roadmap Breakdown
 *   Deconstruct the entire setup roadmap into explicit, isolated sub-tasks.
-*   Every initialization task must be systematically mapped and estimated using the **plannotate** plugin.
+*   When the **Plannotator** plugin is available, run the breakdown through `/plannotator-annotate` so the user can review and annotate it per-task before execution. Otherwise, present it as an inline markdown task list for approval.
 
 ### 2. Strict Execution To-Do Lists
 *   Compile a comprehensive, linear To-Do List for the project setup.
@@ -100,7 +100,7 @@ Every Ruby on Rails project initialized in this environment must be configured w
 ---
 
 ## PHASE 4: FINAL PRESENTATION & SIGN-OFF
-Compile the architectural diagrams, database schema maps, plannotate roadmaps, and core tooling selections into a unified **Final Presentation**.
+Compile the architectural diagrams, database schema maps, task roadmaps, and core tooling selections into a unified **Final Presentation**.
 
 > ❗ **The Execution Gate:** Present this summary to the user. **Zero feature coding is allowed** until the user reviews this presentation and gives explicit authorization to begin development. 
 > 

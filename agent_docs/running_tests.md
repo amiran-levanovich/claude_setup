@@ -41,7 +41,7 @@ Never Make Real Network Requests: You are strictly forbidden from hitting live t
 
 Stubs & Mocks: Use tools like WebMock or VCR to intercept out-of-network HTTP calls. If a service calls an external API, mock the response explicitly at the network layer.
 
-### Matrix Matrix Coverage
+### Coverage Matrix
 
 For every API endpoint you test, you must explicitly construct assertions for three distinct layers:
 
