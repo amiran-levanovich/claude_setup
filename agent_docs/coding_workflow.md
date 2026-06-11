@@ -15,8 +15,15 @@ When executing changes under this playbook, dynamically reference the sibling do
 ## PHASE 1: BRANCHING STRATEGY & GIT HYGIENE
 Coding is strictly isolated into short-lived, single-purpose feature branches.
 
-### The Isolation Mandate: Never Commit Directly to Main
-> **Why we never commit to main:** The `main` branch represents stable, production-ready truth. Bypassing pull requests introduces unverified architectural regressions, circumvents automated security pipelines, risks corrupting production states, and degrades code review audit trails. Feature branches keep experimental code safely contained until proven resilient.
+### Never Commit Directly to Main
+> **Why:** The `main` branch represents stable, production-ready truth. Bypassing pull requests introduces unverified regressions, circumvents automated security pipelines, and degrades code review audit trails. Feature branches keep experimental code safely contained until proven resilient.
+>
+> This rule is enforced deterministically: the pre-commit hook (`.claude/hooks/pre-commit-gate.sh`) blocks any `git commit` on `main`/`master` in a Rails project.
+
+### Branch Naming & Merge Flow
+*   Branch from an up-to-date `main`: `git checkout -b <type>/<short-kebab-description>` — e.g. `feature/order-cancellation`, `fix/nil-gateway-timeout`, `refactor/extract-payment-service`.
+*   Keep branches single-purpose and short-lived (days, not weeks). Rebase on `main` if it drifts.
+*   Merge back via pull request only. Never merge locally into `main`. Open the PR when the feature's full TDD loop is complete and the suite is green.
 
 ### Commit Message Format: Conventional Commits
 All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org) specification.
@@ -47,10 +54,12 @@ fix(payments): handle nil gateway response on timeout
 
 ---
 
-## PHASE 2: THE STRICT TDD CYCLE
-All implementation code must pass through an unyielding Test-Driven Development workflow. Never write production code ahead of its test suite.
+## PHASE 2: THE TDD CYCLE
+All implementation code passes through Test-Driven Development. The hard rule of this phase:
 
-> ❌ **Absolute Prohibition:** Writing any implementation file, class, method, or line of production code — in any form — before the corresponding test exists and has been committed is a hard workflow violation. There are no exceptions. If you find yourself opening an implementation file before a spec file, stop immediately and return to Step 1.
+> ❌ **Tests come first.** Do not write implementation code before the corresponding spec exists and has been committed. If you find yourself opening an implementation file before its spec file, stop and return to Step 1.
+>
+> **Exemption — framework scaffolding:** files produced by the approved Rails generators (`rails generate model/migration/controller` — see the CLAUDE.md generator policy) do not count as implementation code. The gate applies to behavior: methods, scopes, queries, validations, business logic.
 
 ### Feature Planning Gate (mandatory before every feature)
 Before the TDD loop begins for any feature, you must produce a **feature-scoped to-do list**. This is separate from the project-level to-do list produced in Phase 2 of `building_the_project.md`.
@@ -71,8 +80,7 @@ Present this list to the user and receive acknowledgement before proceeding. Mar
 
 ### Step 1: Write Tests First
 *   Begin by describing the desired functionality and writing tests for a new feature that does not yet exist.
-*   **You must create and save the spec file before any other file is touched.** This is not a suggestion — it is the entry gate to the cycle.
-*   Explicitly state to yourself: *"We are operating under strict TDD rules."* This prevents you from creating mock triumphs or stubbing out imaginary code prematurely.
+*   Create and save the spec file before any implementation file is touched — this is the entry gate to the cycle.
 
 ### Step 2: Confirm Tests Fail
 *   Execute the newly written specs immediately using your built-in Bash tool.
@@ -83,7 +91,7 @@ Present this list to the user and receive acknowledgement before proceeding. Mar
 
 ### Step 4: Write Code to Pass
 *   Write the implementation code with the sole goal of making all the committed tests pass.
-*   *Strict Boundary:* You are completely forbidden from altering, modifying, or deleting any lines within the committed test files to force a green light. Refer to `running_tests.md` to ensure correct execution parameters.
+*   ❌ **Never alter, weaken, or delete committed test files to force a green light.** This is an absolute rule with no exceptions. If a committed test turns out to be genuinely wrong, stop and raise it with the user instead. Refer to `running_tests.md` for correct execution parameters.
 
 ### Step 5: Commit Passing Code
 *   Once tests pass, clear the **Pre-Commit Verification Gate** (detailed below) and commit the implementation code, completing the atomic TDD loop.
@@ -91,8 +99,18 @@ Present this list to the user and receive acknowledgement before proceeding. Mar
 ---
 
 ## PHASE 3: PRE-COMMIT VERIFICATION GATE
-Before a commit can be staged and saved to your feature branch, a local execution sweep must be triggered:
+The gate has two layers — one enforced by the harness, one that remains your responsibility.
 
-1.  **Memory Audit:** Run your test suite with **`bullet`** enabled to guarantee zero memory leaks or unexpected N+1 queries are introduced.
-2.  **Style Cleanup:** Invoke the **`rubocop-fixer`** sub-agent (`.claude/agents/rubocop-fixer`) via the Claude agent system. Pass it the list of changed files. It reads `agent_docs/code_conventions.md` for hard constraints, applies all auto-fixable offenses, and returns a fix report. Any `UNRESOLVABLE` offenses in the report must be addressed manually before committing.
-3.  **Result:** The entire pipeline must be 100% green. If any linter, security, or memory audit fails, you are strictly forbidden from committing. Fix the offenses within the boundary of your feature branch before trying again.
+### Enforced automatically (PreToolUse hook)
+`.claude/hooks/pre-commit-gate.sh` intercepts every `git commit` in a Rails project (Gemfile present) and blocks it unless:
+
+1.  The current branch is not `main`/`master`.
+2.  `bundle exec rubocop` is clean.
+3.  `bundle exec brakeman` reports no security warnings (when the gem is installed).
+
+The hook does **not** run the spec suite, because TDD Step 3 commits intentionally failing tests.
+
+### Your responsibility before an implementation commit (Step 5)
+1.  **N+1 Query Audit:** Run the test suite with **`bullet`** enabled to catch N+1 queries and unused eager loading introduced by the change.
+2.  **Style Cleanup:** Run `bundle exec rubocop -A`. If residual offenses remain, invoke the **`rubocop-fixer`** sub-agent (`.claude/agents/rubocop-fixer.md`) with the list of changed files. Any `UNRESOLVABLE` offenses in its report require human review before committing.
+3.  **Green Suite:** The full suite passes. If any check fails, fix it on the feature branch before committing again.

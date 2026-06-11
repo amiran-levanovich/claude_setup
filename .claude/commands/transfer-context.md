@@ -69,4 +69,4 @@ trust blindly. Then wait for my instructions before taking any action.
    - End with an explicit "wait for instructions" line
    - Give the new session everything it needs to continue without re-explaining
 8. Be concise. Every sentence should be information the next session cannot get from reading the code or CLAUDE.md. Cut anything redundant, explanatory, or obvious.
-9. Do NOT include sections for "Verbatim References", "Important Context", or "Completed Work" — claude-mem captures these automatically from tool observations.
+9. Do NOT add extra sections beyond the format above (no "Verbatim References", "Important Context", or "Completed Work" — the Summary covers completed work).
