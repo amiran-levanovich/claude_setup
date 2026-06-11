@@ -27,7 +27,8 @@ hooks/
 │   ├── rails-greenfield-setup/
 │   ├── rails-tdd-workflow/
 │   ├── rails-db-migrations/
-│   └── rails-testing/
+│   ├── rails-testing/
+│   └── rails-workflow-init/      # Setup audit: gems, bullet config, rubocop, hook prerequisites
 └── settings.json                 # Registers the PreToolUse commit hook
 
 agent_docs/                       # Knowledge base — single source of truth, read before acting
@@ -53,7 +54,9 @@ The repo is a self-hosting Claude Code plugin marketplace. In any Claude Code se
 /plugin install rails-workflow@claude-setup
 ```
 
-Everything ships with the plugin: the four skills, the `transfer-context` command, the `rubocop-fixer` agent, and the pre-commit hook (registered via `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}`). The skills read `agent_docs/` from inside the plugin, so target projects need no extra files.
+Everything ships with the plugin: the skills, the `transfer-context` command, the `rubocop-fixer` agent, and the pre-commit hook (registered via `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}`). The skills read `agent_docs/` from inside the plugin, so target projects need no extra files.
+
+After installing, run `/rails-workflow-init` in your project — it audits the Gemfile for the mandatory gems, checks bullet/RuboCop configuration and hook prerequisites, and offers to close each gap.
 
 One difference vs. drop-in: `CLAUDE.md` (standard commands, generator policy) is not part of a plugin. If you want that guidance too, copy it into the project:
 
@@ -105,6 +108,10 @@ Then open the project in Claude Code. On session start it automatically:
 **`rubocop-fixer`** is a scoped sub-agent invoked after `rubocop -A` when residual offenses remain. It fixes what the auto-corrector can't, never disables cops, and flags anything it can't resolve as `UNRESOLVABLE` for human review.
 
 **`/transfer-context`** is a slash command for handing off to a new session when the current one is degraded or hitting context limits. It writes a structured handoff file to `.claude/context-transfers/` and gives you a single line to paste into the new chat — decisions made, traps to avoid, relevant file locations, and open work described as status (not instructions).
+
+### Customizing per project
+
+The skills look for `agent_docs/` in the **project root first** and only fall back to the plugin's bundled copy. To tailor any playbook to a specific project — different testing priorities, MySQL instead of PostgreSQL, looser commit rules — copy that one file into the project's `agent_docs/` and edit it there. The project copy wins; the other playbooks keep coming from the plugin.
 
 ---
 

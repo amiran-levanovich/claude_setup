@@ -76,6 +76,13 @@ Decompose the feature into its atomic implementation tasks and write them as a c
 
 Present this list to the user and receive acknowledgement before proceeding. Mark each item completed as you progress — do not advance to the next item until the current TDD loop (Steps 1–5) is complete.
 
+When presenting the list, also ask the user to choose a **review pacing**:
+
+1. **Per-cycle review** (default) — pause after each completed TDD loop for user review before starting the next item.
+2. **Autonomous** — work through the whole checklist and present the completed feature at the end. Even in this mode, pause immediately if a task requires significant deviation from the approved list (a new dependency, a schema change not on the list, a changed public interface).
+
+Default to per-cycle review if the user expresses no preference.
+
 [1. Write Test] ──> [2. Verify Failure] ──> [3. Commit Test] ──> [4. Write Code] ──> [5. Commit Pass]
 
 ### Step 1: Write Tests First
@@ -95,6 +102,15 @@ Present this list to the user and receive acknowledgement before proceeding. Mar
 
 ### Step 5: Commit Passing Code
 *   Once tests pass, clear the **Pre-Commit Verification Gate** (detailed below) and commit the implementation code, completing the atomic TDD loop.
+
+### Pre-Present Verification (every TDD loop)
+Before presenting code from Step 1 or Step 4 to the user, verify it — generate first, then check, then present:
+
+*   If the loop touched a **migration** — run the Self-Validation Checklist in `database_schema.md`.
+*   If the loop wrote or changed **specs** — run the Self-Validation Checklist in `running_tests.md`.
+*   Check the conventions in `code_conventions.md` that RuboCop can't enforce (predicate naming, magic-value constants, memoization safety).
+
+Fix violations before presenting — never present code you know fails a checklist. When everything passes, a one-line compliance note is enough; be verbose only when reporting violations and their fixes. If a checklist surfaces a genuine judgment call, present the options with trade-offs instead of silently choosing.
 
 ---
 
