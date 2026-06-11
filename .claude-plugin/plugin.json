@@ -1,0 +1,16 @@
+{
+  "name": "rails-workflow",
+  "displayName": "Rails Workflow",
+  "version": "1.0.0",
+  "description": "Opinionated Ruby on Rails workflow for Claude Code: greenfield setup playbook, strict TDD lifecycle, PostgreSQL migration safety, RSpec testing strategy, a RuboCop fixer sub-agent, and a deterministic pre-commit gate (no commits to main, clean RuboCop, clean Brakeman).",
+  "author": {
+    "name": "Amiran Tsiklauri",
+    "url": "https://github.com/amiran-levanovich"
+  },
+  "repository": "https://github.com/amiran-levanovich/claude_setup",
+  "keywords": ["rails", "ruby", "tdd", "rspec", "rubocop", "brakeman", "workflow"],
+  "skills": "./.claude/skills/",
+  "commands": ["./.claude/commands/transfer-context.md"],
+  "agents": ["./.claude/agents/rubocop-fixer.md"],
+  "hooks": "./hooks/hooks.json"
+}

@@ -1,6 +1,6 @@
 # claude_setup
 
-A drop-in Claude Code configuration kit for Ruby / Ruby on Rails projects.
+A Claude Code configuration kit for Ruby / Ruby on Rails projects — installable as a **plugin** (`rails-workflow`) or usable as a **drop-in copy**.
 
 Enforces an opinionated development workflow: structured greenfield setup, TDD lifecycle, database safety standards, and automated code style. Two layers of enforcement: a shared knowledge base (`agent_docs/`) surfaced through auto-triggering skills, and a deterministic pre-commit hook that blocks commits to `main` and commits with RuboCop or Brakeman failures — independent of whether the agent remembers the rules.
 
@@ -9,6 +9,13 @@ Enforces an opinionated development workflow: structured greenfield setup, TDD l
 ## What's inside
 
 ```
+.claude-plugin/
+├── plugin.json                   # Plugin manifest (name: rails-workflow)
+└── marketplace.json              # Lets this repo serve as its own plugin marketplace
+
+hooks/
+└── hooks.json                    # Plugin-mode registration of the pre-commit hook
+
 .claude/
 ├── agents/
 │   └── rubocop-fixer.md          # Sub-agent: fixes RuboCop offenses rubocop -A can't auto-correct
@@ -36,6 +43,25 @@ CLAUDE.md                         # Root project instructions for Claude Code
 ---
 
 ## How to use
+
+### Option A — install as a plugin (recommended)
+
+The repo is a self-hosting Claude Code plugin marketplace. In any Claude Code session:
+
+```
+/plugin marketplace add amiran-levanovich/claude_setup
+/plugin install rails-workflow@claude-setup
+```
+
+Everything ships with the plugin: the four skills, the `transfer-context` command, the `rubocop-fixer` agent, and the pre-commit hook (registered via `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}`). The skills read `agent_docs/` from inside the plugin, so target projects need no extra files.
+
+One difference vs. drop-in: `CLAUDE.md` (standard commands, generator policy) is not part of a plugin. If you want that guidance too, copy it into the project:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/amiran-levanovich/claude_setup/main/CLAUDE.md -o CLAUDE.md
+```
+
+### Option B — drop-in copy
 
 Copy the contents of this repo into the root of your Rails project:
 
