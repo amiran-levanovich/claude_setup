@@ -96,7 +96,7 @@ Then open the project in Claude Code. On session start it automatically:
 | File | When Claude reads it |
 |---|---|
 | `building_the_project.md` | Starting a new project from scratch |
-| `coding_workflow.md` | Writing any feature (TDD cycle + pre-commit gate) |
+| `coding_workflow.md` | Writing any feature (TDD cycle + pre-commit gate + feature-completion review) |
 | `code_conventions.md` | Writing or reviewing Ruby/Rails code (only conventions a linter can't check) |
 | `database_schema.md` | Creating migrations or designing schemas |
 | `running_tests.md` | Running or writing specs |
@@ -123,19 +123,21 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 
 ## Workflow summary
 
-1. **New project** → follow `building_the_project.md` (4 phases, sign-off gate before any feature code)
+1. **New project** → follow `building_the_project.md` (4 phases, sign-off gate before any feature code; optional high-level UX map in Phase 1)
 2. **Daily feature work** → `coding_workflow.md` TDD cycle: write failing test → commit → write code → pass
 3. **Pre-commit gate** → hook-enforced: feature branch + clean RuboCop + clean Brakeman; agent-enforced: Bullet N+1 audit + green suite
 4. **Commits** → Conventional Commits format (`feat`, `fix`, `test`, `refactor`, …), subject ≤ 60 chars
-5. **Merge** → pull request into `main` only — direct commits to `main` are blocked by the hook
+5. **Feature-completion review** → before opening the PR: a review → report → fix → re-review **loop** over the full feature diff (style, security, DRY/design, N+1s) that repeats until a round comes back clean — review skills where installed, manual fallback otherwise
+6. **Merge** → pull request into `main` only — direct commits to `main` are blocked by the hook
 
 ---
 
 ## Recommended: Plannotator plugin
 
-This setup references the **[Plannotator](https://github.com/backnotprop/plannotator)** Claude Code plugin in three places inside `building_the_project.md`:
+This setup references the **[Plannotator](https://github.com/backnotprop/plannotator)** Claude Code plugin in several places inside `building_the_project.md`:
 
 - **Phase 0** — the requirements document (`docs/requirements.md`) is annotated via Plannotator before user sign-off.
+- **Phase 1** — the optional UX & interface map (`docs/ux.md`) is annotated via Plannotator when the user opts into a UX pass.
 - **Phase 2** — the full project setup roadmap is decomposed into isolated sub-tasks and reviewed via Plannotator before any code is written.
 - **Phase 4** — the architectural diagrams, schema maps, and task roadmaps are compiled into a final presentation via Plannotator for user sign-off.
 

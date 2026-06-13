@@ -78,6 +78,18 @@ Establish your structural data layer before writing migrations:
 *   **Relationships:** Map all active associations (`has_many`, `belongs_to`, `through:`, etc.).
 *   **Constraints:** Enforce constraints at the database level (`null: false`, `unique: true`, cascades) to safeguard structural integrity.
 
+### 3. UX & Interface Map (optional — ask the user first)
+A data model and an architecture diagram say nothing about what the user actually sees. Before locking the design, ask the user — via the **AskUserQuestion tool** — whether they want a high-level UX pass for this project. Recommend it for any app with a human-facing UI; skip it for headless APIs, background workers, or CLI-only tools.
+
+If the user opts in, establish the following at a high level (this is interface mapping, not pixel design):
+*   **Root page:** what loads at `/` — landing, dashboard, or sign-in — and for which persona.
+*   **Primary navigation:** the top-level sections a user can reach, and how they move between them.
+*   **Key screens:** the handful of screens that carry the core workflows from `docs/requirements.md`.
+*   **Core user flows:** the click-path for each non-negotiable feature (e.g. sign-up → onboarding → first action).
+*   **Critical states:** the empty, loading, and error states for the key screens.
+
+Capture the outcome in `docs/ux.md` as a bulleted map or a **Mermaid** flow diagram — no visual mockups. When **Plannotator** is available, run it through `/plannotator-annotate docs/ux.md` for review like the other Phase artifacts. If the user opts out, note the absence and move on — nothing downstream blocks on this document.
+
 ---
 
 ## PHASE 2: STRATEGIC PLANNING & TO-DO ENGINES
@@ -108,7 +120,7 @@ Every Ruby on Rails project initialized in this environment must be configured w
 ---
 
 ## PHASE 4: FINAL PRESENTATION & SIGN-OFF
-Compile the architectural diagrams, database schema maps, task roadmaps, and core tooling selections into a unified **Final Presentation**.
+Compile the architectural diagrams, database schema maps, the UX map (when one was produced in Phase 1), task roadmaps, and core tooling selections into a unified **Final Presentation**.
 
 > ❗ **The Execution Gate:** Present this summary to the user. **Zero feature coding is allowed** until the user reviews this presentation and gives explicit authorization to begin development. 
 > 
