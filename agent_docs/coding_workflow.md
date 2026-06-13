@@ -23,7 +23,7 @@ Coding is strictly isolated into short-lived, single-purpose feature branches.
 ### Branch Naming & Merge Flow
 *   Branch from an up-to-date `main`: `git checkout -b <type>/<short-kebab-description>` — e.g. `feature/order-cancellation`, `fix/nil-gateway-timeout`, `refactor/extract-payment-service`.
 *   Keep branches single-purpose and short-lived (days, not weeks). Rebase on `main` if it drifts.
-*   Merge back via pull request only. Never merge locally into `main`. Open the PR when the feature's full TDD loop is complete and the suite is green.
+*   Merge back via pull request only. Never merge locally into `main`. Open the PR when the feature's full TDD loop is complete, the suite is green, and the **Feature-Completion Review** (Phase 4) is clean.
 
 ### Feature Doc Close-Out (after the PR merges)
 A feature doc (`docs/features/<feature>.md`) is **working state, not documentation** — it exists only while its feature is in flight. When the feature's PR merges:
@@ -109,6 +109,9 @@ When presenting the list, also ask the user to choose a **review pacing** (use t
 
 Default to per-cycle review if the user expresses no preference.
 
+### Optional: UX alignment (UI-facing features)
+If the feature adds or changes a user-facing surface, offer the user a brief high-level UX alignment before writing specs — via the AskUserQuestion tool, recommended only when there is a real UI delta. Keep it to what the specs need: which page/route the feature lives on, its entry point from existing navigation, and the empty/error states. Fold the outcome into the feature doc's **Decisions** section. Skip silently for non-UI work (model logic, jobs, internal refactors) — do not prompt when there is nothing to align.
+
 [1. Write Test] ──> [2. Verify Failure] ──> [3. Commit Test] ──> [4. Write Code] ──> [5. Commit Pass]
 
 ### Step 1: Write Tests First
@@ -157,3 +160,35 @@ The hook does **not** run the spec suite, because TDD Step 3 commits intentional
 1.  **N+1 Query Audit:** Run the test suite with **`bullet`** enabled to catch N+1 queries and unused eager loading introduced by the change.
 2.  **Style Cleanup:** Run `bundle exec rubocop -A`. If residual offenses remain, invoke the **`rubocop-fixer`** sub-agent (`.claude/agents/rubocop-fixer.md`) with the list of changed files. Any `UNRESOLVABLE` offenses in its report require human review before committing.
 3.  **Green Suite:** The full suite passes. If any check fails, fix it on the feature branch before committing again.
+
+---
+
+## PHASE 4: FEATURE-COMPLETION REVIEW (before opening the PR)
+The pre-commit gate (Phase 3) is mechanical and commit-scoped — it enforces style and security on every commit but never looks at the feature as a whole, and it cannot judge duplication or design. Once every TDD loop is done and the suite is green, run the **review-and-fix loop** below over the entire feature diff (`git diff main...HEAD`) before opening the PR. This is a loop, not a single pass: you re-review after every round of fixes and only stop when a full pass surfaces nothing.
+
+> **Why a step, not a hook:** style (RuboCop) and security (Brakeman) are deterministic, so they are already hook-enforced on every commit. DRY, design, and altitude are judgment calls — no shell check can make them — so this pass stays the agent's responsibility, gated here before the PR.
+
+### The review dimensions
+Each round covers every dimension against the whole diff. Prefer a dedicated review skill when one is installed in the project; otherwise do the review manually against the referenced playbook:
+
+| Dimension | Preferred skill (if installed) | Manual fallback |
+| :--- | :--- | :--- |
+| Style & conventions | `/code-review` or `/review` | re-read `code_conventions.md`; scan the diff for drift a linter can't catch |
+| Security | `/security-review` | Brakeman + manual audit for authz gaps, mass-assignment, injection |
+| Duplication / DRY & design | `/simplify` | scan for repeated logic, fat controllers, methods doing too much, missing service objects |
+| N+1 queries | — | confirm the per-commit Bullet audits (Phase 3) hold across the full feature flow — run the request/system specs with `bullet` once more end-to-end |
+
+### The loop
+Repeat until a clean round:
+
+1. **Review.** Run every dimension above over the current feature diff and collect all findings.
+2. **No findings?** The loop is complete — proceed to open the PR.
+3. **Findings exist?** **Report them first** — a severity-ordered list (file:line, the problem, the proposed fix). Do not start editing before reporting.
+4. **Fix.** Resolve each finding on the feature branch.
+    *   For a genuine judgment call (a refactor that changes a public interface, a security trade-off, two equally valid designs), **ask the user via the AskUserQuestion tool before fixing** — do not decide silently.
+    *   ❌ Never weaken or delete a committed spec to clear a finding (Phase 2, Step 4 still applies). If a fix changes behaviour, it goes through its own test-first cycle.
+    *   After fixing, re-run the relevant specs and the Phase 3 gate so the fixes are themselves green and committed.
+    *   Record any non-obvious decision in the feature doc's **Decisions** section.
+5. **Re-review.** Go back to step 1. A fix in one round can introduce a finding in another dimension, so the whole pass runs again — never assume a localized fix leaves the rest clean.
+
+Do not exit the loop early or open the PR on a round that still has open findings. Every dimension must come back clean in the **same** round before the feature is done.
