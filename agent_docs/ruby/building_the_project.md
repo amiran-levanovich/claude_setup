@@ -124,4 +124,4 @@ Compile the architectural diagrams, database schema maps, the UX map (when one w
 
 > ❗ **The Execution Gate:** Present this summary to the user. **Zero feature coding is allowed** until the user reviews this presentation and gives explicit authorization to begin development. 
 > 
-> Once authorized, close this document and transition entirely to the tracking rules outlined in `agent_docs/coding_workflow.md`.
+> Once authorized, close this document and transition entirely to the tracking rules outlined in `agent_docs/core/coding_workflow.md`.
