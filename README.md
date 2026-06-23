@@ -1,5 +1,11 @@
 # claude_setup
 
+> **This repo is a marketplace hosting two sibling plugins:**
+> - **`dev-workflow`** (this README) — the workflow for **code** (Ruby on Rails, Python).
+> - **`craft-workflow`** ([`craft-workflow/`](./craft-workflow/)) — the same method for **non-code deliverables**: design, content, and research.
+>
+> Install whichever you need (`/plugin install dev-workflow@claude-setup` / `craft-workflow@claude-setup`); they don't cross-trigger.
+
 A Claude Code configuration kit for **Ruby on Rails and Python** projects — installable as a **plugin** (`dev-workflow`) or usable as a **drop-in copy**.
 
 Enforces one opinionated development workflow across both languages: structured greenfield setup, a TDD lifecycle, database safety standards, and automated code style. A **language-agnostic spine** (`agent_docs/core/`) drives the process; **per-language packs** (`agent_docs/ruby/`, `agent_docs/python/`) supply the concrete tools. Two layers of enforcement: a shared knowledge base surfaced through auto-triggering skills, and a deterministic pre-commit hook that dispatches on the project's marker file and blocks commits to `main` or with linter/security failures — independent of whether the agent remembers the rules.
