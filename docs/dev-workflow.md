@@ -116,16 +116,17 @@ After installing, run `workflow-init` in your project — it detects whether the
 
 ### Option B — drop-in copy
 
-Copy the contents of this repo into the root of your project:
+Copy the kit's working files into the root of your project:
 
 ```bash
 git clone https://github.com/amiran-levanovich/claude_setup.git
 cp -r claude_setup/.claude your-project/
 cp -r claude_setup/agent_docs your-project/
-cp claude_setup/CLAUDE.md your-project/
 ```
 
-Then open the project in Claude Code. On session start it reads `CLAUDE.md`, picks up the `agent_docs/` knowledge base, registers the skills (they auto-trigger on matching tasks), and registers the pre-commit hook from `.claude/settings.json`.
+> Don't copy this repo's `CLAUDE.md` — it is **maintainer memory for `claude_setup` itself**, not a project template. To give your project the right `CLAUDE.md`, run `workflow-init` (below): it generates a stack-specific standard-commands + generator-policy section inline for your detected language.
+
+Then open the project in Claude Code. On session start it picks up the `agent_docs/` knowledge base, registers the skills (they auto-trigger on matching tasks), and registers the pre-commit hook from `.claude/settings.json`. Run `workflow-init` once to audit tooling and generate your project `CLAUDE.md` guidance.
 
 > **Hook requirement:** the commit gate parses hook input with `jq`, falling back to `python3` — at least one must be on `PATH`. The gate only activates in projects with a recognized marker file (`Gemfile` or `pyproject.toml`/`setup.py`), so it is inert in non-code repos.
 
