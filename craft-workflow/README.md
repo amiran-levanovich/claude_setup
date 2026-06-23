@@ -40,7 +40,9 @@ Each pack has `brief.md` (discovery + template), `rubric.md` (the acceptance cri
 
 ## Orchestration — what it drives
 
-The packs prefer a skill if it's installed and fall back to the baked-in rubric otherwise (same pattern as `dev-workflow`'s review table). Recommended installs that materially upgrade output:
+**Assumes nothing is installed.** Every pack is self-sufficient via its baked-in rubric; the skills below are *advised*, not required, and each prefers-if-present with a graceful fallback (same pattern as `dev-workflow`'s review table). `craft-init` runs a **session availability check** at the start of each deliverable and reports which advised skills are present vs missing — the full registry, with *why each is advised* and install pointers, is [`craft_docs/core/orchestration.md`](./craft_docs/core/orchestration.md).
+
+Advised external installs that materially upgrade output:
 
 | Domain | Recommended install | Stars |
 |---|---|---|
@@ -50,7 +52,7 @@ The packs prefer a skill if it's installed and fall back to the baked-in rubric 
 | experience-design | [cuellarfr/design-skills](https://github.com/cuellarfr/design-skills) — heuristic critique, journey mapping, a11y | 35 |
 | content (UX copy) | [content-designer/ux-writing-skill](https://github.com/content-designer/ux-writing-skill) | 117 |
 
-Already-installed Anthropic skills it leans on: `frontend-design`, `canvas-design`, `brand-guidelines`, `web-artifacts-builder`, `doc-coauthoring`, `internal-comms`, plus `plannotator` (review loop), `grill-me` (stress-test the brief), and `capture` (brain-dump intake). None are hard requirements — the packs are self-sufficient via their baked-in rubrics.
+Other skills it orchestrates **when available** (all optional): Anthropic's `frontend-design`, `canvas-design`, `brand-guidelines`, `web-artifacts-builder`, `doc-coauthoring`, `internal-comms`; plus, by capability role, an annotation-review skill (e.g. `plannotator`), a brief stress-test (e.g. `grill-me`), and a brain-dump organizer (e.g. `capture`). Where you don't have one under that exact name, any skill filling the same role works. None are hard requirements — the packs degrade to their baked-in rubrics. See [`craft_docs/core/orchestration.md`](./craft_docs/core/orchestration.md) for the rationale behind each.
 
 ## Install
 

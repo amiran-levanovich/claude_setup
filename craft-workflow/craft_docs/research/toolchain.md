@@ -1,6 +1,6 @@
 # Research — Orchestration & Definition of Done
 
-Orchestrate existing skills/tools per role; prefer the skill if installed, else run the pass manually against `rubric.md`.
+Orchestrate existing skills/tools per role; prefer the skill if installed, else run the pass manually against `rubric.md`. Nothing here is assumed installed — every skill is advised, not required. **Why each is advised, and a session availability check, live in [`../core/orchestration.md`](../core/orchestration.md)** (run by `craft-init`).
 
 ## Role → skill map
 

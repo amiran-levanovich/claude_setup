@@ -1,6 +1,6 @@
 # Experience-Design — Orchestration & Definition of Done
 
-This pack **orchestrates** existing skills; it does not reinvent design tooling. For each role, prefer the skill if it's installed, otherwise fall back to producing manually against `rubric.md` (same pattern as the code workflow's review table).
+This pack **orchestrates** existing skills; it does not reinvent design tooling. For each role, prefer the skill if it's installed, otherwise fall back to producing manually against `rubric.md` (same pattern as the code workflow's review table). Nothing here is assumed installed — every skill is advised, not required. **Why each is advised, and a session availability check, live in [`../core/orchestration.md`](../core/orchestration.md)** (run by `craft-init`).
 
 ## Role → skill map
 
