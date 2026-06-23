@@ -1,0 +1,13 @@
+{
+  "name": "craft-workflow",
+  "displayName": "Craft Workflow (Design · Content · Research)",
+  "version": "1.0.0",
+  "description": "An opinionated workflow for non-code deliverables. A domain-neutral method — discovery → sign-off → criteria-first → produce → review loop — with packs for experience-design (UI/UX, journeys, accessibility), content (long-form, UX copy, SEO), and research (evidence, synthesis). It supplies the method and concrete acceptance rubrics, and orchestrates existing skills (frontend-design, marketingskills, deep-research, plannotator, grill-me) rather than reinventing them. No commit hook — enforcement is the agent-run sign-off gates and review loop.",
+  "author": {
+    "name": "Amiran Tsiklauri",
+    "url": "https://github.com/amiran-levanovich"
+  },
+  "repository": "https://github.com/amiran-levanovich/claude_setup",
+  "keywords": ["design", "ux", "ui", "content", "copywriting", "seo", "research", "workflow", "non-code", "craft"],
+  "skills": "./.claude/skills/"
+}

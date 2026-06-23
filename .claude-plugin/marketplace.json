@@ -1,6 +1,6 @@
 {
   "name": "claude-setup",
-  "description": "Marketplace for the dev-workflow plugin: an opinionated, polyglot development workflow for Claude Code covering Ruby on Rails and Python.",
+  "description": "Marketplace for the dev-workflow and craft-workflow plugins: opinionated Claude Code workflows for code (Ruby on Rails, Python) and non-code deliverables (design, content, research).",
   "owner": {
     "name": "Amiran Tsiklauri",
     "url": "https://github.com/amiran-levanovich"
@@ -9,7 +9,12 @@
     {
       "name": "dev-workflow",
       "source": "./",
-      "description": "Opinionated polyglot workflow: language-agnostic TDD spine + Ruby/Rails and Python packs, migration safety, language-aware fixer agents, and a deterministic pre-commit gate."
+      "description": "Opinionated polyglot dev workflow: language-agnostic TDD spine + Ruby/Rails and Python packs, migration safety, language-aware fixer agents, and a deterministic pre-commit gate."
+    },
+    {
+      "name": "craft-workflow",
+      "source": "./craft-workflow",
+      "description": "Opinionated workflow for non-code deliverables: a domain-neutral method (discovery → criteria-first → produce → review loop) with experience-design, content, and research packs that orchestrate popular design/marketing/research skills."
     }
   ]
 }
