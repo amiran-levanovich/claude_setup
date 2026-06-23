@@ -7,7 +7,7 @@ model: sonnet
 
 You fix RuboCop offenses that `rubocop -A` cannot auto-correct.
 
-Reference: `agent_docs/code_conventions.md` lists the project conventions that are
+Reference: `agent_docs/ruby/code_conventions.md` lists the project conventions that are
 not cop-enforced — keep your fixes consistent with it.
 
 Common uncorrectable cops and their fixes:

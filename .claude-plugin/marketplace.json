@@ -1,15 +1,15 @@
 {
   "name": "claude-setup",
-  "description": "Marketplace for the rails-workflow plugin: an opinionated Ruby on Rails development workflow for Claude Code.",
+  "description": "Marketplace for the dev-workflow plugin: an opinionated, polyglot development workflow for Claude Code covering Ruby on Rails and Python.",
   "owner": {
     "name": "Amiran Tsiklauri",
     "url": "https://github.com/amiran-levanovich"
   },
   "plugins": [
     {
-      "name": "rails-workflow",
+      "name": "dev-workflow",
       "source": "./",
-      "description": "Opinionated Ruby on Rails workflow: greenfield setup, strict TDD, migration safety, RuboCop fixer agent, and a deterministic pre-commit gate."
+      "description": "Opinionated polyglot workflow: language-agnostic TDD spine + Ruby/Rails and Python packs, migration safety, language-aware fixer agents, and a deterministic pre-commit gate."
     }
   ]
 }
