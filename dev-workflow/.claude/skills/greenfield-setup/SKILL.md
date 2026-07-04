@@ -15,4 +15,4 @@ Then read that language's greenfield playbook and follow it:
 
 Locate the file as follows: use `agent_docs/<lang>/building_the_project.md` in the project root if present (drop-in install); otherwise read `../../../agent_docs/<lang>/building_the_project.md` relative to this skill's directory (plugin install).
 
-It is the single source of truth for the greenfield phase sequence (Phases 0–4) and the sign-off gate that must be cleared before feature coding begins. For Python, Phase 1 includes the framework choice (Django vs FastAPI), which determines the ORM, migration tool, and test client.
+It is the single source of truth for the greenfield phase sequence (Phases G0–G4) and the sign-off gate that must be cleared before feature coding begins. For Python, Phase G1 includes the framework choice (Django vs FastAPI), which determines the ORM, migration tool, and test client.

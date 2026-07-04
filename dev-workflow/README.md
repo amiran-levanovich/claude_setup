@@ -48,13 +48,13 @@ agent_docs/                       # Knowledge base — single source of truth, r
 │   ├── orchestration.md          # Advised-tools registry + availability check (run by workflow-init)
 │   └── quickref.md               # 10-rule floor + "when lost" protocol — cheap re-anchor for tight context
 ├── ruby/
-│   ├── building_the_project.md   # Rails greenfield playbook (Phases 0–4)
+│   ├── building_the_project.md   # Rails greenfield playbook (Phases G0–G4)
 │   ├── code_conventions.md       # Ruby/Rails conventions a linter can't check
 │   ├── database_schema.md        # ActiveRecord migration safety, indexing (PostgreSQL)
 │   ├── running_tests.md          # RSpec hierarchy, FactoryBot, mocking
 │   └── toolchain.md              # RuboCop/Brakeman/Bullet/RSpec bindings + gate commands
 └── python/
-    ├── building_the_project.md   # Python greenfield (Django/FastAPI choice, Phases 0–4)
+    ├── building_the_project.md   # Python greenfield (Django/FastAPI choice, Phases G0–G4)
     ├── code_conventions.md       # Python conventions beyond Ruff
     ├── database_schema.md        # Django ORM / SQLAlchemy+Alembic migration safety (PostgreSQL)
     ├── running_tests.md          # pytest hierarchy, factory_boy, respx/responses mocking
@@ -149,7 +149,7 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 
 ## Workflow summary
 
-1. **New project** → `<lang>/building_the_project.md` (4 phases, sign-off gate before any feature code; Python picks Django/FastAPI in Phase 1)
+1. **New project** → `<lang>/building_the_project.md` (Phases G0–G4, sign-off gate before any feature code; Python picks Django/FastAPI in Phase G1)
 2. **Daily feature work** → `core/coding_workflow.md` TDD cycle: write failing test → commit → write code → pass
 3. **Pre-commit gate** → hook-enforced per language: feature branch + clean linter/format + clean security scan; agent-enforced: N+1 audit + green suite
 4. **Commits** → Conventional Commits format (`feat`, `fix`, `test`, `refactor`, …), subject ≤ 60 chars
@@ -162,7 +162,7 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 
 The kit is self-sufficient, but a handful of external tools materially raise output quality. The single registry — what each adds, why it's advised, install pointers, and the fallback without it — is **[`agent_docs/core/orchestration.md`](./agent_docs/core/orchestration.md)** (the dev sibling of craft-workflow's registry). `workflow-init` runs its availability check and reports what's present vs worth installing. Highlights:
 
-- **[Plannotator](https://github.com/backnotprop/plannotator)** — per-section annotation review of the greenfield Phase 0–2 artifacts (requirements, UX map, roadmap). Falls back to inline markdown review.
+- **[Plannotator](https://github.com/backnotprop/plannotator)** — per-section annotation review of the greenfield Phase G0–G2 artifacts (requirements, UX map, roadmap). Falls back to inline markdown review.
 - **[Context7 MCP](https://github.com/upstash/context7)** — version-accurate library/framework docs on demand (gem/package APIs, migration syntax), instead of stale training-data guesses. Install: `npx ctx7 setup --claude`.
 - **`/code-review`, `/security-review`, `/simplify`** — the preferred drivers for the Phase 4 review dimensions; the bundled `diff-reviewer` agent covers each when absent.
 
