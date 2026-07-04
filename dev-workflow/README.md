@@ -27,7 +27,8 @@ hooks/
 .claude/
 ├── agents/
 │   ├── rubocop-fixer.md          # Sub-agent: fixes RuboCop offenses rubocop -A can't auto-correct
-│   └── ruff-fixer.md             # Sub-agent: fixes Ruff offenses ruff --fix can't auto-correct
+│   ├── ruff-fixer.md             # Sub-agent: fixes Ruff offenses ruff --fix can't auto-correct
+│   └── diff-reviewer.md          # Sub-agent: fresh-context Phase 4 review, one dimension per invocation
 ├── commands/
 │   └── transfer-context.md       # Slash command: compress session into a handoff file for a new chat
 ├── hooks/
@@ -86,6 +87,8 @@ README.md                         # This file
 
 **`rubocop-fixer` / `ruff-fixer`** are scoped sub-agents invoked after the auto-corrector when residual offenses remain. They fix what the auto-corrector can't, never disable a rule, and flag anything they can't resolve as `UNRESOLVABLE` for human review.
 
+**`diff-reviewer`** carries the Phase 4 review loop when no dedicated review skill (`/code-review`, `/security-review`, `/simplify`) is installed. Invoked once per dimension (style / security / dry-design / performance) per round, it reads the full feature diff in its own fresh context — unbiased by the session that wrote the code, and immune to its accumulated length — and returns severity-ordered findings or `CLEAN`. It never edits; the main session applies fixes and logs each round in the feature doc's Review log.
+
 **`/transfer-context`** hands off to a new session when the current one is degraded or hitting context limits — it writes a structured handoff file (git state, decisions, traps, a pointer to the in-flight feature doc) and gives you one line to paste into the new chat.
 
 **`context-guard.sh`** automates the approach to auto-compact, which degrades quality sharply. Three events, one script: on every user prompt it measures real context usage from the transcript and, past `CONTEXT_GUARD_PCT` (default 85 % of `CONTEXT_GUARD_WINDOW`, default 200k — set 1000000 on a 1M-context model), injects an instruction to run `transfer-context` now; just before an auto-compact it warns the user; right after a compaction it re-anchors the agent — re-read the workflow spine and the in-flight doc's Review log before continuing. A hook cannot run a skill itself, so the guard works by injecting the instruction one turn early — the practical equivalent.
@@ -116,7 +119,7 @@ The repo is a self-hosting Claude Code plugin marketplace. In any Claude Code se
 /plugin install dev-workflow@claude-setup
 ```
 
-Everything ships with the plugin: the skills, the `transfer-context` command, both fixer agents, and the pre-commit hook (registered via `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}`). The skills read `agent_docs/` from inside the plugin, so target projects need no extra files.
+Everything ships with the plugin: the skills, the `transfer-context` command, the fixer agents, the `diff-reviewer` agent, and the pre-commit hook (registered via `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}`). The skills read `agent_docs/` from inside the plugin, so target projects need no extra files.
 
 After installing, run `workflow-init` in your project — it detects whether the repo is existing or greenfield and takes it from there.
 
@@ -161,7 +164,7 @@ The kit is self-sufficient, but a handful of external tools materially raise out
 
 - **[Plannotator](https://github.com/backnotprop/plannotator)** — per-section annotation review of the greenfield Phase 0–2 artifacts (requirements, UX map, roadmap). Falls back to inline markdown review.
 - **[Context7 MCP](https://github.com/upstash/context7)** — version-accurate library/framework docs on demand (gem/package APIs, migration syntax), instead of stale training-data guesses. Install: `npx ctx7 setup --claude`.
-- **`/code-review`, `/security-review`, `/simplify`** — the preferred drivers for the Phase 4 review dimensions; each has a manual fallback.
+- **`/code-review`, `/security-review`, `/simplify`** — the preferred drivers for the Phase 4 review dimensions; the bundled `diff-reviewer` agent covers each when absent.
 
 All recommended, none required — nothing blocks on their absence.
 
