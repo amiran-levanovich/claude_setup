@@ -27,7 +27,7 @@ A capability may exist under a different name (workspaces often namespace skills
 - **Adds:** finds duplication, fat controllers, and altitude problems mechanically.
 - **Without it:** the bundled `diff-reviewer` agent (dimension: `dry-design`).
 
-### `plannotator` — artifact review (greenfield Phases 0–2)
+### `plannotator` — artifact review (greenfield Phases G0–G2)
 - **Adds:** per-section human annotations on the requirements/UX/roadmap docs — precise, tracked, actionable.
 - **Install:** [backnotprop/plannotator](https://github.com/backnotprop/plannotator)
 - **Without it:** iterate over the inline markdown document instead.

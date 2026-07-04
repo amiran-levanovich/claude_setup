@@ -4,6 +4,19 @@ This runbook dictates the mandatory day-to-day workflow for writing, testing, li
 
 > **Context tight or lost?** `core/quickref.md` is the distilled 10-rule floor with a "when lost" protocol — re-read it instead of guessing.
 
+## EXECUTION TIMELINE
+
+The phases below are **thematic groupings, not a chronology**. What actually runs, in order:
+
+```
+P1 branch → P2 planning gate → ⟳ TDD cycle (P2 Steps 1–5; the P3 gate fires on every commit)
+          → P4 review loop (until a logged clean round) → PR → merge → P1 feature-doc close-out
+```
+
+- **Phase 3 is not a stage after Phase 2** — its hook half intercepts *every* `git commit`, and its agent half runs before every implementation commit (Step 5). It never runs "once".
+- **Phase 1's close-out section runs after the PR merges** — the last act of a feature, not the first.
+- **Greenfield projects use a separate sequence, Phases G0–G4**, in `<lang>/building_the_project.md`. A bare "Phase N" always refers to this document; a "Phase GN" never does.
+
 ---
 
 ## LANGUAGE DETECTION
@@ -84,7 +97,7 @@ All implementation code passes through Test-Driven Development. The hard rule of
 > **Exemption — framework scaffolding:** files produced by the approved framework generators (e.g. Rails `generate model/migration/controller`, Django `startapp`/`makemigrations` — see the generator policy in your language pack's `building_the_project.md` and the project `CLAUDE.md`) do not count as implementation code. The gate applies to behavior: methods, scopes, queries, validations, business logic.
 
 ### Feature Planning Gate (mandatory before every feature)
-Before the TDD loop begins for any feature, you must produce a **feature-scoped to-do list**. This is separate from the project-level to-do list produced in Phase 2 of `building_the_project.md`.
+Before the TDD loop begins for any feature, you must produce a **feature-scoped to-do list**. This is separate from the project-level to-do list produced in Phase G2 of `building_the_project.md`.
 
 **Resume check first:** look in `docs/features/` for an existing doc for this feature. If one exists, load it, honor every logged decision and constraint as an active commitment, and continue from the first unchecked task — do not re-plan from scratch.
 

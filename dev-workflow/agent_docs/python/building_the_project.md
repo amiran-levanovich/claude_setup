@@ -1,10 +1,12 @@
 # Python Project Initialization & Greenfield Setup
 
-This playbook governs the phase sequence for initializing a brand-new Python project or major standalone subsystem from scratch. The one hard gate: no feature code until Phase 4 sign-off is completed.
+This playbook governs the phase sequence for initializing a brand-new Python project or major standalone subsystem from scratch. The one hard gate: no feature code until Phase G4 sign-off is completed.
+
+> Greenfield phases are numbered **G0–G4** to keep them distinct from the daily-workflow Phases 1–4 in `core/coding_workflow.md` — a bare "Phase N" always means the daily workflow.
 
 ---
 
-## PHASE 0: DISCOVERY & REQUIREMENTS GATHERING
+## PHASE G0: DISCOVERY & REQUIREMENTS GATHERING
 Before any technical architecture is drafted, interactively prompt the user to establish a precise product scope. Extract clear answers for:
 
 *   **Functional Scope:** Target user personas, core workflows, and non-negotiable features.
@@ -21,7 +23,7 @@ Run discovery as a structured interview using the **AskUserQuestion tool**, not 
 *   Free-text prose questions only where options can't be enumerated (e.g., "describe the core workflow").
 *   Follow up on answers that change the architecture; skip vectors earlier answers already settled.
 
-### Phase 0 Output: Requirements Document
+### Phase G0 Output: Requirements Document
 Before advancing, produce `docs/requirements.md`:
 
 ```markdown
@@ -62,10 +64,10 @@ Present the final `docs/requirements.md` and receive explicit sign-off before co
 
 ---
 
-## PHASE 1: STACK SELECTION, ARCHITECTURE & MODELING
+## PHASE G1: STACK SELECTION, ARCHITECTURE & MODELING
 
 ### 1. Framework Selection (Python greenfield)
-Choose the web framework via the **AskUserQuestion tool** — two options for now, recommend based on the Phase 0 answers:
+Choose the web framework via the **AskUserQuestion tool** — two options for now, recommend based on the Phase G0 answers:
 
 *   **Django** (Recommended for) — apps that want batteries included: built-in ORM, migrations, admin, auth, and server-rendered or DRF API surfaces. Best when the data model is relational and the team wants convention over assembly.
 *   **FastAPI** — async-first JSON APIs and services: explicit, lightweight, Pydantic-validated, typically paired with SQLAlchemy + Alembic. Best for high-concurrency APIs, microservices, or ML-serving endpoints.
@@ -89,7 +91,7 @@ If they opt in, establish at a high level (interface mapping, not pixel design):
 
 ---
 
-## PHASE 2: STRATEGIC PLANNING & TO-DO ENGINES
+## PHASE G2: STRATEGIC PLANNING & TO-DO ENGINES
 
 ### 1. Roadmap Breakdown
 *   Deconstruct the setup roadmap into explicit, isolated sub-tasks.
@@ -100,13 +102,13 @@ If they opt in, establish at a high level (interface mapping, not pixel design):
 
 ---
 
-## PHASE 3: SCAFFOLD, DEPENDENCY AUDIT & CORE TOOLING
+## PHASE G3: SCAFFOLD, DEPENDENCY AUDIT & CORE TOOLING
 
 ### 1. Scaffold the application
-Turn the approved design into a running skeleton — this is setup, not feature code, so it does not violate the Phase 4 gate:
+Turn the approved design into a running skeleton — this is setup, not feature code, so it does not violate the Phase G4 gate:
 
 1. `git init -b main` if the repo doesn't exist yet. The pre-commit gate exempts a repo with zero commits, so the initial scaffold commit lands on `main`; every commit after it follows the branch rules in `core/coding_workflow.md`.
-2. `uv init` (or the chosen manager's equivalent), then scaffold the Phase 1 framework: Django — `uv add django` + `django-admin startproject`; FastAPI — `uv add fastapi uvicorn sqlalchemy alembic` + the app module and `alembic init`.
+2. `uv init` (or the chosen manager's equivalent), then scaffold the Phase G1 framework: Django — `uv add django` + `django-admin startproject`; FastAPI — `uv add fastapi uvicorn sqlalchemy alembic` + the app module and `alembic init`.
 3. Add the dev/test group from the table below (`uv add --dev ruff bandit pytest pytest-cov ...`) and the framework test integration (`pytest-django` / `httpx`).
 4. Configure `[tool.ruff]` (lint + format) and `[tool.bandit]` (test-dir excludes) in `pyproject.toml`.
 5. Commit the scaffold, then verify the gate is live: `ruff --version` runs via the manager, and a trial commit on `main` is now blocked.
@@ -129,7 +131,7 @@ Every Python project initialized in this environment is configured with this cor
 
 ---
 
-## PHASE 4: FINAL PRESENTATION & SIGN-OFF
+## PHASE G4: FINAL PRESENTATION & SIGN-OFF
 Compile the architecture diagram, schema maps, the UX map (when produced), task roadmaps, framework choice, and core tooling into a unified **Final Presentation**.
 
 > ❗ **The Execution Gate:** Present this summary to the user. **Zero feature coding is allowed** until the user reviews it and gives explicit authorization to begin development.

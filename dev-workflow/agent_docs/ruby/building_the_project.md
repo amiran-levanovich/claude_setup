@@ -1,10 +1,12 @@
 # Project Initialization & Greenfield Setup
 
-This playbook governs the phase sequence for initializing a brand-new project or major standalone subsystem from scratch. The one hard gate: no feature code until Phase 4 sign-off is completed.
+This playbook governs the phase sequence for initializing a brand-new project or major standalone subsystem from scratch. The one hard gate: no feature code until Phase G4 sign-off is completed.
+
+> Greenfield phases are numbered **G0–G4** to keep them distinct from the daily-workflow Phases 1–4 in `core/coding_workflow.md` — a bare "Phase N" always means the daily workflow.
 
 ---
 
-## PHASE 0: DISCOVERY & REQUIREMENTS GATHERING
+## PHASE G0: DISCOVERY & REQUIREMENTS GATHERING
 Before any technical architecture is drafted, you must interactively prompt the user to establish a precise product scope. Extract clear answers for the following vectors:
 
 *   **Functional Scope:** Target user personas, core workflows, and non-negotiable features.
@@ -21,8 +23,8 @@ Run the discovery as a structured interview using the **AskUserQuestion tool** (
 *   Use free-text prose questions only where options can't be enumerated (e.g., "describe the core workflow").
 *   Follow up on answers that change the architecture (e.g., "offline-first" triggers a sync-strategy question) and skip vectors the user's earlier answers already settled.
 
-### Phase 0 Output: Requirements Document
-Before advancing to Phase 1, produce `docs/requirements.md` with this structure:
+### Phase G0 Output: Requirements Document
+Before advancing to Phase G1, produce `docs/requirements.md` with this structure:
 
 ```markdown
 # Requirements: <Project Name>
@@ -65,7 +67,7 @@ Present the final `docs/requirements.md` to the user and receive explicit sign-o
 
 ---
 
-## PHASE 1: HIGH-LEVEL ARCHITECTURE & MODELING
+## PHASE G1: HIGH-LEVEL ARCHITECTURE & MODELING
 Once requirements are locked, map out the technical domain before touching any setup files.
 
 ### 1. Visual Architecture
@@ -92,7 +94,7 @@ Capture the outcome in `docs/ux.md` as a bulleted map or a **Mermaid** flow diag
 
 ---
 
-## PHASE 2: STRATEGIC PLANNING & TO-DO ENGINES
+## PHASE G2: STRATEGIC PLANNING & TO-DO ENGINES
 
 ### 1. Roadmap Breakdown
 *   Deconstruct the entire setup roadmap into explicit, isolated sub-tasks.
@@ -104,10 +106,10 @@ Capture the outcome in `docs/ux.md` as a bulleted map or a **Mermaid** flow diag
 
 ---
 
-## PHASE 3: SCAFFOLD, DEPENDENCY AUDIT & CORE TOOLING
+## PHASE G3: SCAFFOLD, DEPENDENCY AUDIT & CORE TOOLING
 
 ### 1. Scaffold the application
-Turn the approved design into a running skeleton — this is setup, not feature code, so it does not violate the Phase 4 gate:
+Turn the approved design into a running skeleton — this is setup, not feature code, so it does not violate the Phase G4 gate:
 
 1. `git init -b main` if the repo doesn't exist yet. The pre-commit gate exempts a repo with zero commits, so the initial scaffold commit lands on `main`; every commit after it follows the branch rules in `core/coding_workflow.md`.
 2. `rails new . --database=postgresql` with the flags the requirements imply (`--api` for headless services, `--skip-test` since RSpec replaces Minitest).
@@ -130,8 +132,8 @@ Every Ruby on Rails project initialized in this environment must be configured w
 
 ---
 
-## PHASE 4: FINAL PRESENTATION & SIGN-OFF
-Compile the architectural diagrams, database schema maps, the UX map (when one was produced in Phase 1), task roadmaps, and core tooling selections into a unified **Final Presentation**.
+## PHASE G4: FINAL PRESENTATION & SIGN-OFF
+Compile the architectural diagrams, database schema maps, the UX map (when one was produced in Phase G1), task roadmaps, and core tooling selections into a unified **Final Presentation**.
 
 > ❗ **The Execution Gate:** Present this summary to the user. **Zero feature coding is allowed** until the user reviews this presentation and gives explicit authorization to begin development. 
 > 

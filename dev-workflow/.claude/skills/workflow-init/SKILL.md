@@ -35,7 +35,7 @@ The repo has no code yet, so there is nothing to scan. Route into greenfield set
 
 1. Ask the user which language to scaffold — **Ruby/Rails** or **Python** (AskUserQuestion).
 2. For Python, ask the framework — **Django** or **FastAPI**.
-3. Hand off to the `greenfield-setup` skill / the matching `agent_docs/<lang>/building_the_project.md`, which runs Phases 0–4 and the sign-off gate. The tooling audit (Step 3) is satisfied as part of Phase 3 there.
+3. Hand off to the `greenfield-setup` skill / the matching `agent_docs/<lang>/building_the_project.md`, which runs Phases G0–G4 and the sign-off gate. The tooling audit (Step 3) is satisfied as part of Phase G3 there.
 
 ## Step 3 — Tooling audit (existing projects)
 
