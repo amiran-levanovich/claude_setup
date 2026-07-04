@@ -6,12 +6,13 @@ This pack **orchestrates** existing skills; it does not reinvent design tooling.
 
 | Role | Preferred skill (if present) | Fallback |
 | :--- | :--- | :--- |
-| Visual / UI production | `frontend-design`, `web-artifacts-builder` (rich React/Tailwind artifacts), `canvas-design` (static posters/PDF) | hand-build against the rubric |
-| Brand / visual system | `brand-guidelines`, `theme-factory` | apply the project's design tokens manually |
-| Journey mapping · heuristic critique · a11y audit | [`cuellarfr/design-skills`](https://github.com/cuellarfr/design-skills) (UX research, Nielsen-heuristic critique, WCAG 2.2 audit, journey mapping) — *recommended install* | the frameworks are baked into `rubric.md` — critique manually |
-| Deep UI/UX agents | [`VoltAgent`](https://github.com/VoltAgent/awesome-claude-code-subagents) `ui-designer` / `ux-researcher` — *optional install* | — |
+| Frontend design engine (produce · critique · live-iterate) | `impeccable` — *strongly advised, see registry* | produce and critique against the rubric directly |
+| Visual / UI production | `frontend-design` · `web-artifacts-builder` · `canvas-design` | hand-build against the rubric |
+| Brand / visual system | `brand-guidelines` · `theme-factory` | apply the project's design tokens manually |
+| Journey mapping · heuristic critique · a11y audit | `design-skills` — *recommended, see registry* | the frameworks are baked into `rubric.md` — critique manually |
+| Deep UI/UX agents | VoltAgent `ui-designer` / `ux-researcher` — *see registry* | — |
 | Review loop | `plannotator` (annotate the rendered design) | manual critique against the rubric |
-| Brain-dump intake · brief stress-test | `capture` · `grill-me` | — |
+| Brain-dump intake · brief stress-test | `capture` · `grill-me` (or any skill filling the role) | structure / stress-test manually |
 
 > The Nielsen heuristics, WCAG 2.2 AA checks, JTBD, and journey-coherence criteria are **baked into `rubric.md`**, so this pack is self-sufficient. `cuellarfr/design-skills` deepens the critique when installed but is never required.
 

@@ -5,7 +5,7 @@ description: Use when initializing a brand-new Ruby/Rails or Python (Django/Fast
 
 Determine the language first. A greenfield repo usually has no marker file yet, so detection may be inconclusive:
 
-- If a marker already exists, use it: `Gemfile` → `ruby`, `pyproject.toml`/`setup.py` → `python`.
+- If a marker already exists, use it: `Gemfile` → `ruby`, `pyproject.toml`/`setup.py`/`setup.cfg` → `python`.
 - Otherwise, ask the user which language to scaffold (Ruby/Rails or Python) via the AskUserQuestion tool.
 
 Then read that language's greenfield playbook and follow it:

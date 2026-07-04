@@ -100,7 +100,18 @@ If they opt in, establish at a high level (interface mapping, not pixel design):
 
 ---
 
-## PHASE 3: DEPENDENCY AUDIT & CORE TOOLING
+## PHASE 3: SCAFFOLD, DEPENDENCY AUDIT & CORE TOOLING
+
+### 1. Scaffold the application
+Turn the approved design into a running skeleton — this is setup, not feature code, so it does not violate the Phase 4 gate:
+
+1. `git init -b main` if the repo doesn't exist yet. The pre-commit gate exempts a repo with zero commits, so the initial scaffold commit lands on `main`; every commit after it follows the branch rules in `core/coding_workflow.md`.
+2. `uv init` (or the chosen manager's equivalent), then scaffold the Phase 1 framework: Django — `uv add django` + `django-admin startproject`; FastAPI — `uv add fastapi uvicorn sqlalchemy alembic` + the app module and `alembic init`.
+3. Add the dev/test group from the table below (`uv add --dev ruff bandit pytest pytest-cov ...`) and the framework test integration (`pytest-django` / `httpx`).
+4. Configure `[tool.ruff]` (lint + format) and `[tool.bandit]` (test-dir excludes) in `pyproject.toml`.
+5. Commit the scaffold, then verify the gate is live: `ruff --version` runs via the manager, and a trial commit on `main` is now blocked.
+
+### 2. Core tooling
 Every Python project initialized in this environment is configured with this core stack from Day 1 (in the `dev`/`test` dependency group of `pyproject.toml`):
 
 | Package | Role | Enforced by |

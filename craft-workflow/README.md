@@ -46,15 +46,21 @@ Each pack has `brief.md` (discovery + template), `rubric.md` (the acceptance cri
 
 Advised external installs that materially upgrade output:
 
-| Domain | Recommended install | Stars |
+| Domain | Recommended install | What it adds |
 |---|---|---|
-| content | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) — copywriting, CRO, SEO | 34.7k |
-| research | [daymade deep-research](https://github.com/daymade/claude-code-skills) — multi-pass, source scoring | 2.6k |
-| design / research | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) — ui-designer, ux-researcher, market-researcher | 22.3k |
-| experience-design | [cuellarfr/design-skills](https://github.com/cuellarfr/design-skills) — heuristic critique, journey mapping, a11y | 35 |
-| content (UX copy) | [content-designer/ux-writing-skill](https://github.com/content-designer/ux-writing-skill) | 117 |
+| experience-design | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | design critique/audit/polish commands, live browser iteration, deterministic detector rules |
+| content | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | copywriting, CRO, SEO |
+| research | [daymade deep-research](https://github.com/daymade/claude-code-skills) | multi-pass pipeline, source scoring |
+| design / research | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | ui-designer, ux-researcher, market-researcher agents |
+| experience-design | [cuellarfr/design-skills](https://github.com/cuellarfr/design-skills) | heuristic critique, journey mapping, a11y |
+| content (UX copy) | [content-designer/ux-writing-skill](https://github.com/content-designer/ux-writing-skill) | 4-standard microcopy framework |
 
-Other skills it orchestrates **when available** (all optional): Anthropic's `frontend-design`, `canvas-design`, `brand-guidelines`, `web-artifacts-builder`, `doc-coauthoring`, `internal-comms`; plus, by capability role, an annotation-review skill (e.g. `plannotator`), a brief stress-test (e.g. `grill-me`), and a brain-dump organizer (e.g. `capture`). Where you don't have one under that exact name, any skill filling the same role works. None are hard requirements — the packs degrade to their baked-in rubrics. See [`craft_docs/core/orchestration.md`](./craft_docs/core/orchestration.md) for the rationale behind each.
+It also drives, **when available** (all optional):
+
+- Anthropic skills: `frontend-design`, `canvas-design`, `brand-guidelines`, `web-artifacts-builder`, `doc-coauthoring`, `internal-comms`.
+- By capability role: annotation review (e.g. `plannotator`), brief stress-test (e.g. `grill-me`), brain-dump intake (e.g. `capture`) — any skill filling the role works, whatever its name.
+
+None are hard requirements — the packs degrade to their baked-in rubrics. The rationale for each lives in the [registry](./craft_docs/core/orchestration.md).
 
 ## Install
 

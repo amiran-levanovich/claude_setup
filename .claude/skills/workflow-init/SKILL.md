@@ -59,10 +59,7 @@ Present a short status table — one row per check: name, status (ok / missing /
 7. **CLAUDE.md standard commands** — if the project `CLAUDE.md` lacks the stack's standard commands and generator policy, offer to add an inline section for the detected language (env setup, server, test/lint commands, generator policy). Generate it for the detected stack rather than fetching a fixed template.
 8. **Project overrides** — if the project root has an `agent_docs/` directory, list which playbooks it overrides (project copies take precedence over the plugin's). Informational.
 9. **In-flight features** — if `docs/features/` exists, list its docs (each a resumable in-flight feature). Informational.
-10. **Review & orchestration skills** — inspect the skills/tools available to you this session and report which of the workflow's *advised* orchestration skills are present, so the user knows what the feature-completion review loop (Phase 4 of `coding_workflow.md`) can drive vs. fall back on. Informational, never blocks — every dimension has a manual fallback.
-    - `/code-review` or `/review` (style review), `/security-review` (security), `/simplify` (DRY/design) — the Phase 4 review dimensions.
-    - `plannotator` — artifact review in greenfield Phases 0/1/2/4. Advised; install [backnotprop/plannotator](https://github.com/backnotprop/plannotator) if absent.
-    - Bundled with the plugin and always present: the language skills, the `rubocop-fixer`/`ruff-fixer` agents, and the pre-commit hook.
+10. **Review & orchestration tools** — read `agent_docs/core/orchestration.md` (project root first, else `../../../agent_docs/core/orchestration.md` relative to this skill) and run its availability check: inspect the skills/tools available to you this session and report which *advised* tools are present vs missing, with the one-line rationale and install pointer for any absent ("for correct work and best results, these are recommended — and why"). Informational, never blocks — every role has a manual fallback.
 
 ## Output
 After applying approved fixes, re-verify: the dependency install succeeds, and the linter runs (`bundle exec rubocop --version` / `ruff --version`).

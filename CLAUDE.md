@@ -19,15 +19,37 @@ It contains markdown, shell, and JSON — no `Gemfile`, no `pyproject.toml`. Con
 
 ## Layout
 ```
-.claude-plugin/{plugin.json (dev-workflow), marketplace.json (lists both)}
-.claude/{skills,agents,commands,hooks}/  agent_docs/{core,ruby,python}/   # dev-workflow (root)
-hooks/hooks.json                                                          # dev-workflow hook registration
-craft-workflow/{.claude-plugin,.claude/skills,craft_docs/{core,experience-design,content,research}}/
-docs/dev-workflow.md                                                      # dev-workflow detailed guide
-CLAUDE.md (this file)  README.md (general overview)
+.claude-plugin/
+├── plugin.json                  # dev-workflow manifest (its plugin root = repo root)
+└── marketplace.json             # lists both plugins
+
+# ── dev-workflow (source: ./) ──
+.claude/
+├── skills/                      # thin routers: greenfield-setup · tdd-workflow · schema-migrations · testing · workflow-init
+├── agents/                      # rubocop-fixer · ruff-fixer
+├── commands/                    # transfer-context
+├── hooks/                       # pre-commit-gate.sh (commit gate) · context-guard.sh (auto-compact guard)
+└── settings.json                # hook registration (drop-in mode)
+hooks/hooks.json                 # hook registration (plugin mode)
+agent_docs/
+├── core/                        # coding_workflow.md (spine) · orchestration.md (advised tools) · quickref.md (10-rule floor)
+├── ruby/                        # building_the_project · code_conventions · database_schema · running_tests · toolchain
+└── python/                      # same five files
+docs/dev-workflow.md             # detailed guide
+
+# ── craft-workflow (source: ./craft-workflow) ──
+craft-workflow/
+├── .claude-plugin/plugin.json
+├── .claude/skills/              # craft-init · craft-iterate · craft-review
+├── craft_docs/
+│   ├── core/                    # craft_workflow.md (kernel) · orchestration.md (advised skills) · quickref.md (9-rule floor)
+│   └── {experience-design,content,research}/   # each pack: brief.md · rubric.md · toolchain.md
+└── README.md                    # detailed guide
+
+README.md                        # marketplace overview     CLAUDE.md  # this file
 ```
-- **dev-workflow**: a language-agnostic spine (`agent_docs/core/coding_workflow.md`) + `ruby/` & `python/` packs; skills detect language by marker file and route to the matching pack; a real pre-commit hook + `rubocop-fixer`/`ruff-fixer` agents.
-- **craft-workflow**: a domain-neutral kernel (`craft_docs/core/craft_workflow.md`) + `experience-design`/`content`/`research` packs; **no hook, no fixer agents** by design — enforcement is agent-run sign-off gates + the review loop. Advised external skills live in `craft_docs/core/orchestration.md`.
+- **dev-workflow**: skills detect language by marker file (`Gemfile` / `pyproject.toml`…) and route to the matching pack; enforcement = the pre-commit hook + the fixer agents.
+- **craft-workflow**: **no hook, no fixer agents** by design — enforcement is agent-run sign-off gates + the review loop.
 
 ## Maintenance conventions
 - **Keep the two plugins in sync.** They share a design (kernel + packs, `toolchain.md` per pack, an `*-init` skill with an orchestration/availability check). A change to one's structure usually wants a parallel in the other.

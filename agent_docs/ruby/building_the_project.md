@@ -104,7 +104,18 @@ Capture the outcome in `docs/ux.md` as a bulleted map or a **Mermaid** flow diag
 
 ---
 
-## PHASE 3: DEPENDENCY AUDIT & CORE TOOLING
+## PHASE 3: SCAFFOLD, DEPENDENCY AUDIT & CORE TOOLING
+
+### 1. Scaffold the application
+Turn the approved design into a running skeleton — this is setup, not feature code, so it does not violate the Phase 4 gate:
+
+1. `git init -b main` if the repo doesn't exist yet. The pre-commit gate exempts a repo with zero commits, so the initial scaffold commit lands on `main`; every commit after it follows the branch rules in `core/coding_workflow.md`.
+2. `rails new . --database=postgresql` with the flags the requirements imply (`--api` for headless services, `--skip-test` since RSpec replaces Minitest).
+3. Install the test stack: add `rspec-rails` (+ `factory_bot_rails`, `faker`, `capybara`/`selenium-webdriver` for system specs) to the Gemfile and run `bundle exec rails generate rspec:install`.
+4. Write `.rubocop.yml` (requires `rubocop-rails`, `NewCops: enable`) and the Bullet config (`Bullet.enable` in development and test, `Bullet.raise = true` in test).
+5. Commit the scaffold, then verify the gate is live: the linter runs (`bundle exec rubocop --version`) and a trial commit on `main` is now blocked.
+
+### 2. Core tooling
 Every Ruby on Rails project initialized in this environment must be configured with this core safety and performance stack from Day 1:
 
 | Library / Gem | Gemfile Pin | Operational Mandate |
