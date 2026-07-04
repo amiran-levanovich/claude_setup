@@ -182,13 +182,13 @@ The pre-commit gate (Phase 3) is mechanical and commit-scoped — it enforces st
 > **Why a step, not a hook:** style (the linter) and security (the scanner) are deterministic, so they are already hook-enforced on every commit. DRY, design, and altitude are judgment calls — no shell check can make them — so this pass stays the agent's responsibility, gated here before the PR.
 
 ### The review dimensions
-Each round covers every dimension against the whole diff. Prefer a dedicated review skill when one is installed in the project; otherwise do the review manually against the referenced playbook. The concrete tool names per dimension live in `<lang>/toolchain.md`; the registry of advised tools (why each is worth installing, with fallbacks) is `core/orchestration.md`.
+Each round covers every dimension against the whole diff. Prefer a dedicated review skill when one is installed in the project; otherwise dispatch the dimension to the bundled **`diff-reviewer` sub-agent** — one invocation per dimension, passing the dimension, the diff range, and the language. It reviews with fresh context (by Phase 4 your own context is at its fullest and your judgment of your own code at its weakest), returns severity-ordered findings or `CLEAN`, and never edits. Fall back to reviewing manually against the referenced playbook only if the agent is unavailable. The concrete tool names per dimension live in `<lang>/toolchain.md`; the registry of advised tools (why each is worth installing, with fallbacks) is `core/orchestration.md`.
 
-| Dimension | Preferred skill (if installed) | Manual fallback |
+| Dimension | Preferred skill (if installed) | `diff-reviewer` / manual focus |
 | :--- | :--- | :--- |
-| Style & conventions | `/code-review` or `/review` | re-read `<lang>/code_conventions.md`; scan the diff for drift the linter can't catch |
-| Security | `/security-review` | the language's security scanner + manual audit for authz gaps, mass-assignment, injection |
-| Duplication / DRY & design | `/simplify` | scan for repeated logic, fat controllers/views, functions doing too much, missing service objects |
+| Style & conventions | `/code-review` or `/review` | `<lang>/code_conventions.md` — drift the linter can't catch |
+| Security | `/security-review` | authz gaps, mass-assignment, injection, beyond what the scanner flags |
+| Duplication / DRY & design | `/simplify` | repeated logic, fat controllers/views, functions doing too much, missing service objects |
 | Performance / N+1 | — | confirm the per-commit N+1/perf audits (Phase 3) hold across the full feature flow — run the request/system specs with the detector once more end-to-end |
 
 ### The loop

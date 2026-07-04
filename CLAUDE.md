@@ -26,7 +26,7 @@ dev-workflow/
 ├── .claude-plugin/plugin.json
 ├── .claude/
 │   ├── skills/                  # thin routers: greenfield-setup · tdd-workflow · schema-migrations · testing · workflow-init
-│   ├── agents/                  # rubocop-fixer · ruff-fixer
+│   ├── agents/                  # rubocop-fixer · ruff-fixer · diff-reviewer
 │   ├── commands/                # transfer-context
 │   ├── hooks/                   # pre-commit-gate.sh (commit gate) · context-guard.sh (auto-compact guard)
 │   └── settings.json            # hook registration (drop-in mode)

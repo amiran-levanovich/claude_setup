@@ -17,15 +17,15 @@ A capability may exist under a different name (workspaces often namespace skills
 
 ### `/code-review` or `/review` — style review (Phase 4)
 - **Adds:** structured diff review that catches drift the linter can't.
-- **Without it:** re-read `<lang>/code_conventions.md` and scan the diff manually.
+- **Without it:** the bundled `diff-reviewer` agent (dimension: `style`).
 
 ### `/security-review` — security review (Phase 4)
 - **Adds:** judgment-layer audit on top of the scanner — authz gaps, mass-assignment, injection.
-- **Without it:** the language's security scanner plus a manual audit.
+- **Without it:** the bundled `diff-reviewer` agent (dimension: `security`) on top of the language's scanner.
 
 ### `/simplify` — DRY / design review (Phase 4)
 - **Adds:** finds duplication, fat controllers, and altitude problems mechanically.
-- **Without it:** scan for repeated logic and missing service objects manually.
+- **Without it:** the bundled `diff-reviewer` agent (dimension: `dry-design`).
 
 ### `plannotator` — artifact review (greenfield Phases 0–2)
 - **Adds:** per-section human annotations on the requirements/UX/roadmap docs — precise, tracked, actionable.
