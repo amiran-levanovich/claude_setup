@@ -15,10 +15,11 @@ Enforces one opinionated development workflow across both languages: structured 
 
 ## What's inside
 
+All paths below are relative to `dev-workflow/` — the plugin root (the marketplace manifest lives one level up, at the repo's `.claude-plugin/marketplace.json`).
+
 ```
 .claude-plugin/
-├── plugin.json                   # Plugin manifest (name: dev-workflow)
-└── marketplace.json              # Lets this repo serve as its own plugin marketplace
+└── plugin.json                   # Plugin manifest (name: dev-workflow)
 
 hooks/
 └── hooks.json                    # Plugin-mode registration of the pre-commit hook
@@ -58,7 +59,7 @@ agent_docs/                       # Knowledge base — single source of truth, r
     ├── running_tests.md          # pytest hierarchy, factory_boy, respx/responses mocking
     └── toolchain.md              # Ruff/Bandit/pytest bindings + gate commands
 
-CLAUDE.md                         # Root project instructions for Claude Code
+README.md                         # This file
 ```
 
 ---
@@ -125,11 +126,11 @@ Copy the kit's working files into the root of your project:
 
 ```bash
 git clone https://github.com/amiran-levanovich/claude_setup.git
-cp -r claude_setup/.claude your-project/
-cp -r claude_setup/agent_docs your-project/
+cp -r claude_setup/dev-workflow/.claude your-project/
+cp -r claude_setup/dev-workflow/agent_docs your-project/
 ```
 
-> Don't copy this repo's `CLAUDE.md` — it is **maintainer memory for `claude_setup` itself**, not a project template. To give your project the right `CLAUDE.md`, run `workflow-init` (below): it generates a stack-specific standard-commands + generator-policy section inline for your detected language.
+> The kit ships no `CLAUDE.md` template (the repo-root `CLAUDE.md` is **maintainer memory for `claude_setup` itself**). To give your project the right `CLAUDE.md`, run `workflow-init` (below): it generates a stack-specific standard-commands + generator-policy section inline for your detected language.
 
 Then open the project in Claude Code. On session start it picks up the `agent_docs/` knowledge base, registers the skills (they auto-trigger on matching tasks), and registers the pre-commit hook from `.claude/settings.json`. Run `workflow-init` once to audit tooling and generate your project `CLAUDE.md` guidance.
 
@@ -156,7 +157,7 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 
 ## Recommended tools
 
-The kit is self-sufficient, but a handful of external tools materially raise output quality. The single registry — what each adds, why it's advised, install pointers, and the fallback without it — is **[`agent_docs/core/orchestration.md`](../agent_docs/core/orchestration.md)** (the dev sibling of craft-workflow's registry). `workflow-init` runs its availability check and reports what's present vs worth installing. Highlights:
+The kit is self-sufficient, but a handful of external tools materially raise output quality. The single registry — what each adds, why it's advised, install pointers, and the fallback without it — is **[`agent_docs/core/orchestration.md`](./agent_docs/core/orchestration.md)** (the dev sibling of craft-workflow's registry). `workflow-init` runs its availability check and reports what's present vs worth installing. Highlights:
 
 - **[Plannotator](https://github.com/backnotprop/plannotator)** — per-section annotation review of the greenfield Phase 0–2 artifacts (requirements, UX map, roadmap). Falls back to inline markdown review.
 - **[Context7 MCP](https://github.com/upstash/context7)** — version-accurate library/framework docs on demand (gem/package APIs, migration syntax), instead of stale training-data guesses. Install: `npx ctx7 setup --claude`.

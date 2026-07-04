@@ -6,7 +6,7 @@ That method is the same whether you're shipping code or shipping a design, an ar
 
 | Plugin | For | Enforcement | Details |
 |---|---|---|---|
-| **`dev-workflow`** | Code — Ruby on Rails & Python | TDD + a deterministic pre-commit hook (linter/security/branch gate) | [docs/dev-workflow.md](./docs/dev-workflow.md) |
+| **`dev-workflow`** | Code — Ruby on Rails & Python | TDD + a deterministic pre-commit hook (linter/security/branch gate) | [dev-workflow/README.md](./dev-workflow/README.md) |
 | **`craft-workflow`** | Non-code — design, content, research | Agent-run sign-off gates + a critique-and-fix review loop (no hook) | [craft-workflow/README.md](./craft-workflow/README.md) |
 
 Both share the same spine: a **language/-domain-agnostic kernel** (`*/core/*_workflow.md`) plus **packs** that supply the concrete tools or rubrics. The kernel names things by *role*; the packs bind them. They don't cross-trigger — install whichever you need, or both.
@@ -35,15 +35,16 @@ After installing, run **`workflow-init`** (dev) or just describe a task to trigg
 
 ```
 .claude-plugin/
-├── plugin.json          # dev-workflow manifest (plugin at repo root)
 └── marketplace.json     # lists both plugins
 
-.claude/  agent_docs/  hooks/  CLAUDE.md     # dev-workflow (source: ./)   → docs/dev-workflow.md
-craft-workflow/                              # craft-workflow (source: ./craft-workflow)
-docs/dev-workflow.md                         # dev-workflow detailed guide
+dev-workflow/            # code plugin      (source: ./dev-workflow)    → dev-workflow/README.md
+craft-workflow/          # non-code plugin  (source: ./craft-workflow)  → craft-workflow/README.md
+CLAUDE.md                # maintainer memory for this repo
 ```
+
+Each plugin is a self-contained directory with the same shape: `.claude-plugin/plugin.json` manifest, `.claude/skills/` routers, and a knowledge base (`agent_docs/` / `craft_docs/`) the skills point into.
 
 ## Per-plugin documentation
 
-- **[dev-workflow →](./docs/dev-workflow.md)** — language detection, the TDD spine, the pre-commit gate, the Ruby/Python packs, mandatory tooling.
+- **[dev-workflow →](./dev-workflow/README.md)** — language detection, the TDD spine, the pre-commit gate, the Ruby/Python packs, mandatory tooling.
 - **[craft-workflow →](./craft-workflow/README.md)** — the non-code method, the experience-design / content / research packs, the orchestration registry and availability check.

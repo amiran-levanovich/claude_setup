@@ -1,6 +1,6 @@
 # craft-workflow
 
-> Part of the [**claude_setup**](../README.md) marketplace. Sibling plugin: [**dev-workflow**](../docs/dev-workflow.md) (code).
+> Part of the [**claude_setup**](../README.md) marketplace. Sibling plugin: [**dev-workflow**](../dev-workflow/README.md) (code).
 
 A Claude Code plugin that brings the discipline of the `dev-workflow` kit to **non-code deliverables** — design, content, and research. Same spine (understand → plan → criteria-first → produce → review loop); the code-specific machinery (git gates, test suites) is replaced by **agent-run gates**, because non-code quality is a judgment, not a shell check.
 
