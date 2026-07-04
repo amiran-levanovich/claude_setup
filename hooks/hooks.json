@@ -1,5 +1,5 @@
 {
-  "description": "Pre-commit verification gate: blocks git commit on main/master, with RuboCop offenses, or with Brakeman warnings (Rails projects only).",
+  "description": "dev-workflow hooks: (1) pre-commit gate — blocks git commit on main/master or with linter/security failures; (2) context guard — warns near the auto-compact threshold, prompts a transfer-context handoff, and re-anchors after compaction.",
   "hooks": {
     "PreToolUse": [
       {
@@ -9,6 +9,41 @@
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/.claude/hooks/pre-commit-gate.sh",
             "timeout": 300
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/.claude/hooks/context-guard.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/.claude/hooks/context-guard.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/.claude/hooks/context-guard.sh",
+            "timeout": 15
           }
         ]
       }

@@ -6,12 +6,12 @@ Orchestrate existing skills/tools per role; prefer the skill if installed, else 
 
 | Role | Preferred skill/tool (if present) | Fallback |
 | :--- | :--- | :--- |
-| Multi-pass research engine | [`daymade/claude-code-skills` deep-research](https://github.com/daymade/claude-code-skills) — *recommended install (2.6k★)*: query-set building, source-credibility scoring, parallel drafting, format enforcement | run the passes manually: query set → gather → score → synthesize |
-| Domain research agents | [`VoltAgent`](https://github.com/VoltAgent/awesome-claude-code-subagents) `market-researcher` / `technical-writer` — *optional install* | — |
-| Evidence gathering | `WebSearch` / `WebFetch` (built-in); `context7` for library/API/tech docs | — |
-| Output formatting | `docx` · `pdf` · `xlsx` (when a formatted report/sheet is the deliverable) | markdown |
+| Multi-pass research engine | `deep-research` — *strongly advised, see registry* | run the passes manually: query set → gather → score → synthesize |
+| Domain research agents | VoltAgent `market-researcher` / `technical-writer` — *see registry* | — |
+| Evidence gathering | `WebSearch` / `WebFetch` (built-in); `context7` for library/API docs | — |
+| Output formatting | `docx` · `pdf` · `xlsx` | markdown |
 | Review loop | `plannotator` (annotate the draft report) | manual critique against the rubric |
-| Brain-dump intake · question stress-test | `capture` · `grill-me` | — |
+| Brain-dump intake · question stress-test | `capture` · `grill-me` (or any skill filling the role) | structure / stress-test manually |
 
 > Source-credibility scoring, claim→source traceability, and counter-argument coverage are **baked into `rubric.md`**, so the pack is self-sufficient. `deep-research` is the recommended install because its multi-pass pipeline materially raises rigor and citation quality.
 

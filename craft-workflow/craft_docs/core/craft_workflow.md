@@ -4,6 +4,8 @@ This runbook is the **domain-agnostic kernel** for producing non-code work — a
 
 > **The one rule that carries over unchanged:** define what "good" looks like *before* you produce. In code that is a failing test; here it is an explicit **acceptance rubric**. Producing before the rubric exists is the same mistake as writing implementation before the test.
 
+> **Context tight or lost?** `core/quickref.md` is the distilled 9-rule floor with a "when lost" protocol — re-read it instead of guessing.
+
 ---
 
 ## STEP 0 — DETECT THE DOMAIN
@@ -29,7 +31,7 @@ Use the **AskUserQuestion tool**, not a wall of open questions:
 *   One topic at a time, at most two questions per call.
 *   2–4 concrete options each, recommended one first and justified; free-text only where options can't be enumerated.
 *   Pull the domain-specific question set from `<domain>/brief.md`.
-*   If the user hands you a brain-dump, run it through the **`capture`** skill first to structure it, then fill the brief from that.
+*   If the user hands you a brain-dump, run it through a **brain-dump intake skill** first (e.g. `capture` — check your session's skill list for the exact name; workspaces often namespace it, like `cs:capture`), then fill the brief from that. If none is available, structure the dump into the brief template yourself.
 
 ### The brief
 Write `craft/<deliverable-kebab-name>.md` (create the `craft/` directory if needed) using the template in `<domain>/brief.md`. Every brief, regardless of domain, pins down:
@@ -39,7 +41,7 @@ Write `craft/<deliverable-kebab-name>.md` (create the `craft/` directory if need
 *   **Success criteria** — how we'll know it worked (this seeds the rubric in Step 3).
 
 ### Sign-off gate
-Present the brief and get **explicit sign-off before producing anything**. This is the equivalent of the greenfield Phase 4 execution gate — zero production until the brief is approved. To pressure-test a thin or hand-wavy brief before sign-off, offer the **`grill-me`** skill. When `plannotator` is available, annotate the brief with it for precise, per-section review.
+Present the brief and get **explicit sign-off before producing anything**. This is the equivalent of the greenfield Phase 4 execution gate — zero production until the brief is approved. To pressure-test a thin or hand-wavy brief before sign-off, offer a **plan-interrogation skill** if one is available (e.g. `grill-me`, possibly namespaced like `cs:grill-me`); otherwise self-review the brief against its success criteria. When an annotation-review skill (e.g. `plannotator`) is available, annotate the brief with it for precise, per-section review.
 
 ---
 
@@ -68,7 +70,10 @@ The brief file is **working state, not documentation** — it lives only while t
 - <unresolved item, and what it blocks>
 ```
 
-Decompose the deliverable into atomic pieces (a landing page → hero, value props, social proof, CTA; a report → each research question). Keep the doc tight — one line per entry; consolidate a section when it passes ~10 entries. Present the plan and ask the user to pick a **review pacing** (AskUserQuestion, per-pass recommended): *per-pass* (pause after each piece) or *autonomous* (produce the whole thing, present at the end — but stop immediately on any significant deviation from the approved brief). On close-out, promote anything durable (a brand rule, a voice guide) to the project's `CLAUDE.md`, then delete the brief — git history preserves it if the work is in a repo.
+*   **Decompose** the deliverable into atomic pieces (a landing page → hero, value props, social proof, CTA; a report → each research question).
+*   **Keep the doc tight** — one line per entry; consolidate a section when it passes ~10 entries.
+*   **Pick a review pacing** — present the plan and ask via AskUserQuestion (per-pass recommended): *per-pass* pauses after each piece; *autonomous* produces the whole thing and presents at the end, but stops immediately on any significant deviation from the approved brief.
+*   **On close-out**, promote anything durable (a brand rule, a voice guide) to the project's `CLAUDE.md`, then delete the brief — git history preserves it if the work is in a repo.
 
 ---
 
@@ -99,8 +104,8 @@ Code has a deterministic pre-commit gate; non-code has none — so the **entire*
 Repeat until a clean round:
 
 1. **Review.** Run every dimension in `<domain>/rubric.md` over the whole deliverable. Prefer a dedicated review skill when present (`plannotator` for visual/written annotation; the domain's critique skill in `toolchain.md`); otherwise critique manually against the rubric.
-2. **No findings?** Done — present the final deliverable and the definition-of-done checklist from `<domain>/toolchain.md`.
-3. **Findings?** **Report them first** — a prioritized list (location, the problem, the proposed fix). Don't start editing before reporting.
+2. **No findings?** Record "round N: clean" in the living doc's `### Review log`, then done — present the final deliverable and the definition-of-done checklist from `<domain>/toolchain.md`. A clean round that isn't logged doesn't count.
+3. **Findings?** **Record them first** — append the round to a `### Review log` section of the living doc (`craft/<name>.md`): round number, then a prioritized list (location, the problem, the proposed fix). Then report the list. Don't start editing before recording — the log is what lets a session resumed mid-loop know which round it is in and which findings are still open; never rely on the conversation alone to carry loop state.
 4. **Fix.** Resolve each finding. For a genuine judgment call (two valid directions, a brand trade-off), ask via AskUserQuestion before deciding. Record non-obvious decisions in the living doc.
 5. **Re-review.** Go back to step 1 — a fix in one dimension can break another, so the whole pass runs again.
 

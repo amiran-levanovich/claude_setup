@@ -9,7 +9,7 @@ Non-code work has no deterministic gate, so this loop carries the entire quality
 
 1. **Review** the whole deliverable against every dimension in `craft_docs/<domain>/rubric.md`. Prefer `plannotator` (annotate the rendered design/draft) and any critique skill named in `craft_docs/<domain>/toolchain.md`; otherwise critique manually.
 2. **No findings?** Done — present the deliverable and the Definition of Done checklist from `craft_docs/<domain>/toolchain.md`.
-3. **Findings?** Report them first (prioritized: location, problem, proposed fix), then fix. Ask via AskUserQuestion on genuine judgment calls. Record non-obvious decisions in `craft/<name>.md`.
+3. **Findings?** Record them first in the `### Review log` of `craft/<name>.md` (round number + prioritized list: location, problem, proposed fix), report, then fix. Ask via AskUserQuestion on genuine judgment calls. Record non-obvious decisions in the living doc. Log clean rounds too — loop state lives in the doc, not the conversation.
 4. **Re-review** — a fix in one dimension can break another, so the whole pass runs again.
 
 Do not declare done on a round that still has open findings. Every dimension must come back clean in the same round.

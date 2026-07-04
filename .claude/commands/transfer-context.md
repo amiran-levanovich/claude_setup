@@ -1,10 +1,10 @@
 # Transfer Context
 
-Prepare context for a new chat session when this one is degraded or hitting limits.
+Prepare context for a new chat session when this one is degraded or hitting limits. The `context-guard` hook triggers this automatically when the conversation nears the auto-compact threshold — a fresh session from a handoff beats a compacted one every time.
 
 ## File Output
 
-Write the context transfer to a markdown file at `.claude/context-transfers/<random-8-chars>.md` (relative to the project root). Create the directory if it doesn't exist. Use a random alphanumeric string for the filename.
+Write the context transfer to `.claude/context-transfers/<YYYYMMDD-HHMM>-<short-kebab-slug>.md` (relative to the project root; timestamp so the newest sorts last). Create the directory if it doesn't exist, and delete any older transfer files in it — only the newest handoff matters.
 
 After writing the file, output ONLY this to the user (nothing else):
 
@@ -34,6 +34,10 @@ Do NOT print the transfer content to the conversation. The user will copy-paste 
 - [How the user prefers to interact, e.g. "review before committing"]
 - [Quality gates or approval steps observed during the session]
 
+### Git State
+- Branch: [current branch] · last commit: [hash + subject]
+- Uncommitted: [one line per modified/untracked file that matters, or "clean"]
+
 ### Relevant Files
 - path/to/file:L10-L45 - [what changed and why]
 - path/to/other:L3 - [specific function/block that matters]
@@ -57,6 +61,7 @@ trust blindly. Then wait for my instructions before taking any action.
 ## Instructions
 
 0. Read the project's CLAUDE.md first. Do NOT restate anything already covered there (conventions, patterns, rules, preferences). The transfer context should only contain session-specific information.
+0.5. Same for the kit's living docs: if an in-flight `docs/features/<feature>.md` or `craft/<name>.md` exists, bring it up to date (task states, Decisions, Review log) and put it FIRST in "Relevant Files" — do not restate its content in the transfer. The doc is the durable memory; the transfer only carries what the doc can't (session dynamics, working agreements, git state).
 1. Summarize completed work (not what was attempted or in progress)
 2. List decisions made and their reasoning
 3. Note traps: failed approaches, mistakes made, things the next agent will be tempted to repeat

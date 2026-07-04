@@ -30,7 +30,8 @@ hooks/
 ├── commands/
 │   └── transfer-context.md       # Slash command: compress session into a handoff file for a new chat
 ├── hooks/
-│   └── pre-commit-gate.sh        # Deterministic gate: dispatches on marker file (Ruby vs Python)
+│   ├── pre-commit-gate.sh        # Deterministic gate: dispatches on marker file (Ruby vs Python)
+│   └── context-guard.sh          # Warns near auto-compact, prompts transfer-context, re-anchors after compaction
 ├── skills/                       # Thin auto-triggering pointers into agent_docs/ (language-detecting)
 │   ├── greenfield-setup/
 │   ├── tdd-workflow/
@@ -41,7 +42,9 @@ hooks/
 
 agent_docs/                       # Knowledge base — single source of truth, read before acting
 ├── core/
-│   └── coding_workflow.md        # Language-agnostic TDD lifecycle, Git hygiene, conventional commits
+│   ├── coding_workflow.md        # Language-agnostic TDD lifecycle, Git hygiene, conventional commits
+│   ├── orchestration.md          # Advised-tools registry + availability check (run by workflow-init)
+│   └── quickref.md               # 10-rule floor + "when lost" protocol — cheap re-anchor for tight context
 ├── ruby/
 │   ├── building_the_project.md   # Rails greenfield playbook (Phases 0–4)
 │   ├── code_conventions.md       # Ruby/Rails conventions a linter can't check
@@ -82,7 +85,9 @@ CLAUDE.md                         # Root project instructions for Claude Code
 
 **`rubocop-fixer` / `ruff-fixer`** are scoped sub-agents invoked after the auto-corrector when residual offenses remain. They fix what the auto-corrector can't, never disable a rule, and flag anything they can't resolve as `UNRESOLVABLE` for human review.
 
-**`/transfer-context`** hands off to a new session when the current one is degraded or hitting context limits — it writes a structured handoff file and gives you one line to paste into the new chat.
+**`/transfer-context`** hands off to a new session when the current one is degraded or hitting context limits — it writes a structured handoff file (git state, decisions, traps, a pointer to the in-flight feature doc) and gives you one line to paste into the new chat.
+
+**`context-guard.sh`** automates the approach to auto-compact, which degrades quality sharply. Three events, one script: on every user prompt it measures real context usage from the transcript and, past `CONTEXT_GUARD_PCT` (default 85 % of `CONTEXT_GUARD_WINDOW`, default 200k — set 1000000 on a 1M-context model), injects an instruction to run `transfer-context` now; just before an auto-compact it warns the user; right after a compaction it re-anchors the agent — re-read the workflow spine and the in-flight doc's Review log before continuing. A hook cannot run a skill itself, so the guard works by injecting the instruction one turn early — the practical equivalent.
 
 ### Onboarding: `workflow-init`
 
@@ -128,7 +133,9 @@ cp -r claude_setup/agent_docs your-project/
 
 Then open the project in Claude Code. On session start it picks up the `agent_docs/` knowledge base, registers the skills (they auto-trigger on matching tasks), and registers the pre-commit hook from `.claude/settings.json`. Run `workflow-init` once to audit tooling and generate your project `CLAUDE.md` guidance.
 
-> **Hook requirement:** the commit gate parses hook input with `jq`, falling back to `python3` — at least one must be on `PATH`. The gate only activates in projects with a recognized marker file (`Gemfile` or `pyproject.toml`/`setup.py`), so it is inert in non-code repos.
+> **Don't combine Option A and Option B.** If the plugin is installed *and* the project carries a drop-in copy, the hook is registered twice (`hooks/hooks.json` + `.claude/settings.json`) and every `git commit` runs the full linter/security pass twice. Pick one mode per project; for a drop-in project with the plugin also installed, delete the `hooks` block from the project's `.claude/settings.json`.
+
+> **Hook requirement:** the commit gate parses hook input with `jq`, falling back to `python3` — at least one must be on `PATH`. The gate only activates in projects with a recognized marker file (`Gemfile` or `pyproject.toml`/`setup.py`/`setup.cfg`), so it is inert in non-code repos. A repo with zero commits is exempt (greenfield bootstrap), and exporting `SKIP_COMMIT_GATE=1` in the environment Claude Code was launched from disables the gate entirely.
 
 ### Customizing per project
 
@@ -147,9 +154,15 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 
 ---
 
-## Recommended: Plannotator plugin
+## Recommended tools
 
-This setup references the **[Plannotator](https://github.com/backnotprop/plannotator)** Claude Code plugin in several places inside both `building_the_project.md` playbooks (requirements review, the optional UX map, the setup roadmap, and the final sign-off presentation). Install it from the Claude Code plugin registry and it will be available as `plannotator`. Without it, those steps fall back to inline markdown documents and task lists — functional but less structured. Plannotator is recommended, not required.
+The kit is self-sufficient, but a handful of external tools materially raise output quality. The single registry — what each adds, why it's advised, install pointers, and the fallback without it — is **[`agent_docs/core/orchestration.md`](../agent_docs/core/orchestration.md)** (the dev sibling of craft-workflow's registry). `workflow-init` runs its availability check and reports what's present vs worth installing. Highlights:
+
+- **[Plannotator](https://github.com/backnotprop/plannotator)** — per-section annotation review of the greenfield Phase 0–2 artifacts (requirements, UX map, roadmap). Falls back to inline markdown review.
+- **[Context7 MCP](https://github.com/upstash/context7)** — version-accurate library/framework docs on demand (gem/package APIs, migration syntax), instead of stale training-data guesses. Install: `npx ctx7 setup --claude`.
+- **`/code-review`, `/security-review`, `/simplify`** — the preferred drivers for the Phase 4 review dimensions; each has a manual fallback.
+
+All recommended, none required — nothing blocks on their absence.
 
 ---
 

@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
-# PreToolUse gate: intercepts `git commit` and enforces the checks that must
-# never depend on the agent remembering them (see agent_docs/core/coding_workflow.md).
+# PreToolUse gate on `git commit`: blocks commits on main/master or with
+# linter/security failures. Dispatches on the marker file (Gemfile -> Ruby,
+# pyproject.toml/setup.py/setup.cfg -> Python); inert elsewhere. Full behavior
+# and rationale: docs/dev-workflow.md ("Hook requirement").
 #
-# Polyglot: dispatches on the project's marker file —
-#   Gemfile                          -> Ruby/Rails  (RuboCop + Brakeman)
-#   pyproject.toml / setup.py        -> Python      (Ruff lint+format + Bandit)
-# Inert in any other repo.
-#
-# Deliberately does NOT run the test suite: TDD Step 3 commits intentionally
-# failing tests. The green-suite requirement applies only to implementation
-# commits and stays with the agent.
+# Does NOT run the test suite — TDD Step 3 commits intentionally failing tests.
 set -u
+
+# Escape hatch. Read from the hook's own env, so prefixing it to the gated
+# command has no effect — only the user's launch environment can set it.
+if [ "${SKIP_COMMIT_GATE:-}" = "1" ]; then
+  exit 0
+fi
 
 input=$(cat)
 
@@ -23,12 +24,21 @@ else
   cmd=$input
 fi
 
-# Only gate git commit invocations (handles `git commit` and `git -C <path> commit`).
-# The leading character class includes quotes so the raw-JSON fallback also matches.
-printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]\"'])git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+commit" || exit 0
+# Match `git commit` with any global flags in between, so -c/-C/--no-pager
+# can't slip past. Quotes stay in the boundary class deliberately: dropping
+# them would open a `sh -c "git commit"` bypass (fail-closed beats fail-open).
+git_flag='[[:space:]]+(-[cC][[:space:]]+[^[:space:]]+|--?[^[:space:]]+)'
+printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]\"'])git(${git_flag})*[[:space:]]+commit([[:space:]]|$|[\"'])" || exit 0
 
-# Determine the project language by marker file. In a plain docs/config repo
-# (no recognized marker) the hook is a no-op.
+# `git -C <path>`: run every check against the repo the commit targets.
+gitdir=$(printf '%s' "$cmd" | sed -nE "s/.*(^|[;&|[:space:]\"'])git(${git_flag})*[[:space:]]+-C[[:space:]]+([^[:space:]]+)([[:space:]].*)?$/\4/p")
+if [ -n "$gitdir" ]; then
+  if ! cd "$gitdir" 2>/dev/null; then
+    echo "Blocked: cannot resolve 'git -C $gitdir' target directory from the hook. Run the commit from inside that directory instead." >&2
+    exit 2
+  fi
+fi
+
 if [ -f Gemfile ]; then
   lang=ruby
 elif [ -f pyproject.toml ] || [ -f setup.py ] || [ -f setup.cfg ]; then
@@ -37,8 +47,11 @@ else
   exit 0
 fi
 
-# Branch guard is language-agnostic. symbolic-ref (not rev-parse) so detection
-# works on a repo with zero commits.
+# Zero-commit repo: greenfield bootstrap, nothing to regress yet.
+if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+  exit 0
+fi
+
 branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
 if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
   echo "Blocked: direct commits to '$branch' are forbidden. Create a feature branch first — see agent_docs/core/coding_workflow.md, Phase 1." >&2
@@ -46,6 +59,11 @@ if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
 fi
 
 if [ "$lang" = ruby ]; then
+  if ! bundle exec rubocop --version >/dev/null 2>&1; then
+    echo "Blocked: RuboCop is not available via 'bundle exec' — it is the linter this gate requires. Add 'rubocop' (and 'rubocop-rails') to the Gemfile and run 'bundle install' (see agent_docs/ruby/toolchain.md)." >&2
+    exit 2
+  fi
+
   if ! bundle exec rubocop --parallel --force-exclusion >&2; then
     echo "Blocked: RuboCop offenses present. Run 'bundle exec rubocop -A', then invoke the rubocop-fixer agent for residual offenses." >&2
     exit 2
@@ -84,9 +102,11 @@ else
   fi
 
   if $run bandit --version >/dev/null 2>&1; then
-    bandit_args="-q -r ."
     if [ -f pyproject.toml ] && grep -q "^\[tool.bandit\]" pyproject.toml 2>/dev/null; then
       bandit_args="-q -c pyproject.toml -r ."
+    else
+      # Bandit's built-in excludes don't cover virtualenvs.
+      bandit_args="-q -r . -x ./.venv,./venv,./node_modules"
     fi
     if ! $run bandit $bandit_args >&2; then
       echo "Blocked: Bandit reported security issues. Resolve them before committing." >&2

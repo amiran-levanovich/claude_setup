@@ -11,7 +11,7 @@ This file is the single place that maps the **roles** referenced by `core/coding
 | Dependency manager | **uv** (preferred) / **Poetry** / **pip** | detect by lockfile — see below |
 | Linter | **Ruff** | `ruff check .` · auto-fix: `ruff check --fix .` |
 | Formatter | **Ruff formatter** | `ruff format --check .` · apply: `ruff format .` |
-| Security scanner | **Bandit** | `bandit -q -r <src_dir>` (configure excludes in `pyproject.toml`) |
+| Security scanner | **Bandit** | `bandit -q -r .` — with a `[tool.bandit]` section it uses that config; otherwise the gate adds `-x ./.venv,./venv,./node_modules` so dependency code isn't scanned |
 | N+1 / performance detector | query-count assertions | Django: `django_assert_num_queries`; SQLAlchemy: query-count fixture — see `running_tests.md` |
 | Test runner | **pytest** | `pytest` (see `running_tests.md`) |
 | Fixer sub-agent | **`ruff-fixer`** | invoke after `ruff check --fix` leaves residual offenses |
@@ -49,11 +49,13 @@ Pin in `pyproject.toml`; let the lockfile freeze exact versions. Run the manager
 
 ## Pre-commit gate (what the hook runs)
 
-In a Python project (`pyproject.toml` / `setup.py` present) the hook blocks `git commit` unless:
+In a Python project (`pyproject.toml` / `setup.py` / `setup.cfg` present) the hook blocks `git commit` unless:
 
 1. The branch is not `main`/`master`.
 2. `ruff check .` is clean **and** `ruff format --check .` reports no reformatting.
-3. `bandit -q -r <src>` reports no issues (when installed).
+3. `bandit -q -r .` reports no issues (when installed; virtualenv dirs are excluded unless a `[tool.bandit]` config takes over).
+
+A repo with zero commits is exempt from the whole gate (greenfield bootstrap); `SKIP_COMMIT_GATE=1` in the launch environment disables it.
 
 The hook deliberately does **not** run pytest — TDD Step 3 commits intentionally failing tests.
 

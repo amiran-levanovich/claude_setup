@@ -2,6 +2,8 @@
 
 This runbook dictates the mandatory day-to-day workflow for writing, testing, linting, and committing features. It is **language-agnostic** — the concrete tools (linter, security scanner, test runner, N+1/perf check, fixer agent) are defined per language in the matching toolchain doc.
 
+> **Context tight or lost?** `core/quickref.md` is the distilled 10-rule floor with a "when lost" protocol — re-read it instead of guessing.
+
 ---
 
 ## LANGUAGE DETECTION
@@ -180,7 +182,7 @@ The pre-commit gate (Phase 3) is mechanical and commit-scoped — it enforces st
 > **Why a step, not a hook:** style (the linter) and security (the scanner) are deterministic, so they are already hook-enforced on every commit. DRY, design, and altitude are judgment calls — no shell check can make them — so this pass stays the agent's responsibility, gated here before the PR.
 
 ### The review dimensions
-Each round covers every dimension against the whole diff. Prefer a dedicated review skill when one is installed in the project; otherwise do the review manually against the referenced playbook. The concrete tool names per dimension live in `<lang>/toolchain.md`.
+Each round covers every dimension against the whole diff. Prefer a dedicated review skill when one is installed in the project; otherwise do the review manually against the referenced playbook. The concrete tool names per dimension live in `<lang>/toolchain.md`; the registry of advised tools (why each is worth installing, with fallbacks) is `core/orchestration.md`.
 
 | Dimension | Preferred skill (if installed) | Manual fallback |
 | :--- | :--- | :--- |
@@ -193,8 +195,8 @@ Each round covers every dimension against the whole diff. Prefer a dedicated rev
 Repeat until a clean round:
 
 1. **Review.** Run every dimension above over the current feature diff and collect all findings.
-2. **No findings?** The loop is complete — proceed to open the PR.
-3. **Findings exist?** **Report them first** — a severity-ordered list (file:line, the problem, the proposed fix). Do not start editing before reporting.
+2. **No findings?** Record "round N: clean" in the feature doc's `### Review log`, then the loop is complete — proceed to open the PR. A clean round that isn't logged doesn't count.
+3. **Findings exist?** **Record them first** — append the round to a `### Review log` section of the feature doc (`docs/features/<feature>.md`): round number, then a severity-ordered list (file:line, the problem, the proposed fix). Then report that list to the user. Do not start editing before recording. The log is what lets a session resumed mid-loop know which round it is in and which findings are still open — never rely on the conversation alone to carry loop state.
 4. **Fix.** Resolve each finding on the feature branch.
     *   For a genuine judgment call (a refactor that changes a public interface, a security trade-off, two equally valid designs), **ask the user via the AskUserQuestion tool before fixing** — do not decide silently.
     *   ❌ Never weaken or delete a committed spec to clear a finding (Phase 2, Step 4 still applies). If a fix changes behaviour, it goes through its own test-first cycle.

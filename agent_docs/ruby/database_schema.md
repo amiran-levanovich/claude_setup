@@ -10,15 +10,21 @@ Relying solely on Rails model validations is a critical anti-pattern. Race condi
 
 ### Non-Null Columns
 
-If a column should never be empty, enforce it explicitly in the database migration using null: false.
+If a column should never be empty, enforce it explicitly in the database with `null: false`.
 
 ```
-# Good
-add_column :users, :email, :string, null: false
+# Good — new table: declare the constraint inline
+create_table :users do |t|
+  t.string :email, null: false
+end
 
-# Bad
+# Bad — no constraint at all
 add_column :users, :email, :string
 ```
+
+On an **existing table with rows**, `add_column ..., null: false` (without a default) fails outright —
+existing rows violate the constraint, and strong_migrations blocks it. Use the safe sequence instead:
+add the column nullable → backfill in batches → `change_column_null :users, :email, false`.
 
 ### Unique Indexes
 
@@ -60,7 +66,7 @@ Always add a `null: false` constraint and a sensible `default:` value when defin
 
 ## INDEXING STRATEGY (FAST QUERIES)
 
-Database lookups degrade exponentially without correct index placement. Every query must be performant.
+An unindexed lookup is a sequential scan — cost grows linearly with table size and shows up as soon as tables leave toy scale.
 
 ### Non-Negotiable Indexing Mandates:
 
@@ -81,7 +87,7 @@ This workspace bundles strong_migrations. You are strictly forbidden from writin
 
 ### Safe Migration Patterns:
 
-* **Adding Column with Default Values:** Never write ``add_column :users, :role, :string, default: 'member'``. This rewrites every row on big tables. Instead, use safe backfilling:
+* **Adding Column with Default Values:** On PostgreSQL 11+, `add_column` with a **constant** default is safe — it no longer rewrites the table. What still rewrites every row is a **volatile** default (`default: -> { 'gen_random_uuid()' }`, computed timestamps). For volatile defaults, or when supporting pre-11 PG, use safe backfilling:
 
 ```
 # 1. Add column without default
@@ -102,7 +108,7 @@ change_column_default :users, :role, from: nil, to: 'member'
 
 * **Adding Indexes Instantly (PostgreSQL):** Always execute index generation concurrently to prevent table locks:
 ```
-class AddIndexToUsersEmail < ActiveRecord::Migration[7.1]
+class AddIndexToUsersEmail < ActiveRecord::Migration[8.0]  # match your Rails major.minor
   disable_ddl_transaction!
 
   def change
@@ -120,12 +126,12 @@ STOP after writing any migration or schema change. Check every item before prese
 4. **FK indexes:** Is every foreign key column indexed?
 5. **Filter indexes:** Are columns used in `where`/`find_by`/`order`/`group` indexed — composite where queries combine them, highest-filtering column first?
 6. **Enum safety:** Is every enum string-backed, with `null: false` and a sensible `default:`?
-7. **Zero-downtime:** Indexes added with `algorithm: :concurrently` + `disable_ddl_transaction!`? No default value on `add_column` for large tables? No direct column drops?
+7. **Zero-downtime:** Indexes added with `algorithm: :concurrently` + `disable_ddl_transaction!`? No volatile default on `add_column` for large tables? No `null: false` added directly to an existing populated table? No direct column drops?
 
 ### Anti-pattern scan
 - [ ] Validation that exists only in the model with no matching DB constraint
 - [ ] Integer-backed enum
-- [ ] `add_column ... default:` on a table that may be large in production
+- [ ] `add_column` with a volatile default (or any default on pre-11 PG) on a table that may be large in production
 - [ ] A `belongs_to` whose column has no index
 
 ### Judgment calls
