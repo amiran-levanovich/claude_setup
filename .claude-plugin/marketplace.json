@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "dev-workflow",
-      "source": "./",
+      "source": "./dev-workflow",
       "description": "Opinionated polyglot dev workflow: language-agnostic TDD spine + Ruby/Rails and Python packs, migration safety, language-aware fixer agents, and a deterministic pre-commit gate."
     },
     {

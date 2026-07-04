@@ -2,7 +2,7 @@
 # PreToolUse gate on `git commit`: blocks commits on main/master or with
 # linter/security failures. Dispatches on the marker file (Gemfile -> Ruby,
 # pyproject.toml/setup.py/setup.cfg -> Python); inert elsewhere. Full behavior
-# and rationale: docs/dev-workflow.md ("Hook requirement").
+# and rationale: the dev-workflow README ("Hook requirement").
 #
 # Does NOT run the test suite — TDD Step 3 commits intentionally failing tests.
 set -u

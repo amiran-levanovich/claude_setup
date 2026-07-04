@@ -7,7 +7,7 @@ This file is **memory for working *on* this repo**, not guidance for a project t
 
 | Plugin | Source | For | Detail |
 |---|---|---|---|
-| `dev-workflow` | `./` (repo root) | Code — Ruby/Rails & Python | [docs/dev-workflow.md](./docs/dev-workflow.md) |
+| `dev-workflow` | `./dev-workflow` | Code — Ruby/Rails & Python | [dev-workflow/README.md](./dev-workflow/README.md) |
 | `craft-workflow` | `./craft-workflow` | Non-code — design, content, research | [craft-workflow/README.md](./craft-workflow/README.md) |
 
 Both share one method: discovery → plan → **criteria-first** → produce → review-loop until clean. The general overview is [README.md](./README.md).
@@ -19,23 +19,23 @@ It contains markdown, shell, and JSON — no `Gemfile`, no `pyproject.toml`. Con
 
 ## Layout
 ```
-.claude-plugin/
-├── plugin.json                  # dev-workflow manifest (its plugin root = repo root)
-└── marketplace.json             # lists both plugins
+.claude-plugin/marketplace.json  # lists both plugins
 
-# ── dev-workflow (source: ./) ──
-.claude/
-├── skills/                      # thin routers: greenfield-setup · tdd-workflow · schema-migrations · testing · workflow-init
-├── agents/                      # rubocop-fixer · ruff-fixer
-├── commands/                    # transfer-context
-├── hooks/                       # pre-commit-gate.sh (commit gate) · context-guard.sh (auto-compact guard)
-└── settings.json                # hook registration (drop-in mode)
-hooks/hooks.json                 # hook registration (plugin mode)
-agent_docs/
-├── core/                        # coding_workflow.md (spine) · orchestration.md (advised tools) · quickref.md (10-rule floor)
-├── ruby/                        # building_the_project · code_conventions · database_schema · running_tests · toolchain
-└── python/                      # same five files
-docs/dev-workflow.md             # detailed guide
+# ── dev-workflow (source: ./dev-workflow) ──
+dev-workflow/
+├── .claude-plugin/plugin.json
+├── .claude/
+│   ├── skills/                  # thin routers: greenfield-setup · tdd-workflow · schema-migrations · testing · workflow-init
+│   ├── agents/                  # rubocop-fixer · ruff-fixer
+│   ├── commands/                # transfer-context
+│   ├── hooks/                   # pre-commit-gate.sh (commit gate) · context-guard.sh (auto-compact guard)
+│   └── settings.json            # hook registration (drop-in mode)
+├── hooks/hooks.json             # hook registration (plugin mode)
+├── agent_docs/
+│   ├── core/                    # coding_workflow.md (spine) · orchestration.md (advised tools) · quickref.md (10-rule floor)
+│   ├── ruby/                    # building_the_project · code_conventions · database_schema · running_tests · toolchain
+│   └── python/                  # same five files
+└── README.md                    # detailed guide
 
 # ── craft-workflow (source: ./craft-workflow) ──
 craft-workflow/
@@ -46,6 +46,7 @@ craft-workflow/
 │   └── {experience-design,content,research}/   # each pack: brief.md · rubric.md · toolchain.md
 └── README.md                    # detailed guide
 
+.claude/settings.json            # this repo's own hooks (context guard for maintainer sessions)
 README.md                        # marketplace overview     CLAUDE.md  # this file
 ```
 - **dev-workflow**: skills detect language by marker file (`Gemfile` / `pyproject.toml`…) and route to the matching pack; enforcement = the pre-commit hook + the fixer agents.
@@ -55,6 +56,6 @@ README.md                        # marketplace overview     CLAUDE.md  # this fi
 - **Keep the two plugins in sync.** They share a design (kernel + packs, `toolchain.md` per pack, an `*-init` skill with an orchestration/availability check). A change to one's structure usually wants a parallel in the other.
 - **Don't add a commit hook or fixer agents to craft-workflow** — its quality bar is judgment, carried by the review loop. That asymmetry is intentional.
 - **Skills are thin pointers**, not content: a skill's `SKILL.md` detects context and routes to the authoritative `agent_docs/`/`craft_docs/` file. Put substance in the docs, not the skill. Path resolution: project-root copy first, else `../../../<docs>/…` relative to the skill dir.
-- **Versioning**: bump the affected plugin's `version` in its `plugin.json` on a meaningful change (breaking renames → major; `dev-workflow` is at 2.x, `craft-workflow` at 1.x).
+- **Versioning**: bump the affected plugin's `version` in its `plugin.json` on a meaningful change (breaking renames → major; `dev-workflow` is at 3.x, `craft-workflow` at 1.x).
 - **Git**: feature branch → PR into `main` (never commit to `main`); [Conventional Commits](https://www.conventionalcommits.org), subject ≤ 60 chars; end commit messages with the `Co-Authored-By` trailer.
 - When editing a pack doc, update its plugin's README/detail doc and this layout if the structure changed; run the verification checks above before committing.
