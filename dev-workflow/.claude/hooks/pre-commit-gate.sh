@@ -4,6 +4,10 @@
 # pyproject.toml/setup.py/setup.cfg -> Python); inert elsewhere. Full behavior
 # and rationale: the dev-workflow README ("Hook requirement").
 #
+# Checks run only on the files the commit can include (staged + unstaged vs
+# HEAD) — pre-existing offenses elsewhere in the repo never block a commit.
+# Full-repo sweeps belong to CI and the Phase 4 review, not this gate.
+#
 # Does NOT run the test suite — TDD Step 3 commits intentionally failing tests.
 set -u
 
@@ -58,24 +62,61 @@ if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
   exit 2
 fi
 
+# Files this commit can include: staged + unstaged changes vs HEAD (covers
+# plain `git commit`, `git commit -a`, and `git commit <paths>` — a superset
+# is fine; deleted files carry nothing to lint). NUL-delimited for safety.
+changed_files=()
+while IFS= read -r -d '' f; do
+  [ -f "$f" ] && changed_files+=("$f")
+done < <(git diff HEAD --name-only -z --diff-filter=ACMRT)
+
 if [ "$lang" = ruby ]; then
+  ruby_files=()
+  for f in ${changed_files[@]+"${changed_files[@]}"}; do
+    case "$f" in
+      *.rb|*.rake|*.gemspec|Gemfile|*/Gemfile|Rakefile|*/Rakefile|config.ru|*/config.ru) ruby_files+=("$f") ;;
+    esac
+  done
+
+  if [ ${#ruby_files[@]} -eq 0 ]; then
+    exit 0
+  fi
+
   if ! bundle exec rubocop --version >/dev/null 2>&1; then
     echo "Blocked: RuboCop is not available via 'bundle exec' — it is the linter this gate requires. Add 'rubocop' (and 'rubocop-rails') to the Gemfile and run 'bundle install' (see agent_docs/ruby/toolchain.md)." >&2
     exit 2
   fi
 
-  if ! bundle exec rubocop --parallel --force-exclusion >&2; then
-    echo "Blocked: RuboCop offenses present. Run 'bundle exec rubocop -A', then invoke the rubocop-fixer agent for residual offenses." >&2
+  # --force-exclusion keeps .rubocop.yml excludes effective for explicit paths.
+  if ! bundle exec rubocop --parallel --force-exclusion "${ruby_files[@]}" >&2; then
+    echo "Blocked: RuboCop offenses in the files this commit touches. Run 'bundle exec rubocop -A' on them, then invoke the rubocop-fixer agent for residual offenses." >&2
     exit 2
   fi
 
   if bundle show brakeman >/dev/null 2>&1; then
-    if ! bundle exec brakeman --quiet --no-pager >&2; then
-      echo "Blocked: Brakeman reported security warnings. Resolve them before committing." >&2
+    # Scoped scan so legacy warnings elsewhere don't block the commit; the
+    # full-app scan runs in the Phase 4 review. --only-files takes a
+    # comma-separated list.
+    only_files=$(IFS=,; printf '%s' "${ruby_files[*]}")
+    if ! bundle exec brakeman --quiet --no-pager --only-files "$only_files" >&2; then
+      echo "Blocked: Brakeman reported security warnings in the files this commit touches. Resolve them before committing." >&2
       exit 2
     fi
   fi
 else
+  py_files=()
+  bandit_files=()
+  for f in ${changed_files[@]+"${changed_files[@]}"}; do
+    case "$f" in
+      *.py) py_files+=("$f"); bandit_files+=("$f") ;;
+      *.pyi) py_files+=("$f") ;;
+    esac
+  done
+
+  if [ ${#py_files[@]} -eq 0 ]; then
+    exit 0
+  fi
+
   # Python: pick the dependency-manager runner by lockfile.
   if [ -f uv.lock ]; then
     run="uv run"
@@ -91,25 +132,26 @@ else
     exit 2
   fi
 
-  if ! $run ruff check . >&2; then
-    echo "Blocked: Ruff lint offenses present. Run 'ruff check --fix .', then invoke the ruff-fixer agent for residual offenses." >&2
+  # --force-exclude keeps configured excludes effective for explicit paths.
+  if ! $run ruff check --force-exclude "${py_files[@]}" >&2; then
+    echo "Blocked: Ruff lint offenses in the files this commit touches. Run 'ruff check --fix' on them, then invoke the ruff-fixer agent for residual offenses." >&2
     exit 2
   fi
 
-  if ! $run ruff format --check . >&2; then
-    echo "Blocked: code is not formatted. Run 'ruff format .' and re-stage the changes." >&2
+  if ! $run ruff format --check --force-exclude "${py_files[@]}" >&2; then
+    echo "Blocked: changed files are not formatted. Run 'ruff format' on them and re-stage the changes." >&2
     exit 2
   fi
 
-  if $run bandit --version >/dev/null 2>&1; then
+  if [ ${#bandit_files[@]} -gt 0 ] && $run bandit --version >/dev/null 2>&1; then
+    # Explicit file targets — no -r sweep, so venv excludes are unnecessary.
     if [ -f pyproject.toml ] && grep -q "^\[tool.bandit\]" pyproject.toml 2>/dev/null; then
-      bandit_args="-q -c pyproject.toml -r ."
+      bandit_cfg="-c pyproject.toml"
     else
-      # Bandit's built-in excludes don't cover virtualenvs.
-      bandit_args="-q -r . -x ./.venv,./venv,./node_modules"
+      bandit_cfg=""
     fi
-    if ! $run bandit $bandit_args >&2; then
-      echo "Blocked: Bandit reported security issues. Resolve them before committing." >&2
+    if ! $run bandit -q $bandit_cfg "${bandit_files[@]}" >&2; then
+      echo "Blocked: Bandit reported security issues in the files this commit touches. Resolve them before committing." >&2
       exit 2
     fi
   fi

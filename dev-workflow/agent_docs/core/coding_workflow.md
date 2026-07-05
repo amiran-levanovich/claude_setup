@@ -177,10 +177,10 @@ The gate has two layers — one enforced by the harness, one that remains your r
 `.claude/hooks/pre-commit-gate.sh` intercepts every `git commit` in a supported project and blocks it unless:
 
 1.  The current branch is not `main`/`master`.
-2.  The language's **linter** (and **formatter check**, where the toolchain defines one) is clean.
-3.  The language's **security scanner** reports no warnings (when installed).
+2.  The language's **linter** (and **formatter check**, where the toolchain defines one) is clean on the files the commit touches.
+3.  The language's **security scanner** reports no warnings in those files (when installed).
 
-The hook dispatches on the marker file and runs the right toolchain — see `<lang>/toolchain.md` for the exact commands. The hook does **not** run the test suite, because TDD Step 3 commits intentionally failing tests.
+The hook dispatches on the marker file and runs the right toolchain — see `<lang>/toolchain.md` for the exact commands. Checks 2–3 are **scoped to the commit's changed files** (staged + unstaged vs `HEAD`), so pre-existing offenses elsewhere in the repo never block a commit — full-repo sweeps belong to CI and the Phase 4 review. The hook does **not** run the test suite, because TDD Step 3 commits intentionally failing tests.
 
 ### Your responsibility before an implementation commit (Step 5)
 1.  **Performance / N+1 audit:** Run the test suite with the language's N+1/perf detector enabled (see `<lang>/toolchain.md`) to catch query and eager-loading regressions introduced by the change.

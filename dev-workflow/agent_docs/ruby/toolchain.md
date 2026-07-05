@@ -38,8 +38,10 @@ Pins use pessimistic `~>` on the current major. Run `bundle outdated` at init to
 In a Ruby project (`Gemfile` present) the hook blocks `git commit` unless:
 
 1. The branch is not `main`/`master`.
-2. `bundle exec rubocop --parallel --force-exclusion` is clean.
-3. `bundle exec brakeman` reports no warnings (when the gem is installed).
+2. `bundle exec rubocop --parallel --force-exclusion <changed files>` is clean.
+3. `bundle exec brakeman --only-files <changed files>` reports no warnings (when the gem is installed).
+
+Checks are scoped to the Ruby files the commit touches (staged + unstaged vs `HEAD`) — pre-existing offenses elsewhere never block a commit. A commit touching no Ruby files skips the tool runs entirely. The full-app Brakeman scan runs in the Phase 4 review instead, where cross-file flows are back in scope.
 
 The hook deliberately does **not** run RSpec — TDD Step 3 commits intentionally failing tests.
 

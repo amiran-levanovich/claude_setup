@@ -83,7 +83,7 @@ README.md                         # This file
 | `testing` | `<lang>/running_tests.md` |
 | `workflow-init` | onboarding + tooling audit (see below) |
 
-**`.claude/hooks/pre-commit-gate.sh`** is the deterministic enforcement layer. Every `git commit` is intercepted; it dispatches on the marker file and blocks the commit unless the branch is not `main`/`master` and the language's linter (+ formatter, + security scanner when installed) is clean. It deliberately skips the test suite — the TDD cycle commits intentionally failing tests — so the green-suite check stays with the agent.
+**`.claude/hooks/pre-commit-gate.sh`** is the deterministic enforcement layer. Every `git commit` is intercepted; it dispatches on the marker file and blocks the commit unless the branch is not `main`/`master` and the language's linter (+ formatter, + security scanner when installed) is clean **on the files the commit touches** (staged + unstaged vs `HEAD`). Scoping to changed files keeps the gate usable in existing codebases with pre-existing offenses — legacy debt elsewhere never blocks a commit; full-repo sweeps belong to CI and the Phase 4 review. It deliberately skips the test suite — the TDD cycle commits intentionally failing tests — so the green-suite check stays with the agent.
 
 **`rubocop-fixer` / `ruff-fixer`** are scoped sub-agents invoked after the auto-corrector when residual offenses remain. They fix what the auto-corrector can't, never disable a rule, and flag anything they can't resolve as `UNRESOLVABLE` for human review.
 
@@ -151,7 +151,7 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 
 1. **New project** → `<lang>/building_the_project.md` (Phases G0–G4, sign-off gate before any feature code; Python picks Django/FastAPI in Phase G1)
 2. **Daily feature work** → `core/coding_workflow.md` TDD cycle: write failing test → commit → write code → pass
-3. **Pre-commit gate** → hook-enforced per language: feature branch + clean linter/format + clean security scan; agent-enforced: N+1 audit + green suite
+3. **Pre-commit gate** → hook-enforced per language on the commit's changed files: feature branch + clean linter/format + clean security scan; agent-enforced: N+1 audit + green suite
 4. **Commits** → Conventional Commits format (`feat`, `fix`, `test`, `refactor`, …), subject ≤ 60 chars
 5. **Feature-completion review** → before the PR: a review → report → fix → re-review **loop** over the full feature diff (style, security, DRY/design, N+1s) that repeats until a round comes back clean
 6. **Merge** → pull request into `main` only — direct commits to `main` are blocked by the hook
