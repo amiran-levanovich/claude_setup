@@ -100,11 +100,13 @@ Run `workflow-init` right after installing the plugin in a project. It is **stat
 - **Existing repo** (marker present) → it scans the stack and pre-fills a project-identity draft from your models/routes/schema, asks you to **confirm or correct** it, then writes a `## Project Identity` section into the project `CLAUDE.md`. No "may I scan?" prompt — scanning is read-only and always wanted.
 - **Empty repo** → it routes into greenfield setup: pick the language (Ruby/Rails or Python), then the framework (Python: Django or FastAPI), and hands off to the matching `building_the_project.md`.
 
-Either way it then audits the language's mandatory tooling, hook prerequisites, CLAUDE.md guidance, and which review/orchestration skills are available — and offers to close each gap.
+Either way it then audits the language's mandatory tooling, hook prerequisites, CLAUDE.md guidance, and which review/orchestration skills are available — and offers to close each gap. It can also tailor the conventions playbook to the project through a short interview, writing a project-root override that extends (never replaces) the pack defaults.
 
 ### Per-feature living docs
 
 Each feature in progress gets a context doc at `docs/features/<feature>.md` in the target project — the task checklist, decisions made (and why), failed approaches, and open questions. Any future session resumes from this doc instead of re-deriving context. The folder is bounded by design: when the feature's PR merges, durable decisions are promoted to the project's `CLAUDE.md` and the doc is deleted — git history preserves it.
+
+At close-out a third kind of knowledge is kept: **project lessons** — generalizable experience that is neither a `CLAUDE.md` rule nor feature state ("service objects here grow past 200 lines within three features; split early"). Confirmed entries accumulate one bullet each in `docs/lessons.md`, the planning gate reads them back before each new feature, and entries that keep recurring get promoted into `CLAUDE.md` and removed — so the file stays a curated shortlist, never a log. The full protocol is in `core/coding_workflow.md`.
 
 ---
 

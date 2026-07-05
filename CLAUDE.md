@@ -47,6 +47,7 @@ craft-workflow/
 └── README.md                    # detailed guide
 
 .claude/settings.json            # this repo's own hooks (context guard for maintainer sessions)
+.claude/skills/repo-audit/       # maintainer-only: audits docs/manifests against the real inventory (not shipped)
 README.md                        # marketplace overview     CLAUDE.md  # this file
 ```
 - **dev-workflow**: skills detect language by marker file (`Gemfile` / `pyproject.toml`…) and route to the matching pack; enforcement = the pre-commit hook + the fixer agents.
@@ -59,3 +60,4 @@ README.md                        # marketplace overview     CLAUDE.md  # this fi
 - **Versioning**: bump the affected plugin's `version` in its `plugin.json` on a meaningful change (breaking renames → major; `dev-workflow` is at 3.x, `craft-workflow` at 1.x).
 - **Git**: feature branch → PR into `main` (never commit to `main`); [Conventional Commits](https://www.conventionalcommits.org), subject ≤ 60 chars; end commit messages with the `Co-Authored-By` trailer.
 - When editing a pack doc, update its plugin's README/detail doc and this layout if the structure changed; run the verification checks above before committing.
+- **After any structural change** (skill/agent/hook/doc added, renamed, or removed), run the `repo-audit` skill — it mechanizes the sync check and stale-reference sweep above.

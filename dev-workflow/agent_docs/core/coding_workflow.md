@@ -56,9 +56,25 @@ A feature doc (`docs/features/<feature>.md`) is **working state, not documentati
 
 1. **Promote anything durable.** A decision that future features must honor goes into the project's `CLAUDE.md`; a correction to a playbook goes into the project's `agent_docs/` override of that file. Most entries need no promotion — they only mattered while the work was open.
     *   **Promote by consolidating, never by appending.** `CLAUDE.md` is loaded into every session — each promotion should rewrite or extend the relevant existing section in a line or two, not add a new block. If a promotion would push `CLAUDE.md` past roughly 100 lines, tighten the file as part of the same edit.
-2. **Delete the doc** in the post-merge cleanup. Git history preserves it permanently (`git log --all -- 'docs/features/<feature>.md'`).
+2. **Capture project lessons** (see below): propose any generalizable patterns this feature surfaced; write only what the user confirms into `docs/lessons.md`.
+3. **Delete the doc** in the post-merge cleanup. Git history preserves it permanently (`git log --all -- 'docs/features/<feature>.md'`).
 
 This keeps `docs/features/` listing only in-flight work — it never grows beyond the number of features actually in progress, regardless of project age.
+
+### Project Lessons (`docs/lessons.md`)
+Rules live in `CLAUDE.md`; feature-specific state dies with the feature doc. A third kind of knowledge fits neither: **experience gained while applying the rules** — "service objects here grow past 200 lines within three features, split early", "this gem's retry API silently swallows timeouts". Those accumulate in `docs/lessons.md`, one bullet per entry:
+
+```
+- YYYY-MM-DD [context] pattern — actionable takeaway   (context: design | implementation | review | bugfix)
+```
+
+Guardrails — all four are hard rules:
+*   **User-confirmed only.** Propose candidates at close-out (or mid-feature when one would otherwise be lost); the user accepts, edits, or rejects each. Never write autonomously.
+*   **Generalization test** before proposing: the entry names a pattern (not a feature fact), and someone on an unrelated feature could act on it without this feature's context. Fails either half → don't propose.
+*   **Two lines max** per entry, scannable in seconds.
+*   **Tighten & promote.** An entry that recurs ~3+ times is a rule — promote it into `CLAUDE.md` (or the relevant `agent_docs/` override) and remove it here. When the file passes ~30 entries, propose consolidation. The file must never become a log.
+
+**Load:** the Feature Planning Gate (Phase 2) reads `docs/lessons.md` when it exists and surfaces the entries relevant to the planned feature as soft guidance. Missing file = no lessons yet; continue silently.
 
 ### Commit Message Format: Conventional Commits
 All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org) specification.
@@ -100,6 +116,8 @@ All implementation code passes through Test-Driven Development. The hard rule of
 Before the TDD loop begins for any feature, you must produce a **feature-scoped to-do list**. This is separate from the project-level to-do list produced in Phase G2 of `building_the_project.md`.
 
 **Resume check first:** look in `docs/features/` for an existing doc for this feature. If one exists, load it, honor every logged decision and constraint as an active commitment, and continue from the first unchecked task — do not re-plan from scratch.
+
+**Load project lessons:** if `docs/lessons.md` exists (see Phase 1), read it and surface the entries relevant to this feature as soft guidance while planning. Missing file — continue silently.
 
 For a new feature, decompose it into its atomic implementation tasks and write them to `docs/features/<feature-kebab-name>.md` (create the directory if needed). A task is atomic when it maps to a single spec and a single production change. Template:
 
