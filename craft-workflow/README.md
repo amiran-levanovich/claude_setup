@@ -17,7 +17,7 @@ Define what "good" looks like **before** you produce. In code that's a failing t
 ## The five steps (`craft_docs/core/craft_workflow.md`)
 
 1. **Discovery & brief** → interview, write `craft/<name>.md`, **sign-off gate** before producing.
-2. **Plan** as a resumable living doc (atomic pieces, decisions, dead-ends, open questions).
+2. **Plan** as a resumable living doc (atomic pieces, decisions, dead-ends, open questions). Close-out promotes durable rules to `CLAUDE.md` and captures confirmed, generalizable **project lessons** into `craft/lessons.md` — read back at the start of every later deliverable.
 3. **Criteria-first** → write the piece's rubric (the "test") before producing it.
 4. **Produce → check → iterate** → produce, check against the rubric yourself, fix, present.
 5. **Completion review loop** → critique the whole deliverable against the domain rubric, report → fix → re-review until a clean round.

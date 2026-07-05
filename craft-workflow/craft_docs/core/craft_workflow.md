@@ -73,7 +73,16 @@ The brief file is **working state, not documentation** — it lives only while t
 *   **Decompose** the deliverable into atomic pieces (a landing page → hero, value props, social proof, CTA; a report → each research question).
 *   **Keep the doc tight** — one line per entry; consolidate a section when it passes ~10 entries.
 *   **Pick a review pacing** — present the plan and ask via AskUserQuestion (per-pass recommended): *per-pass* pauses after each piece; *autonomous* produces the whole thing and presents at the end, but stops immediately on any significant deviation from the approved brief.
-*   **On close-out**, promote anything durable (a brand rule, a voice guide) to the project's `CLAUDE.md`, then delete the brief — git history preserves it if the work is in a repo.
+*   **On close-out**, promote anything durable (a brand rule, a voice guide) to the project's `CLAUDE.md`, capture project lessons into `craft/lessons.md` (see below), then delete the brief — git history preserves it if the work is in a repo.
+
+### Project lessons (`craft/lessons.md`)
+Durable rules go to `CLAUDE.md`; the brief dies at close-out. **Experience gained while doing the work** — "long-form drafts here bury the lede until the second pass", "this brand's voice reads flat below grade-9 vocabulary" — fits neither, and accumulates in `craft/lessons.md`, one bullet per entry:
+
+```
+- YYYY-MM-DD [context] pattern — actionable takeaway   (context: design | content | research | review)
+```
+
+Hard rules: entries are **user-confirmed only** (propose at close-out; never write autonomously); each must pass the **generalization test** (names a pattern, usable on an unrelated deliverable without this one's context); **two lines max**; and the file self-tightens — an entry recurring ~3+ times promotes into `CLAUDE.md` and leaves this file, and past ~30 entries propose consolidation. When planning a new deliverable (this step), read `craft/lessons.md` if it exists and surface the relevant entries as soft guidance; a missing file just means no lessons yet.
 
 ---
 

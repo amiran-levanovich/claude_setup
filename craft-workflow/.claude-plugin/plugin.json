@@ -1,7 +1,7 @@
 {
   "name": "craft-workflow",
   "displayName": "Craft Workflow (Design · Content · Research)",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "An opinionated workflow for non-code deliverables. A domain-neutral method — discovery → sign-off → criteria-first → produce → review loop — with packs for experience-design (UI/UX, journeys, accessibility), content (long-form, UX copy, SEO), and research (evidence, synthesis). It supplies the method and concrete acceptance rubrics, and orchestrates existing skills (frontend-design, marketingskills, deep-research, plannotator, grill-me) rather than reinventing them. No commit hook — enforcement is the agent-run sign-off gates and review loop.",
   "author": {
     "name": "Amiran Tsiklauri",
