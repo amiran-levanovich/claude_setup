@@ -1,7 +1,7 @@
 {
   "name": "dev-workflow",
   "displayName": "Dev Workflow (Ruby/Rails + Python)",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "description": "Opinionated, polyglot development workflow for Claude Code. A language-agnostic spine (greenfield setup, strict TDD lifecycle, zero-downtime migration safety, feature-completion review loop, deterministic pre-commit gate) with per-language packs for Ruby on Rails (RuboCop, Brakeman, Bullet, RSpec) and Python (Ruff, Bandit, pytest; Django or FastAPI). Includes language-aware fixer sub-agents and a commit gate that dispatches on the project's marker file.",
   "author": {
     "name": "Amiran Tsiklauri",
