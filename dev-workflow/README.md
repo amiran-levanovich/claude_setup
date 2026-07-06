@@ -45,6 +45,7 @@ hooks/
 agent_docs/                       # Knowledge base — single source of truth, read before acting
 ├── core/
 │   ├── coding_workflow.md        # Language-agnostic TDD lifecycle, Git hygiene, conventional commits
+│   ├── feature_closeout.md       # Post-merge close-out: promote decisions, capture lessons, delete feature doc
 │   ├── orchestration.md          # Advised-tools registry + availability check (run by workflow-init)
 │   └── quickref.md               # 10-rule floor + "when lost" protocol — cheap re-anchor for tight context
 ├── ruby/
@@ -69,7 +70,7 @@ README.md                         # This file
 
 **Language detection.** Every skill and the hook key off the project's marker file: `Gemfile` → Ruby/Rails, `pyproject.toml` / `setup.py` / `setup.cfg` → Python. The spine resolves `<lang>` and routes the concrete commands to that pack's `toolchain.md`.
 
-**`agent_docs/core/coding_workflow.md`** is the language-agnostic spine: branching strategy, Conventional Commits, the feature-doc lifecycle, the TDD cycle (write failing test → commit → implement → pass), and the feature-completion review loop. It names tools only by role — "the linter," "the security scanner" — and defers the concrete commands to `<lang>/toolchain.md`.
+**`agent_docs/core/coding_workflow.md`** is the language-agnostic spine: branching strategy, Conventional Commits, the feature-doc lifecycle, the TDD cycle (write failing test → commit → implement → pass), and the feature-completion review loop. It names tools only by role — "the linter," "the security scanner" — and defers the concrete commands to `<lang>/toolchain.md`. The post-merge steps (promote durable decisions, capture lessons, delete the feature doc) live in **`core/feature_closeout.md`**, read only when a feature's PR has merged.
 
 **`agent_docs/<lang>/`** packs supply the specifics: conventions a linter can't check, the testing strategy, migration safety, the greenfield playbook, and the role→tool bindings.
 
@@ -106,7 +107,7 @@ Either way it then audits the language's mandatory tooling, hook prerequisites, 
 
 Each feature in progress gets a context doc at `docs/features/<feature>.md` in the target project — the task checklist, decisions made (and why), failed approaches, and open questions. Any future session resumes from this doc instead of re-deriving context. The folder is bounded by design: when the feature's PR merges, durable decisions are promoted to the project's `CLAUDE.md` and the doc is deleted — git history preserves it.
 
-At close-out a third kind of knowledge is kept: **project lessons** — generalizable experience that is neither a `CLAUDE.md` rule nor feature state ("service objects here grow past 200 lines within three features; split early"). Confirmed entries accumulate one bullet each in `docs/lessons.md`, the planning gate reads them back before each new feature, and entries that keep recurring get promoted into `CLAUDE.md` and removed — so the file stays a curated shortlist, never a log. The full protocol is in `core/coding_workflow.md`.
+At close-out a third kind of knowledge is kept: **project lessons** — generalizable experience that is neither a `CLAUDE.md` rule nor feature state ("service objects here grow past 200 lines within three features; split early"). Confirmed entries accumulate one bullet each in `docs/lessons.md`, the planning gate reads them back before each new feature, and entries that keep recurring get promoted into `CLAUDE.md` and removed — so the file stays a curated shortlist, never a log. The full protocol is in `core/feature_closeout.md`.
 
 ---
 

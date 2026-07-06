@@ -24,4 +24,5 @@ Re-read in this order, stopping as soon as you're oriented: **this file → the 
 | Feature / bugfix / refactor | `core/coding_workflow.md` + `<lang>/toolchain.md` |
 | Writing tests | + `<lang>/running_tests.md` |
 | Schema / migration | + `<lang>/database_schema.md` |
+| After the PR merges | `core/feature_closeout.md` |
 | New project | `<lang>/building_the_project.md` |

@@ -32,7 +32,7 @@ dev-workflow/
 │   └── settings.json            # hook registration (drop-in mode)
 ├── hooks/hooks.json             # hook registration (plugin mode)
 ├── agent_docs/
-│   ├── core/                    # coding_workflow.md (spine) · orchestration.md (advised tools) · quickref.md (10-rule floor)
+│   ├── core/                    # coding_workflow.md (spine) · feature_closeout.md (post-merge) · orchestration.md (advised tools) · quickref.md (10-rule floor)
 │   ├── ruby/                    # building_the_project · code_conventions · database_schema · running_tests · toolchain
 │   └── python/                  # same five files
 └── README.md                    # detailed guide
