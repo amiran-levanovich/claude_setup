@@ -15,7 +15,7 @@ This file is the single place that maps the **roles** referenced by `core/coding
 | N+1 / performance detector | query-count assertions | Django: `django_assert_num_queries`; SQLAlchemy: query-count fixture — see `running_tests.md` |
 | Test runner | **pytest** | `pytest` (see `running_tests.md`) |
 | Fixer sub-agent | **`ruff-fixer`** | invoke after `ruff check --fix` leaves residual offenses |
-| Review sub-agent | **`diff-reviewer`** | Phase 4: one invocation per review dimension when no review skill is installed |
+| Review sub-agent | **`diff-reviewer`** | Phase 4 (no review skill installed): dimension `all` in one invocation for small diffs and confirmation passes; one invocation per dimension for large diffs |
 | Migration safety | manual review + framework tooling | Django migrations / Alembic — see `database_schema.md` |
 
 Ruff fills **both** the linter role (replacing flake8/isort/pyupgrade/etc.) and the formatter role (replacing Black). The spine's "formatter check" maps to `ruff format --check .`.

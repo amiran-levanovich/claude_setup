@@ -10,7 +10,7 @@ Re-read this when context is tight, after a compaction, or whenever unsure. It i
 6. **Before an implementation commit**: green suite + N+1 audit + auto-format (fixer agent for leftovers).
 7. **Commits**: Conventional Commits, subject ≤ 60 chars.
 8. **Update the feature doc every cycle** — tasks, Decisions, Traps, Review log. The doc is the memory; the conversation is not.
-9. **Before the PR**: the review loop (style / security / DRY / N+1) over the full diff — no review skill installed → dispatch each dimension to the `diff-reviewer` agent. Log every round in the feature doc's Review log; only a *logged* clean round ends the loop.
+9. **Before the PR**: the review loop (style / security / DRY / N+1) over the full diff — small diff (< ~200 lines) → one `diff-reviewer` pass with dimension `all`; large diff → one agent (or installed review skill) per dimension. After a fix round, a full re-pass only if a MAJOR finding or cross-cutting fix; all-MINOR, localized fixes → one combined confirmation pass. Log every round in the feature doc's Review log; only a *logged* clean pass ends the loop.
 10. **Judgment calls → AskUserQuestion** with options. Never decide silently; never guess a fact you can verify.
 
 ## When lost

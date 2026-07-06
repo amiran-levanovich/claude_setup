@@ -28,7 +28,7 @@ hooks/
 ├── agents/
 │   ├── rubocop-fixer.md          # Sub-agent: fixes RuboCop offenses rubocop -A can't auto-correct
 │   ├── ruff-fixer.md             # Sub-agent: fixes Ruff offenses ruff --fix can't auto-correct
-│   └── diff-reviewer.md          # Sub-agent: fresh-context Phase 4 review, one dimension per invocation
+│   └── diff-reviewer.md          # Sub-agent: fresh-context Phase 4 review — one dimension, or `all` for small diffs
 ├── commands/
 │   └── transfer-context.md       # Slash command: compress session into a handoff file for a new chat
 ├── hooks/
@@ -87,7 +87,7 @@ README.md                         # This file
 
 **`rubocop-fixer` / `ruff-fixer`** are scoped sub-agents invoked after the auto-corrector when residual offenses remain. They fix what the auto-corrector can't, never disable a rule, and flag anything they can't resolve as `UNRESOLVABLE` for human review.
 
-**`diff-reviewer`** carries the Phase 4 review loop when no dedicated review skill (`/code-review`, `/security-review`, `/simplify`) is installed. Invoked once per dimension (style / security / dry-design / performance) per round, it reads the full feature diff in its own fresh context — unbiased by the session that wrote the code, and immune to its accumulated length — and returns severity-ordered findings or `CLEAN`. It never edits; the main session applies fixes and logs each round in the feature doc's Review log.
+**`diff-reviewer`** carries the Phase 4 review loop when no dedicated review skill (`/code-review`, `/security-review`, `/simplify`) is installed. The dispatch scales with the diff: a small diff (under ~200 changed lines) gets a **single combined invocation** (dimension `all`); a large diff gets one invocation per dimension (style / security / dry-design / performance). Either way the agent reads the full feature diff in its own fresh context — unbiased by the session that wrote the code, and immune to its accumulated length — and returns severity-ordered findings or `CLEAN`. It never edits; the main session applies fixes and logs each round in the feature doc's Review log. Re-review rounds are scoped too: a full re-pass only after a MAJOR finding or a cross-cutting fix; a round of localized MINOR fixes is closed by one combined confirmation pass.
 
 **`/transfer-context`** hands off to a new session when the current one is degraded or hitting context limits — it writes a structured handoff file (git state, decisions, traps, a pointer to the in-flight feature doc) and gives you one line to paste into the new chat.
 
@@ -155,7 +155,7 @@ The skills look for `agent_docs/` in the **project root first** and only fall ba
 2. **Daily feature work** → `core/coding_workflow.md` TDD cycle: write failing test → commit → write code → pass
 3. **Pre-commit gate** → hook-enforced per language on the commit's changed files: feature branch + clean linter/format + clean security scan; agent-enforced: N+1 audit + green suite
 4. **Commits** → Conventional Commits format (`feat`, `fix`, `test`, `refactor`, …), subject ≤ 60 chars
-5. **Feature-completion review** → before the PR: a review → report → fix → re-review **loop** over the full feature diff (style, security, DRY/design, N+1s) that repeats until a round comes back clean
+5. **Feature-completion review** → before the PR: a review → report → fix → re-review **loop** over the full feature diff (style, security, DRY/design, N+1s) that repeats until a logged clean pass — effort scaled to the diff (combined reviewer for small diffs, per-dimension fan-out for large ones; re-rounds scoped to what the fixes could have broken)
 6. **Merge** → pull request into `main` only — direct commits to `main` are blocked by the hook
 
 ---
