@@ -4,6 +4,8 @@ This playbook governs the phase sequence for initializing a brand-new project or
 
 > Greenfield phases are numbered **G0–G4** to keep them distinct from the daily-workflow Phases 1–4 in `core/coding_workflow.md` — a bare "Phase N" always means the daily workflow.
 
+**Scale the artifacts to the project.** Every phase and gate below runs regardless of size, but the *depth* of each artifact must match what is being built: the full requirements/architecture/UX/roadmap treatment is sized for a real product. For a small tool, an experiment, or a learning project, produce the same documents at a few lines per section, keep the interview to the vectors that actually apply, and say so — never skip a gate, and never pad a document to look thorough.
+
 ---
 
 ## PHASE G0: DISCOVERY & REQUIREMENTS GATHERING

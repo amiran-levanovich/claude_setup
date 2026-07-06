@@ -14,7 +14,7 @@ This file is the single place that maps the **roles** referenced by `core/coding
 | N+1 / performance detector | **Bullet** | test suite run with `Bullet.raise = true` in the test env |
 | Test runner | **RSpec** | `bundle exec rspec` (see `running_tests.md`) |
 | Fixer sub-agent | **`rubocop-fixer`** | invoke after `rubocop -A` leaves residual offenses |
-| Review sub-agent | **`diff-reviewer`** | Phase 4: one invocation per review dimension when no review skill is installed |
+| Review sub-agent | **`diff-reviewer`** | Phase 4 (no review skill installed): dimension `all` in one invocation for small diffs and confirmation passes; one invocation per dimension for large diffs |
 | Migration safety | **strong_migrations** | raises on unsafe migrations at runtime (see `database_schema.md`) |
 
 RuboCop fills **both** the linter and formatter roles — there is no separate formatter check in Ruby, so the spine's "formatter check, where the toolchain defines one" is a no-op here.

@@ -208,12 +208,20 @@ The hook dispatches on the marker file and runs the right toolchain — see `<la
 ---
 
 ## PHASE 4: FEATURE-COMPLETION REVIEW (before opening the PR)
-The pre-commit gate (Phase 3) is mechanical and commit-scoped — it enforces style and security on every commit but never looks at the feature as a whole, and it cannot judge duplication or design. Once every TDD loop is done and the suite is green, run the **review-and-fix loop** below over the entire feature diff (`git diff main...HEAD`) before opening the PR. This is a loop, not a single pass: you re-review after every round of fixes and only stop when a full pass surfaces nothing.
+The pre-commit gate (Phase 3) is mechanical and commit-scoped — it enforces style and security on every commit but never looks at the feature as a whole, and it cannot judge duplication or design. Once every TDD loop is done and the suite is green, run the **review-and-fix loop** below over the entire feature diff (`git diff main...HEAD`) before opening the PR. This is a loop, not a single pass: you re-review after every round of fixes and only stop when a pass surfaces nothing. The loop's rigor is fixed; its **cost scales with the diff** — small diffs get a single combined reviewer, and re-review rounds are scoped to what the fixes could plausibly have broken.
 
 > **Why a step, not a hook:** style (the linter) and security (the scanner) are deterministic, so they are already hook-enforced on every commit. DRY, design, and altitude are judgment calls — no shell check can make them — so this pass stays the agent's responsibility, gated here before the PR.
 
+### Review scale — size the effort to the diff
+Measure the feature diff once before round 1: `git diff main...HEAD --stat`, counting changed lines outside `docs/` and lockfiles. The size picks the dispatch mode:
+
+*   **Small diff (under ~200 changed lines): combined pass.** One `diff-reviewer` invocation with dimension `all` — a single fresh-context agent covers all four dimensions over the whole diff. Do not fan out four agents over a diff a single reviewer can hold; the fan-out's per-agent overhead (each re-reads the diff and playbooks) costs more than it adds on a small change.
+*   **Large diff: per-dimension fan-out.** Prefer a dedicated review skill when one is installed in the project; otherwise one `diff-reviewer` invocation per dimension, passing the dimension, the diff range, and the language.
+
+Either way the agent reviews with fresh context (by Phase 4 your own context is at its fullest and your judgment of your own code at its weakest), returns severity-ordered findings or `CLEAN`, and never edits. Fall back to reviewing manually against the referenced playbook only if the agent is unavailable. The concrete tool names per dimension live in `<lang>/toolchain.md`; the registry of advised tools (why each is worth installing, with fallbacks) is `core/orchestration.md`.
+
 ### The review dimensions
-Each round covers every dimension against the whole diff. Prefer a dedicated review skill when one is installed in the project; otherwise dispatch the dimension to the bundled **`diff-reviewer` sub-agent** — one invocation per dimension, passing the dimension, the diff range, and the language. It reviews with fresh context (by Phase 4 your own context is at its fullest and your judgment of your own code at its weakest), returns severity-ordered findings or `CLEAN`, and never edits. Fall back to reviewing manually against the referenced playbook only if the agent is unavailable. The concrete tool names per dimension live in `<lang>/toolchain.md`; the registry of advised tools (why each is worth installing, with fallbacks) is `core/orchestration.md`.
+Every round — combined or fanned out — judges all four dimensions against the whole diff.
 
 | Dimension | Preferred skill (if installed) | `diff-reviewer` / manual focus |
 | :--- | :--- | :--- |
@@ -225,7 +233,7 @@ Each round covers every dimension against the whole diff. Prefer a dedicated rev
 ### The loop
 Repeat until a clean round:
 
-1. **Review.** Run every dimension above over the current feature diff and collect all findings.
+1. **Review.** Run a full pass — all four dimensions at the dispatch mode the diff size picked — over the current feature diff and collect all findings.
 2. **No findings?** Record "round N: clean" in the feature doc's `### Review log`, then the loop is complete — proceed to open the PR. A clean round that isn't logged doesn't count.
 3. **Findings exist?** **Record them first** — append the round to a `### Review log` section of the feature doc (`docs/features/<feature>.md`): round number, then a severity-ordered list (file:line, the problem, the proposed fix). Then report that list to the user. Do not start editing before recording. The log is what lets a session resumed mid-loop know which round it is in and which findings are still open — never rely on the conversation alone to carry loop state.
 4. **Fix.** Resolve each finding on the feature branch.
@@ -233,6 +241,8 @@ Repeat until a clean round:
     *   ❌ Never weaken or delete a committed spec to clear a finding (Phase 2, Step 4 still applies). If a fix changes behaviour, it goes through its own test-first cycle.
     *   After fixing, re-run the relevant specs and the Phase 3 gate so the fixes are themselves green and committed.
     *   Record any non-obvious decision in the feature doc's **Decisions** section.
-5. **Re-review.** Go back to step 1. A fix in one round can introduce a finding in another dimension, so the whole pass runs again — never assume a localized fix leaves the rest clean.
+5. **Re-review — scope it to what the fixes could have broken:**
+    *   The round had a **BLOCKER/MAJOR finding, or any fix was cross-cutting** (touched a public interface, the schema, or code shared beyond the fixed spot) → go back to step 1: a full pass, because a significant fix can introduce a finding in any dimension.
+    *   The round's findings were **all MINOR and every fix was localized** → run one **combined confirmation pass** instead: a single `diff-reviewer` invocation (dimension `all`) over the updated feature diff. If it comes back clean, record "round N: clean (confirmation)" and the loop is complete. If it surfaces new findings, treat them as a new round at step 3.
 
-Do not exit the loop early or open the PR on a round that still has open findings. Every dimension must come back clean in the **same** round before the feature is done.
+Do not exit the loop early or open the PR on a round that still has open findings. The loop ends only on a logged clean pass — a full round or a confirmation pass — with nothing open.
