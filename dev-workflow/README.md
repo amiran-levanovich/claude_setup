@@ -1,6 +1,6 @@
 # dev-workflow
 
-> Part of the [**claude_setup**](../README.md) marketplace. Sibling plugin: [**craft-workflow**](../craft-workflow/README.md) (non-code deliverables).
+> Part of the [**claude_setup**](../README.md) marketplace. Sibling plugins: [**craft-workflow**](../craft-workflow/README.md) (non-code deliverables) · [**job-workflow**](../job-workflow/README.md) (job search).
 
 A Claude Code configuration kit for **Ruby on Rails and Python** projects — installable as a **plugin** (`dev-workflow`) or usable as a **drop-in copy**.
 
