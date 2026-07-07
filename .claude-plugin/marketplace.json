@@ -1,6 +1,6 @@
 {
   "name": "claude-setup",
-  "description": "Marketplace for the dev-workflow and craft-workflow plugins: opinionated Claude Code workflows for code (Ruby on Rails, Python) and non-code deliverables (design, content, research).",
+  "description": "Marketplace for the dev-workflow, craft-workflow, and job-workflow plugins: opinionated Claude Code workflows for code (Ruby on Rails, Python), non-code deliverables (design, content, research), and the job search (knowledge-base-driven tailored applications).",
   "owner": {
     "name": "Amiran Tsiklauri",
     "url": "https://github.com/amiran-levanovich"
@@ -15,6 +15,11 @@
       "name": "craft-workflow",
       "source": "./craft-workflow",
       "description": "Opinionated workflow for non-code deliverables: a domain-neutral method (discovery → criteria-first → produce → review loop) with experience-design, content, and research packs that orchestrate popular design/marketing/research skills."
+    },
+    {
+      "name": "job-workflow",
+      "source": "./job-workflow",
+      "description": "Opinionated job-search workflow: an extensive resumable interview builds a verified candidate knowledge base, then per posting sub-agents tailor an ATS-safe CV and a company-specific cover letter, gated by a verifier that traces every claim to the knowledge base. European/DACH conventions built in."
     }
   ]
 }
