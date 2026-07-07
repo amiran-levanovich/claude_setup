@@ -5,11 +5,11 @@ This file is **memory for working *on* this repo**, not guidance for a project t
 ## What this repo is
 `claude_setup` is a **self-hosting Claude Code plugin marketplace** (`.claude-plugin/marketplace.json`) hosting three sibling plugins:
 
-| Plugin | Source | For | Detail |
-|---|---|---|---|
-| `dev-workflow` | `./dev-workflow` | Code — Ruby/Rails & Python | [dev-workflow/README.md](./dev-workflow/README.md) |
-| `craft-workflow` | `./craft-workflow` | Non-code — design, content, research | [craft-workflow/README.md](./craft-workflow/README.md) |
-| `job-workflow` | `./job-workflow` | Job search — candidate knowledge base + tailored applications | [job-workflow/README.md](./job-workflow/README.md) |
+| Plugin           | Source             | For                                                           | Detail                                                 |
+| :--------------- | :----------------- | :------------------------------------------------------------ | :----------------------------------------------------- |
+| `dev-workflow`   | `./dev-workflow`   | Code — Ruby/Rails & Python                                    | [dev-workflow/README.md](./dev-workflow/README.md)     |
+| `craft-workflow` | `./craft-workflow` | Non-code — design, content, research                          | [craft-workflow/README.md](./craft-workflow/README.md) |
+| `job-workflow`   | `./job-workflow`   | Job search — candidate knowledge base + tailored applications | [job-workflow/README.md](./job-workflow/README.md)     |
 
 All share one method: discovery → plan → **criteria-first** → produce → review-loop until clean. The general overview is [README.md](./README.md).
 

@@ -4,11 +4,11 @@ A self-hosting Claude Code **plugin marketplace** built on one idea: take a sing
 
 That method is the same whether you're shipping code, shipping a design, an article, a research report — or shipping *yourself* to a hiring pipeline. So the marketplace ships it as **three sibling plugins**:
 
-| Plugin | For | Enforcement | Details |
-|---|---|---|---|
-| **`dev-workflow`** | Code — Ruby on Rails & Python | TDD + a deterministic pre-commit hook (linter/security/branch gate) | [dev-workflow/README.md](./dev-workflow/README.md) |
-| **`craft-workflow`** | Non-code — design, content, research | Agent-run sign-off gates + a critique-and-fix review loop (no hook) | [craft-workflow/README.md](./craft-workflow/README.md) |
-| **`job-workflow`** | The job search — knowledge base, tailored CV + cover letter per posting | A verifier agent gate + claim→knowledge traceability (no hook) | [job-workflow/README.md](./job-workflow/README.md) |
+| Plugin               | For                                                                     | Enforcement                                                         | Details                                                |
+| :------------------- | :---------------------------------------------------------------------- | :------------------------------------------------------------------ | :----------------------------------------------------- |
+| **`dev-workflow`**   | Code — Ruby on Rails & Python                                           | TDD + a deterministic pre-commit hook (linter/security/branch gate) | [dev-workflow/README.md](./dev-workflow/README.md)     |
+| **`craft-workflow`** | Non-code — design, content, research                                    | Agent-run sign-off gates + a critique-and-fix review loop (no hook) | [craft-workflow/README.md](./craft-workflow/README.md) |
+| **`job-workflow`**   | The job search — knowledge base, tailored CV + cover letter per posting | A verifier agent gate + claim→knowledge traceability (no hook)      | [job-workflow/README.md](./job-workflow/README.md)     |
 
 All share the same spine: a **domain-agnostic kernel** (dev: `agent_docs/core/coding_workflow.md`, craft: `craft_docs/core/craft_workflow.md`, job: `job_docs/core/job_workflow.md`) plus supporting docs that supply the concrete tools, rubrics, or standards. The kernel names things by *role*; the docs bind them. They don't cross-trigger — install whichever you need.
 
