@@ -26,21 +26,21 @@ Context tight or resuming lost? [`craft_docs/core/quickref.md`](./craft_docs/cor
 
 ## Domains
 
-| Pack | Covers | Baked-in rubric frameworks |
-|---|---|---|
-| **experience-design** | UI/visual design, UX flows, user journeys, accessibility | Nielsen's 10 heuristics · WCAG 2.2 AA · Jobs-to-be-Done · journey coherence |
-| **content** | long-form writing, marketing/landing copy, UX microcopy, SEO | UX-writing 4 standards · SEO search-intent + E-E-A-T · benefits-over-features |
-| **research** | investigation, evidence weighing, synthesis, reports | source-credibility scoring · claim→source traceability · counter-argument coverage |
+| Pack                  | Covers                                                       | Baked-in rubric frameworks                                                         |
+| :-------------------- | :----------------------------------------------------------- | :--------------------------------------------------------------------------------- |
+| **experience-design** | UI/visual design, UX flows, user journeys, accessibility     | Nielsen's 10 heuristics · WCAG 2.2 AA · Jobs-to-be-Done · journey coherence        |
+| **content**           | long-form writing, marketing/landing copy, UX microcopy, SEO | UX-writing 4 standards · SEO search-intent + E-E-A-T · benefits-over-features      |
+| **research**          | investigation, evidence weighing, synthesis, reports         | source-credibility scoring · claim→source traceability · counter-argument coverage |
 
 Each pack has `brief.md` (discovery + template), `rubric.md` (the acceptance criteria), and `toolchain.md` (orchestration + definition of done). A task can span packs — web work is usually `experience-design` + `content`.
 
 ## Skills
 
-| Skill | When it triggers |
-|---|---|
-| `craft-init` | Start of a deliverable — discovery, brief, sign-off |
-| `craft-iterate` | Producing/iterating each piece against its rubric |
-| `craft-review` | The completion critique-and-fix loop before "done" |
+| Skill           | When it triggers                                    |
+| :-------------- | :-------------------------------------------------- |
+| `craft-init`    | Start of a deliverable — discovery, brief, sign-off |
+| `craft-iterate` | Producing/iterating each piece against its rubric   |
+| `craft-review`  | The completion critique-and-fix loop before "done"  |
 
 ## Orchestration — what it drives
 
@@ -48,14 +48,14 @@ Each pack has `brief.md` (discovery + template), `rubric.md` (the acceptance cri
 
 Advised external installs that materially upgrade output:
 
-| Domain | Recommended install | What it adds |
-|---|---|---|
-| experience-design | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | design critique/audit/polish commands, live browser iteration, deterministic detector rules |
-| content | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | copywriting, CRO, SEO |
-| research | [daymade deep-research](https://github.com/daymade/claude-code-skills) | multi-pass pipeline, source scoring |
-| design / research | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | ui-designer, ux-researcher, market-researcher agents |
-| experience-design | [cuellarfr/design-skills](https://github.com/cuellarfr/design-skills) | heuristic critique, journey mapping, a11y |
-| content (UX copy) | [content-designer/ux-writing-skill](https://github.com/content-designer/ux-writing-skill) | 4-standard microcopy framework |
+| Domain            | Recommended install                                                                       | What it adds                                                                                |
+| :---------------- | :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| experience-design | [pbakaus/impeccable](https://github.com/pbakaus/impeccable)                               | design critique/audit/polish commands, live browser iteration, deterministic detector rules |
+| content           | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills)         | copywriting, CRO, SEO                                                                       |
+| research          | [daymade deep-research](https://github.com/daymade/claude-code-skills)                    | multi-pass pipeline, source scoring                                                         |
+| design / research | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents)         | ui-designer, ux-researcher, market-researcher agents                                        |
+| experience-design | [cuellarfr/design-skills](https://github.com/cuellarfr/design-skills)                     | heuristic critique, journey mapping, a11y                                                   |
+| content (UX copy) | [content-designer/ux-writing-skill](https://github.com/content-designer/ux-writing-skill) | 4-standard microcopy framework                                                              |
 
 It also drives, **when available** (all optional):
 

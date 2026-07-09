@@ -4,14 +4,14 @@ Orchestrate existing skills/tools per role; prefer the skill if installed, else 
 
 ## Role → skill map
 
-| Role | Preferred skill/tool (if present) | Fallback |
-| :--- | :--- | :--- |
-| Multi-pass research engine | `deep-research` — *strongly advised, see registry* | run the passes manually: query set → gather → score → synthesize |
-| Domain research agents | VoltAgent `market-researcher` / `technical-writer` — *see registry* | — |
-| Evidence gathering | `WebSearch` / `WebFetch` (built-in); `context7` for library/API docs | — |
-| Output formatting | `docx` · `pdf` · `xlsx` | markdown |
-| Review loop | `plannotator` (annotate the draft report) | manual critique against the rubric |
-| Brain-dump intake · question stress-test | `capture` · `grill-me` (or any skill filling the role) | structure / stress-test manually |
+| Role                                     | Preferred skill/tool (if present)                                    | Fallback                                                         |
+| :--------------------------------------- | :------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| Multi-pass research engine               | `deep-research` — *strongly advised, see registry*                   | run the passes manually: query set → gather → score → synthesize |
+| Domain research agents                   | VoltAgent `market-researcher` / `technical-writer` — *see registry*  | —                                                                |
+| Evidence gathering                       | `WebSearch` / `WebFetch` (built-in); `context7` for library/API docs | —                                                                |
+| Output formatting                        | `docx` · `pdf` · `xlsx`                                              | markdown                                                         |
+| Review loop                              | `plannotator` (annotate the draft report)                            | manual critique against the rubric                               |
+| Brain-dump intake · question stress-test | `capture` · `grill-me` (or any skill filling the role)               | structure / stress-test manually                                 |
 
 > Source-credibility scoring, claim→source traceability, and counter-argument coverage are **baked into `rubric.md`**, so the pack is self-sufficient. `deep-research` is the recommended install because its multi-pass pipeline materially raises rigor and citation quality.
 

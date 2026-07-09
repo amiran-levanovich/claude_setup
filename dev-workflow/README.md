@@ -6,10 +6,10 @@ A Claude Code configuration kit for **Ruby on Rails and Python** projects — in
 
 Enforces one opinionated development workflow across both languages: structured greenfield setup, a TDD lifecycle, database safety standards, and automated code style. A **language-agnostic spine** (`agent_docs/core/`) drives the process; **per-language packs** (`agent_docs/ruby/`, `agent_docs/python/`) supply the concrete tools. Two layers of enforcement: a shared knowledge base surfaced through auto-triggering skills, and a deterministic pre-commit hook that dispatches on the project's marker file and blocks commits to `main` or with linter/security failures — independent of whether the agent remembers the rules.
 
-| Language | Frameworks | Linter / format | Security | Tests | N+1 / perf |
-|---|---|---|---|---|---|
-| **Ruby** | Rails | RuboCop (+ rubocop-rails) | Brakeman | RSpec | Bullet |
-| **Python** | Django, FastAPI | Ruff (lint + format) | Bandit | pytest | query-count assertions |
+| Language   | Frameworks      | Linter / format           | Security | Tests  | N+1 / perf             |
+| :--------- | :-------------- | :------------------------ | :------- | :----- | :--------------------- |
+| **Ruby**   | Rails           | RuboCop (+ rubocop-rails) | Brakeman | RSpec  | Bullet                 |
+| **Python** | Django, FastAPI | Ruff (lint + format)      | Bandit   | pytest | query-count assertions |
 
 ---
 
@@ -76,13 +76,13 @@ README.md                         # This file
 
 **`.claude/skills/`** holds thin skills that auto-surface when the task matches and route to the right doc:
 
-| Skill | Routes to |
-|---|---|
-| `tdd-workflow` | `core/coding_workflow.md` (+ detected `<lang>/toolchain.md`) |
-| `greenfield-setup` | `<lang>/building_the_project.md` |
-| `schema-migrations` | `<lang>/database_schema.md` |
-| `testing` | `<lang>/running_tests.md` |
-| `workflow-init` | onboarding + tooling audit (see below) |
+| Skill               | Routes to                                                    |
+| :------------------ | :----------------------------------------------------------- |
+| `tdd-workflow`      | `core/coding_workflow.md` (+ detected `<lang>/toolchain.md`) |
+| `greenfield-setup`  | `<lang>/building_the_project.md`                             |
+| `schema-migrations` | `<lang>/database_schema.md`                                  |
+| `testing`           | `<lang>/running_tests.md`                                    |
+| `workflow-init`     | onboarding + tooling audit (see below)                       |
 
 **`.claude/hooks/pre-commit-gate.sh`** is the deterministic enforcement layer. Every `git commit` is intercepted; it dispatches on the marker file and blocks the commit unless the branch is not `main`/`master` and the language's linter (+ formatter, + security scanner when installed) is clean **on the files the commit touches** (staged + unstaged vs `HEAD`). Scoping to changed files keeps the gate usable in existing codebases with pre-existing offenses — legacy debt elsewhere never blocks a commit; full-repo sweeps belong to CI and the Phase 4 review. It deliberately skips the test suite — the TDD cycle commits intentionally failing tests — so the green-suite check stays with the agent.
 
@@ -177,22 +177,22 @@ All recommended, none required — nothing blocks on their absence.
 
 ### Ruby / Rails
 
-| Gem | Purpose | Enforced by |
-|---|---|---|
-| `bullet ~> 8` | N+1 query detection | Agent — suite run with bullet before implementation commits |
-| `brakeman ~> 7` | Static security analysis | Hook — blocks `git commit` on warnings |
-| `rubocop ~> 1` | Code style enforcement | Hook — blocks `git commit` on offenses |
-| `rubocop-rails ~> 2` | Rails-specific cops | Hook — part of the RuboCop check |
-| `strong_migrations ~> 2` | Zero-downtime migration safety | Gem itself — raises on unsafe migrations at runtime |
+| Gem                      | Purpose                        | Enforced by                                                 |
+| :----------------------- | :----------------------------- | :---------------------------------------------------------- |
+| `bullet ~> 8`            | N+1 query detection            | Agent — suite run with bullet before implementation commits |
+| `brakeman ~> 7`          | Static security analysis       | Hook — blocks `git commit` on warnings                      |
+| `rubocop ~> 1`           | Code style enforcement         | Hook — blocks `git commit` on offenses                      |
+| `rubocop-rails ~> 2`     | Rails-specific cops            | Hook — part of the RuboCop check                            |
+| `strong_migrations ~> 2` | Zero-downtime migration safety | Gem itself — raises on unsafe migrations at runtime         |
 
 ### Python
 
-| Package | Purpose | Enforced by |
-|---|---|---|
-| `ruff` | Lint + format (replaces black/flake8/isort) | Hook — blocks `git commit` on offenses or unformatted code |
-| `bandit` | Static security analysis | Hook — blocks `git commit` on issues |
-| `pytest` (+ `pytest-cov`) | Test runner + coverage | Agent — green suite before implementation commits |
-| `factory_boy` + `faker` | Test data factories | Agent |
-| `respx` / `responses` | HTTP mocking (total mocking mandate) | Agent |
+| Package                   | Purpose                                     | Enforced by                                                |
+| :------------------------ | :------------------------------------------ | :--------------------------------------------------------- |
+| `ruff`                    | Lint + format (replaces black/flake8/isort) | Hook — blocks `git commit` on offenses or unformatted code |
+| `bandit`                  | Static security analysis                    | Hook — blocks `git commit` on issues                       |
+| `pytest` (+ `pytest-cov`) | Test runner + coverage                      | Agent — green suite before implementation commits          |
+| `factory_boy` + `faker`   | Test data factories                         | Agent                                                      |
+| `respx` / `responses`     | HTTP mocking (total mocking mandate)        | Agent                                                      |
 
 `mypy` is supported as an **opt-in**, not part of the commit gate — `workflow-init` offers to wire it up. There is no ambient N+1 raiser like Bullet in Python; N+1 protection is assertion-based in the tests (see `python/running_tests.md`).
