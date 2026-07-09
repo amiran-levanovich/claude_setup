@@ -55,7 +55,7 @@ Each plugin is a self-contained directory with the same shape: `.claude-plugin/p
 
 - **[dev-workflow →](./dev-workflow/README.md)** — language detection, the TDD spine, the pre-commit gate, the Ruby/Python packs, mandatory tooling.
 - **[craft-workflow →](./craft-workflow/README.md)** — the non-code method, the experience-design / content / research packs, the orchestration registry and availability check.
-- **[job-workflow →](./job-workflow/README.md)** — the verified candidate knowledge base, the tailoring pipeline with cv-tailor / cover-letter-writer / application-verifier agents, ATS + DACH standards.
+- **[job-workflow →](./job-workflow/README.md)** — the verified candidate knowledge base, the tailoring pipeline with cv-tailor / cover-letter-writer / application-verifier agents, the interview-briefer for booked interviews, ATS + DACH standards.
 
 ## License
 
