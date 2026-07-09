@@ -52,7 +52,7 @@ job-workflow/
 ├── .claude-plugin/plugin.json
 ├── .claude/
 │   ├── skills/                  # thin routers: job-intake · job-goals · job-apply
-│   └── agents/                  # cv-tailor · cover-letter-writer · application-verifier
+│   └── agents/                  # cv-tailor · cover-letter-writer · application-verifier · interview-briefer
 ├── job_docs/
 │   ├── core/                    # job_workflow.md (kernel) · kb_schema.md · interview_protocol.md · tailoring_method.md · orchestration.md · quickref.md
 │   ├── standards/               # cv_rules · ats_rules · cover_letter_rules · dach_conventions · rendering
