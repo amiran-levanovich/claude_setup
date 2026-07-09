@@ -56,7 +56,7 @@ job-workflow/
 ├── job_docs/
 │   ├── core/                    # job_workflow.md (kernel) · kb_schema.md · interview_protocol.md · tailoring_method.md · orchestration.md · quickref.md
 │   ├── standards/               # cv_rules · ats_rules · cover_letter_rules · dach_conventions · rendering
-│   ├── lifecycle/               # tracking · postmortem · interview_prep
+│   ├── lifecycle/               # tracking · postmortem · interview_prep · analytics
 │   └── templates/               # cv_template.md
 └── README.md                    # detailed guide
 
