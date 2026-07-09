@@ -122,13 +122,13 @@ Turn the approved design into a running skeleton — this is setup, not feature 
 ### 2. Core tooling
 Every Ruby on Rails project initialized in this environment must be configured with this core safety and performance stack from Day 1:
 
-| Library / Gem | Gemfile Pin | Operational Mandate |
-| :--- | :--- | :--- |
-| **`bullet`** | `~> 8` | Active memory profiling. Detects and kills N+1 queries and lazy/unused eager loading instantly. |
-| **`brakeman`** | `~> 7` | Static analysis security scanner. Audits the codebase for vulnerabilities, SQL injection, and XSS risks. |
-| **`rubocop`** | `~> 1` | Strict code layout and style enforcement aligned with Ruby community best practices. |
-| **`rubocop-rails`** | `~> 2` | Rails-specific cops for controllers, models, and migrations. |
-| **`strong_migrations`** | `~> 2` | Catches hazardous database migration patterns that cause table-locking or downtime. |
+| Library / Gem           | Gemfile Pin | Operational Mandate                                                                                      |
+| :---------------------- | :---------- | :------------------------------------------------------------------------------------------------------- |
+| **`bullet`**            | `~> 8`      | Active memory profiling. Detects and kills N+1 queries and lazy/unused eager loading instantly.          |
+| **`brakeman`**          | `~> 7`      | Static analysis security scanner. Audits the codebase for vulnerabilities, SQL injection, and XSS risks. |
+| **`rubocop`**           | `~> 1`      | Strict code layout and style enforcement aligned with Ruby community best practices.                     |
+| **`rubocop-rails`**     | `~> 2`      | Rails-specific cops for controllers, models, and migrations.                                             |
+| **`strong_migrations`** | `~> 2`      | Catches hazardous database migration patterns that cause table-locking or downtime.                      |
 
 > Pins use pessimistic `~>` on the current major version. Run `bundle outdated` at initialization to confirm these are still the latest majors.
 

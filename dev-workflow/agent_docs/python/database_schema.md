@@ -2,9 +2,9 @@
 
 Mandatory standards for modifying the schema and structuring relationships in a Python project. The ORM and migration tool depend on the framework:
 
-| Framework | ORM | Migration tool |
-| :--- | :--- | :--- |
-| **Django** | Django ORM | built-in migrations (`makemigrations` / `migrate`) |
+| Framework             | ORM        | Migration tool                                       |
+| :-------------------- | :--------- | :--------------------------------------------------- |
+| **Django**            | Django ORM | built-in migrations (`makemigrations` / `migrate`)   |
 | **FastAPI** (typical) | SQLAlchemy | **Alembic** (`alembic revision` / `alembic upgrade`) |
 
 > **Database Target:** this document targets **PostgreSQL**. Patterns such as concurrent index creation and some locking semantics do not apply to MySQL or SQLite. Verify before running migrations on a non-PG database.

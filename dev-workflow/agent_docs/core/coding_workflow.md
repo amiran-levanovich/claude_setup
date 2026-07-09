@@ -114,12 +114,12 @@ Either way the reviewer works with fresh context (by Phase 4 your judgment of yo
 ### The review dimensions
 Every round — combined or fanned out — judges all four dimensions against the whole diff.
 
-| Dimension | Preferred skill (if installed) | `diff-reviewer` / manual focus |
-| :--- | :--- | :--- |
-| Style & conventions | `/code-review` or `/review` | `<lang>/code_conventions.md` — drift the linter can't catch |
-| Security | `/security-review` | authz gaps, mass-assignment, injection, beyond what the scanner flags |
-| Duplication / DRY & design | `/simplify` | repeated logic, fat controllers/views, functions doing too much, missing service objects |
-| Performance / N+1 | — | confirm the per-commit N+1/perf audits (Phase 3) hold across the full feature flow — run the request/system specs with the detector once more end-to-end |
+| Dimension                  | Preferred skill (if installed) | `diff-reviewer` / manual focus                                                                                                                           |
+| :------------------------- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Style & conventions        | `/code-review` or `/review`    | `<lang>/code_conventions.md` — drift the linter can't catch                                                                                              |
+| Security                   | `/security-review`             | authz gaps, mass-assignment, injection, beyond what the scanner flags                                                                                    |
+| Duplication / DRY & design | `/simplify`                    | repeated logic, fat controllers/views, functions doing too much, missing service objects                                                                 |
+| Performance / N+1          | —                              | confirm the per-commit N+1/perf audits (Phase 3) hold across the full feature flow — run the request/system specs with the detector once more end-to-end |
 
 ### The loop
 Repeat until a logged clean pass:

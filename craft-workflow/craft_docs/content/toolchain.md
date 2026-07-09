@@ -4,14 +4,14 @@ Orchestrate existing skills per role; prefer the skill if installed, else write 
 
 ## Role → skill map
 
-| Role | Preferred skill (if present) | Fallback |
-| :--- | :--- | :--- |
-| Marketing/landing copy · CRO · SEO | `marketingskills` — *strongly advised, see registry* | write against the marketing + seo rubric sections |
-| UX microcopy | `ux-writing-skill` — *see registry* | the 4 standards are baked into `rubric.md` |
-| Long-form structure & house formats | `doc-coauthoring` · `internal-comms` | outline-first, write against the Always rubric |
-| Document output | `docx` · `pdf` · `pptx` | markdown |
-| Review loop | `plannotator` (annotate the draft) | manual critique against the rubric |
-| Brain-dump intake · brief stress-test | `capture` · `grill-me` (or any skill filling the role) | structure / stress-test manually |
+| Role                                  | Preferred skill (if present)                           | Fallback                                          |
+| :------------------------------------ | :----------------------------------------------------- | :------------------------------------------------ |
+| Marketing/landing copy · CRO · SEO    | `marketingskills` — *strongly advised, see registry*   | write against the marketing + seo rubric sections |
+| UX microcopy                          | `ux-writing-skill` — *see registry*                    | the 4 standards are baked into `rubric.md`        |
+| Long-form structure & house formats   | `doc-coauthoring` · `internal-comms`                   | outline-first, write against the Always rubric    |
+| Document output                       | `docx` · `pdf` · `pptx`                                | markdown                                          |
+| Review loop                           | `plannotator` (annotate the draft)                     | manual critique against the rubric                |
+| Brain-dump intake · brief stress-test | `capture` · `grill-me` (or any skill filling the role) | structure / stress-test manually                  |
 
 > The UX-writing 4 standards and the SEO search-intent/E-E-A-T checklist are **baked into `rubric.md`**, so the pack is self-sufficient. `marketingskills` is the recommended install because it materially upgrades landing/SEO/CRO production.
 

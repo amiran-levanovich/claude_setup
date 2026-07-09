@@ -118,14 +118,14 @@ Turn the approved design into a running skeleton — this is setup, not feature 
 ### 2. Core tooling
 Every Python project initialized in this environment is configured with this core stack from Day 1 (in the `dev`/`test` dependency group of `pyproject.toml`):
 
-| Package | Role | Enforced by |
-| :--- | :--- | :--- |
-| **`ruff`** | Lint + format (replaces black/flake8/isort) | Hook — blocks `git commit` on offenses or unformatted code |
-| **`bandit`** | Static security analysis | Hook — blocks `git commit` on issues |
-| **`pytest`** + `pytest-cov` | Test runner + coverage | Agent — green suite before implementation commits |
-| Django: `pytest-django` · FastAPI: `httpx` | Framework test integration | Agent |
-| `factory_boy` + `faker` | Test data factories | Agent |
-| `respx` / `responses` | HTTP mocking | Agent — total mocking mandate |
+| Package                                    | Role                                        | Enforced by                                                |
+| :----------------------------------------- | :------------------------------------------ | :--------------------------------------------------------- |
+| **`ruff`**                                 | Lint + format (replaces black/flake8/isort) | Hook — blocks `git commit` on offenses or unformatted code |
+| **`bandit`**                               | Static security analysis                    | Hook — blocks `git commit` on issues                       |
+| **`pytest`** + `pytest-cov`                | Test runner + coverage                      | Agent — green suite before implementation commits          |
+| Django: `pytest-django` · FastAPI: `httpx` | Framework test integration                  | Agent                                                      |
+| `factory_boy` + `faker`                    | Test data factories                         | Agent                                                      |
+| `respx` / `responses`                      | HTTP mocking                                | Agent — total mocking mandate                              |
 
 **Dependency manager:** prefer **uv** (`uv init`, `uv add`, `uv.lock`); Poetry and pip+venv are acceptable — see `toolchain.md` for detection. **mypy** is optional and **not** gated; offer it as a project choice.
 

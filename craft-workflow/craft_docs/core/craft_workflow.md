@@ -11,11 +11,11 @@ This runbook is the **domain-agnostic kernel** for producing non-code work — a
 ## STEP 0 — DETECT THE DOMAIN
 There is no marker file here; detect the **task type** from the request and route to the matching pack:
 
-| The task is about… | `<domain>` | Pack |
-| :--- | :--- | :--- |
-| UI, visual design, layouts, user journeys, UX flows, accessibility | `experience-design` | `craft_docs/experience-design/` |
-| Writing — long-form, marketing/landing copy, UX microcopy, SEO content | `content` | `craft_docs/content/` |
-| Investigating a question, gathering evidence, synthesizing findings, reports | `research` | `craft_docs/research/` |
+| The task is about…                                                           | `<domain>`          | Pack                            |
+| :--------------------------------------------------------------------------- | :------------------ | :------------------------------ |
+| UI, visual design, layouts, user journeys, UX flows, accessibility           | `experience-design` | `craft_docs/experience-design/` |
+| Writing — long-form, marketing/landing copy, UX microcopy, SEO content       | `content`           | `craft_docs/content/`           |
+| Investigating a question, gathering evidence, synthesizing findings, reports | `research`          | `craft_docs/research/`          |
 
 If the task spans two domains (e.g. "design and write a landing page"), run the kernel once and pull the brief/rubric from **both** packs — most web work is `experience-design` + `content` together. If the request fits none, run the kernel with a brief and rubric you construct from first principles, and tell the user no specialized pack applies.
 

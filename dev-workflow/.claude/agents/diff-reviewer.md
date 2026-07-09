@@ -29,11 +29,11 @@ If any input is missing, name it and stop. Never guess a dimension or range.
    invocation the other dimensions are covered by separate invocations — do not pad
    your report with out-of-dimension observations.
 
-| Dimension | Read | Judge |
-| :--- | :--- | :--- |
-| `style` | `<lang>/code_conventions.md` | drift the linter can't catch: naming, altitude, comment discipline, structure |
-| `security` | `<lang>/toolchain.md` (scanner role) | authz gaps, mass assignment, injection, secrets in code, unsafe deserialization — beyond what the scanner flags |
-| `dry-design` | `<lang>/code_conventions.md` | duplication, fat controllers/views, wrong-layer logic, missing service objects, functions doing too much |
+| Dimension     | Read                                                    | Judge                                                                                                                                                                   |
+| :------------ | :------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `style`       | `<lang>/code_conventions.md`                            | drift the linter can't catch: naming, altitude, comment discipline, structure                                                                                           |
+| `security`    | `<lang>/toolchain.md` (scanner role)                    | authz gaps, mass assignment, injection, secrets in code, unsafe deserialization — beyond what the scanner flags                                                         |
+| `dry-design`  | `<lang>/code_conventions.md`                            | duplication, fat controllers/views, wrong-layer logic, missing service objects, functions doing too much                                                                |
 | `performance` | `<lang>/database_schema.md` + `<lang>/running_tests.md` | N+1 patterns, missing indexes for new query paths, unbounded result sets; run the suite with the N+1 detector (see `<lang>/toolchain.md`) when the project runs locally |
 
 ## Output contract

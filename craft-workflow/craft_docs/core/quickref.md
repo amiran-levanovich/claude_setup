@@ -18,8 +18,8 @@ Re-read in this order, stopping as soon as you're oriented: **this file → the 
 
 ## Minimum read set by step
 
-| Step | Read |
-| :--- | :--- |
-| Starting a deliverable | `core/craft_workflow.md` + `<domain>/brief.md` |
-| Producing pieces | + `<domain>/rubric.md` and `<domain>/toolchain.md` |
-| Final review | `<domain>/rubric.md` + `<domain>/toolchain.md` (Definition of Done) |
+| Step                   | Read                                                                |
+| :--------------------- | :------------------------------------------------------------------ |
+| Starting a deliverable | `core/craft_workflow.md` + `<domain>/brief.md`                      |
+| Producing pieces       | + `<domain>/rubric.md` and `<domain>/toolchain.md`                  |
+| Final review           | `<domain>/rubric.md` + `<domain>/toolchain.md` (Definition of Done) |
