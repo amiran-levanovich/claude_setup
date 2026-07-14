@@ -5,7 +5,7 @@ description: Use when initializing a brand-new Ruby/Rails or Python (Django/Fast
 
 Determine the language first. A greenfield repo usually has no marker file yet, so detection may be inconclusive:
 
-- If a marker already exists, use it: `Gemfile` → `ruby`, `pyproject.toml`/`setup.py`/`setup.cfg` → `python`.
+- If a marker already exists in the project root (one check — don't search subdirectories), use it: `Gemfile` → `ruby`, `pyproject.toml`/`setup.py`/`setup.cfg` → `python`.
 - Otherwise, ask the user which language to scaffold (Ruby/Rails or Python) via the AskUserQuestion tool.
 
 Then read that language's greenfield playbook and follow it:
@@ -13,6 +13,6 @@ Then read that language's greenfield playbook and follow it:
 - ruby → `agent_docs/ruby/building_the_project.md`
 - python → `agent_docs/python/building_the_project.md`
 
-Locate the file as follows: use `agent_docs/<lang>/building_the_project.md` in the project root if present (drop-in install); otherwise read `../../../agent_docs/<lang>/building_the_project.md` relative to this skill's directory (plugin install).
+Locate the file as follows: use `agent_docs/<lang>/building_the_project.md` in the project root if present (drop-in install); otherwise read `../../../agent_docs/<lang>/building_the_project.md` relative to this skill's directory (plugin install). Those two locations are the only ones: if neither resolves, report the broken install and stop — never search the filesystem for `agent_docs`.
 
 It is the single source of truth for the greenfield phase sequence (Phases G0–G4) and the sign-off gate that must be cleared before feature coding begins. For Python, Phase G1 includes the framework choice (Django vs FastAPI), which determines the ORM, migration tool, and test client.

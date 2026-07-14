@@ -3,7 +3,7 @@ name: craft-review
 description: Use to REVIEW or finish a non-code deliverable (design, UI/UX, landing page, article, marketing/UX copy, SEO content, research report) before calling it done — a full critique-and-fix loop against the domain rubric. Triggers on 'review this design/copy/report', 'critique this', 'is this good enough', 'is this done', 'polish this', 'finalize this'. NOT for source code review (use dev-workflow's review skills).
 ---
 
-Read `craft_docs/core/craft_workflow.md` and run Step 5 (the completion review loop). Locate it: use `craft_docs/core/craft_workflow.md` in the project root if present (drop-in); otherwise `../../../craft_docs/core/craft_workflow.md` relative to this skill's directory (plugin install).
+Read `craft_docs/core/craft_workflow.md` and run Step 5 (the completion review loop). Locate it: use `craft_docs/core/craft_workflow.md` in the project root if present (drop-in); otherwise `../../../craft_docs/core/craft_workflow.md` relative to this skill's directory (plugin install). Those two locations are the only ones: if neither resolves, report the broken install and stop — never search the filesystem for `craft_docs`.
 
 Non-code work has no deterministic gate, so this loop carries the entire quality bar. Detect the domain, then repeat until a clean round:
 
