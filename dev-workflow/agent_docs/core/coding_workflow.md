@@ -19,7 +19,7 @@ P1 branch → P2 planning gate → ⟳ TDD cycle (P2 Steps 1–5; the P3 gate fi
 
 ## LANGUAGE & PACK
 
-Detect the language once, before anything else, by marker file: `Gemfile` → `ruby`; `pyproject.toml`/`setup.py`/`setup.cfg` → `python`. Both or neither present → ask the user. `<lang>` resolves to the matching pack, `agent_docs/<lang>/` — reference its files as needs arise: `code_conventions.md` (structure and style the linter can't check), `running_tests.md` (test engine and flags), `database_schema.md` (indexes, queries, migrations), `toolchain.md` (every concrete tool binding).
+Detect the language once, before anything else, by marker file in the project root (one existence check — never a recursive search): `Gemfile` → `ruby`; `pyproject.toml`/`setup.py`/`setup.cfg` → `python`. Both or neither present → ask the user. `<lang>` resolves to the matching pack, `agent_docs/<lang>/` — reference its files as needs arise: `code_conventions.md` (structure and style the linter can't check), `running_tests.md` (test engine and flags), `database_schema.md` (indexes, queries, migrations), `toolchain.md` (every concrete tool binding).
 
 ---
 

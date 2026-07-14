@@ -2,9 +2,9 @@
 
 Re-read this when context is tight, after a compaction, or whenever unsure. It is the distilled floor of `coding_workflow.md`, not a replacement — follow the full doc when you can.
 
-1. **Language by marker file**: `Gemfile` → ruby, `pyproject.toml`/`setup.py`/`setup.cfg` → python. All concrete commands come from `agent_docs/<lang>/toolchain.md`.
+1. **Language by marker file in the project root** (one check, never a recursive search): `Gemfile` → ruby, `pyproject.toml`/`setup.py`/`setup.cfg` → python. All concrete commands come from `agent_docs/<lang>/toolchain.md`.
 2. **Never commit to `main`** (hook-enforced). Work on `<type>/<kebab-description>` branches; merge by PR only.
-3. **Resume, don't re-plan**: if `docs/features/<feature>.md` exists, load it and continue from its task list, honoring every logged decision.
+3. **Resume, don't re-plan**: if `docs/features/<feature>.md` exists, load it and continue from its task list, honoring every logged decision. Missing doc = nothing in flight: plan fresh, don't search elsewhere.
 4. **Spec first**: no implementation code before its failing spec exists, fails for the right reason, and is committed.
 5. **Never weaken or delete a committed spec.** If one seems wrong, stop and ask the user.
 6. **Before an implementation commit**: green suite + N+1 audit + auto-format (fixer agent for leftovers).

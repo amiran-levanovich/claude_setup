@@ -3,7 +3,7 @@
 Re-read this when context is tight, after a compaction, or whenever unsure. It is the distilled floor of `craft_workflow.md`, not a replacement — follow the full kernel when you can.
 
 1. **Detect the domain**: `experience-design` / `content` / `research` — a task may span two. Packs live in `craft_docs/<domain>/`.
-2. **Resume, don't re-interview**: if `craft/<name>.md` exists, load it and continue from its plan, honoring every logged decision.
+2. **Resume, don't re-interview**: if `craft/<name>.md` exists, load it and continue from its plan, honoring every logged decision. Missing doc = nothing in flight: start fresh, don't search elsewhere.
 3. **No production before the brief is signed off.** Zero exceptions.
 4. **No piece before its rubric**: write the piece's acceptance rubric (from `<domain>/rubric.md`) into the living doc first — it is the test.
 5. **Check before presenting**: verify each piece against its rubric yourself; never present a known miss.
