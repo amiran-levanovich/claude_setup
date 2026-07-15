@@ -1,4 +1,4 @@
-# Quick Reference — the 10-rule floor
+# Quick Reference — the 11-rule floor
 
 Re-read this when context is tight, after a compaction, or whenever unsure. It is the distilled floor of `coding_workflow.md`, not a replacement — follow the full doc when you can.
 
@@ -12,6 +12,7 @@ Re-read this when context is tight, after a compaction, or whenever unsure. It i
 8. **Update the feature doc every cycle** — tasks, Decisions, Traps, Review log. The doc is the memory; the conversation is not.
 9. **Before the PR**: the review loop (style / security / DRY / N+1) over the full diff — small diff (< ~200 lines) → one `diff-reviewer` pass with dimension `all`; large diff → one agent (or installed review skill) per dimension. After a fix round, a full re-pass only if a MAJOR finding or cross-cutting fix; all-MINOR, localized fixes → one combined confirmation pass. Log every round in the feature doc's Review log; only a *logged* clean pass ends the loop.
 10. **Judgment calls → AskUserQuestion** with options. Never decide silently; never guess a fact you can verify.
+11. **Act on checked state, not claims.** Before acting on "merged", "CI green", "pushed", "deployed" — whether the claim comes from the user, an agent, or your own memory of earlier in the session — check the real system first. And report success only after the command confirms it (exit 0, the PR actually shows merged); a claim of success is not one.
 
 ## When lost
 

@@ -2,7 +2,7 @@
 
 The mandatory day-to-day workflow for writing, testing, linting, and committing features. It is **language-agnostic** — every concrete tool (linter, security scanner, test runner, N+1/perf check, fixer agent) is bound by role in `<lang>/toolchain.md`.
 
-> **Context tight or lost?** `core/quickref.md` is the distilled 10-rule floor with a "when lost" protocol — re-read it instead of guessing.
+> **Context tight or lost?** `core/quickref.md` is the distilled 11-rule floor with a "when lost" protocol — re-read it instead of guessing.
 
 ## EXECUTION TIMELINE
 
@@ -29,6 +29,7 @@ Detect the language once, before anything else, by marker file in the project ro
 *   Branch from an up-to-date `main`: `<type>/<short-kebab-description>` — e.g. `feature/order-cancellation`, `fix/nil-gateway-timeout`. Single-purpose, short-lived (days, not weeks); rebase on `main` if it drifts.
 *   Merge back via pull request only — never locally. Open the PR when every TDD loop is done, the suite is green, and the Phase 4 review is clean.
 *   **After the merge**, run `core/feature_closeout.md` — the feature doc is working state and must not outlive its feature.
+*   **Act on checked state, not claims.** A claimed git or CI state — "merged", "CI is green", "already pushed", "the branch is up to date" — gets verified against the real system (`gh pr view`, `git fetch` + log, the CI run itself) before anything builds on it, whether the claim came from the user, an agent's report, or your own memory of earlier in the session. Symmetrically, report an action as done only after its command confirmed success (exit 0, the state visibly changed) — never on the intention to have done it.
 
 ### Commit messages — Conventional Commits
 `<type>(<scope>): <description>`, standard types (`feat` | `fix` | `test` | `refactor` | `chore` | `docs` | `perf`); TDD Step 3 failing-test commits use `test`. Hard rules: **subject ≤ 60 characters** (reword until it fits); description lowercase, imperative mood, no trailing period; breaking change → `!` after the type (`feat(api)!: …`).

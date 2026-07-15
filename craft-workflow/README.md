@@ -22,7 +22,7 @@ Define what "good" looks like **before** you produce. In code that's a failing t
 4. **Produce → check → iterate** → produce, check against the rubric yourself, fix, present.
 5. **Completion review loop** → critique the whole deliverable against the domain rubric, report → fix → re-review until a clean round.
 
-Context tight or resuming lost? [`craft_docs/core/quickref.md`](./craft_docs/core/quickref.md) is the distilled 9-rule floor with a "when lost" protocol — the sibling of `dev-workflow`'s 10-rule quickref.
+Context tight or resuming lost? [`craft_docs/core/quickref.md`](./craft_docs/core/quickref.md) is the distilled 9-rule floor with a "when lost" protocol — the sibling of `dev-workflow`'s 11-rule quickref.
 
 ## Domains
 
