@@ -33,9 +33,12 @@ dev-workflow/
 │   └── settings.json            # hook registration (drop-in mode)
 ├── hooks/hooks.json             # hook registration (plugin mode)
 ├── agent_docs/
-│   ├── core/                    # coding_workflow.md (spine) · feature_closeout.md (post-merge) · orchestration.md (advised tools) · quickref.md (11-rule floor)
+│   ├── core/                    # coding_workflow.md (spine) · feature_closeout.md (post-merge) · orchestration.md (advised tools + harness fallbacks) · quickref.md (11-rule floor)
 │   ├── ruby/                    # building_the_project · code_conventions · database_schema · running_tests · toolchain
 │   └── python/                  # same five files
+├── .agents/skills/              # symlinks to .claude/skills/* — Agent Skills discovery for Codex/Gemini
+├── AGENTS.md                    # canonical harness-neutral entry point (multi-agent support)
+├── GEMINI.md                    # Gemini CLI wrapper → AGENTS.md
 └── README.md                    # detailed guide
 
 # ── craft-workflow (source: ./craft-workflow) ──
@@ -71,6 +74,7 @@ README.md                        # marketplace overview     CLAUDE.md  # this fi
 ## Maintenance conventions
 - **Keep the sibling plugins in sync.** They share a design (a `core/` kernel + supporting docs, `orchestration.md` with an availability check, a `quickref.md` floor, thin skill routers). A change to one's structure usually wants a parallel in the others.
 - **Don't add a commit hook or fixer agents to craft-workflow or job-workflow** — their quality bar is judgment, carried by agent-run gates and review loops. That asymmetry is intentional.
+- **Multi-agent support (Codex/Gemini) is dev-workflow-only for now** — the pilot: `AGENTS.md` (canonical entry point) + `GEMINI.md` (wrapper) + `.agents/skills/` (symlinks to `.claude/skills/*`, the Agent Skills discovery path) + the hook's `--git-hook` mode + the orchestration fallback table. When a skill is added/renamed in dev-workflow, update its `.agents/skills/` symlink and the AGENTS.md skill table too. Porting the pattern to craft/job is planned, not yet done — that asymmetry is temporary, not a design.
 - **Never commit personal data into job-workflow** (names, employers, salaries, application material). Its docs are generic method; anything candidate-specific belongs in the user's job folder, not the kit. Sweep before committing.
 - **Skills are thin pointers**, not content: a skill's `SKILL.md` detects context and routes to the authoritative `agent_docs/`/`craft_docs/` file. Put substance in the docs, not the skill. Path resolution: project-root copy first, else `../../../<docs>/…` relative to the skill dir. (Applies to the *shipped plugins*; maintainer skills in this repo's `.claude/skills/` hold their procedure inline — there is no docs layer for repo maintenance.)
 - **Versioning**: bump the affected plugin's `version` in its `plugin.json` on a meaningful change (breaking renames → major; `dev-workflow` is at 3.x, `craft-workflow` and `job-workflow` at 1.x). Bump with a targeted line edit — a JSON load/dump round-trip reformats the manifest. After the bump's PR merges, tag `main` and publish a GitHub release: `<plugin>-v<version>` (e.g. `dev-workflow-v3.3.0`), notes ending with the consumer update commands (`/plugin marketplace update claude-setup`, `/plugin update <plugin>@claude-setup`). `marketplace.json` carries no versions by design — the tag/release is the marketplace-level signal.

@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
-# PreToolUse gate on `git commit`: blocks commits on main/master or with
-# linter/security failures. Dispatches on the marker file (Gemfile -> Ruby,
+# Commit gate: blocks commits on main/master or with linter/security
+# failures. Dispatches on the marker file (Gemfile -> Ruby,
 # pyproject.toml/setup.py/setup.cfg -> Python); inert elsewhere. Full behavior
 # and rationale: the dev-workflow README ("Hook requirement").
+#
+# Two invocation modes:
+#  - Claude Code PreToolUse hook (default): reads the tool-call JSON on
+#    stdin, matches `git commit`, then runs the checks.
+#  - Plain git pre-commit hook (`--git-hook`): git itself guarantees the
+#    commit context, so the stdin parsing and command matching are skipped
+#    and the checks run directly. Installed by workflow-init on harnesses
+#    without PreToolUse hooks (Codex, Gemini CLI, ...).
 #
 # Checks run only on the files the commit can include (staged + unstaged vs
 # HEAD) — pre-existing offenses elsewhere in the repo never block a commit.
@@ -17,29 +25,31 @@ if [ "${SKIP_COMMIT_GATE:-}" = "1" ]; then
   exit 0
 fi
 
-input=$(cat)
+if [ "${1:-}" != "--git-hook" ]; then
+  input=$(cat)
 
-if command -v jq >/dev/null 2>&1; then
-  cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
-elif command -v python3 >/dev/null 2>&1; then
-  cmd=$(printf '%s' "$input" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("tool_input",{}).get("command",""))' 2>/dev/null)
-else
-  # Crude fallback: substring detection on the raw JSON still catches `git commit`.
-  cmd=$input
-fi
+  if command -v jq >/dev/null 2>&1; then
+    cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
+  elif command -v python3 >/dev/null 2>&1; then
+    cmd=$(printf '%s' "$input" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("tool_input",{}).get("command",""))' 2>/dev/null)
+  else
+    # Crude fallback: substring detection on the raw JSON still catches `git commit`.
+    cmd=$input
+  fi
 
-# Match `git commit` with any global flags in between, so -c/-C/--no-pager
-# can't slip past. Quotes stay in the boundary class deliberately: dropping
-# them would open a `sh -c "git commit"` bypass (fail-closed beats fail-open).
-git_flag='[[:space:]]+(-[cC][[:space:]]+[^[:space:]]+|--?[^[:space:]]+)'
-printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]\"'])git(${git_flag})*[[:space:]]+commit([[:space:]]|$|[\"'])" || exit 0
+  # Match `git commit` with any global flags in between, so -c/-C/--no-pager
+  # can't slip past. Quotes stay in the boundary class deliberately: dropping
+  # them would open a `sh -c "git commit"` bypass (fail-closed beats fail-open).
+  git_flag='[[:space:]]+(-[cC][[:space:]]+[^[:space:]]+|--?[^[:space:]]+)'
+  printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]\"'])git(${git_flag})*[[:space:]]+commit([[:space:]]|$|[\"'])" || exit 0
 
-# `git -C <path>`: run every check against the repo the commit targets.
-gitdir=$(printf '%s' "$cmd" | sed -nE "s/.*(^|[;&|[:space:]\"'])git(${git_flag})*[[:space:]]+-C[[:space:]]+([^[:space:]]+)([[:space:]].*)?$/\4/p")
-if [ -n "$gitdir" ]; then
-  if ! cd "$gitdir" 2>/dev/null; then
-    echo "Blocked: cannot resolve 'git -C $gitdir' target directory from the hook. Run the commit from inside that directory instead." >&2
-    exit 2
+  # `git -C <path>`: run every check against the repo the commit targets.
+  gitdir=$(printf '%s' "$cmd" | sed -nE "s/.*(^|[;&|[:space:]\"'])git(${git_flag})*[[:space:]]+-C[[:space:]]+([^[:space:]]+)([[:space:]].*)?$/\4/p")
+  if [ -n "$gitdir" ]; then
+    if ! cd "$gitdir" 2>/dev/null; then
+      echo "Blocked: cannot resolve 'git -C $gitdir' target directory from the hook. Run the commit from inside that directory instead." >&2
+      exit 2
+    fi
   fi
 fi
 

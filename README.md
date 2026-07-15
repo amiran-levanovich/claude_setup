@@ -53,7 +53,7 @@ Each plugin is a self-contained directory with the same shape: `.claude-plugin/p
 
 ## Per-plugin documentation
 
-- **[dev-workflow →](./dev-workflow/README.md)** — language detection, the TDD spine, the pre-commit gate, the Ruby/Python packs, mandatory tooling.
+- **[dev-workflow →](./dev-workflow/README.md)** — language detection, the TDD spine, the pre-commit gate, the Ruby/Python packs, mandatory tooling. Also runs on **OpenAI Codex and Gemini CLI** via the open Agent Skills standard (its README, Option C).
 - **[craft-workflow →](./craft-workflow/README.md)** — the non-code method, the experience-design / content / research packs, the orchestration registry and availability check.
 - **[job-workflow →](./job-workflow/README.md)** — the verified candidate knowledge base, the scored fit gate that evaluates every posting before production, the tailoring pipeline with cv-tailor / cover-letter-writer / application-verifier agents, the interview-briefer for booked interviews, ATS + DACH standards.
 

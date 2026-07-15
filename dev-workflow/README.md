@@ -61,6 +61,11 @@ agent_docs/                       # Knowledge base — single source of truth, r
     ├── running_tests.md          # pytest hierarchy, factory_boy, respx/responses mocking
     └── toolchain.md              # Ruff/Bandit/pytest bindings + gate commands
 
+.agents/
+└── skills/                       # Symlinks to .claude/skills/* — Agent Skills discovery path for Codex & Gemini CLI
+
+AGENTS.md                         # Canonical harness-neutral entry point (Codex & friends)
+GEMINI.md                         # Gemini CLI wrapper — points at AGENTS.md
 README.md                         # This file
 ```
 
@@ -143,6 +148,24 @@ Then open the project in Claude Code. On session start it picks up the `agent_do
 > **Don't combine Option A and Option B.** If the plugin is installed *and* the project carries a drop-in copy, the hook is registered twice (`hooks/hooks.json` + `.claude/settings.json`) and every `git commit` runs the full linter/security pass twice. Pick one mode per project; for a drop-in project with the plugin also installed, delete the `hooks` block from the project's `.claude/settings.json`.
 
 > **Hook requirement:** the commit gate parses hook input with `jq`, falling back to `python3` — at least one must be on `PATH`. The gate only activates in projects with a recognized marker file (`Gemfile` or `pyproject.toml`/`setup.py`/`setup.cfg`), so it is inert in non-code repos. A repo with zero commits is exempt (greenfield bootstrap), and exporting `SKIP_COMMIT_GATE=1` in the environment Claude Code was launched from disables the gate entirely.
+
+### Option C — OpenAI Codex, Gemini CLI, and other Agent Skills harnesses
+
+The method is harness-neutral: the docs are plain markdown, and the skills follow the open [Agent Skills](https://agentskills.io) standard, which Codex and Gemini CLI discover natively from `.agents/skills/`. Three steps:
+
+1. **Vendor the kit** — clone it somewhere stable (a submodule in your project, or a shared checkout like `~/.agents/claude_setup`):
+   ```bash
+   git clone https://github.com/amiran-levanovich/claude_setup.git ~/.agents/claude_setup
+   ```
+2. **Link the skills** where your harness scans — per project (`.agents/skills/` at the repo root) or user-wide (`~/.agents/skills`):
+   ```bash
+   mkdir -p ~/.agents/skills
+   for s in ~/.agents/claude_setup/dev-workflow/.claude/skills/*/; do ln -sn "$s" ~/.agents/skills/$(basename "$s"); done
+   ```
+   Symlinks are supported by both harnesses, and the skills' relative doc references resolve through the link back into the kit checkout — nothing else to copy.
+3. **Wire the instructions** — copy `dev-workflow/AGENTS.md` into your project root (or add a "read `<kit>/dev-workflow/AGENTS.md`" line to your existing `AGENTS.md`). Gemini CLI loads `GEMINI.md` by default; the shipped one-line wrapper covers it, or set `contextFileName` to `AGENTS.md`.
+
+Then run `workflow-init` once per project. On a non-Claude harness it offers to install the commit gate as a **plain git pre-commit hook** (`pre-commit-gate.sh --git-hook` — same script, same checks, enforced by git itself). Sub-agents and `AskUserQuestion` have documented fallbacks: `agent_docs/core/orchestration.md`, "Harness capability fallbacks".
 
 ### Customizing per project
 
