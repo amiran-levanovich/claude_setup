@@ -12,4 +12,4 @@ Non-code work has no deterministic gate, so this loop carries the entire quality
 3. **Findings?** Record them first in the `### Review log` of `craft/<name>.md` (round number + prioritized list: location, problem, proposed fix), report, then fix. Ask via AskUserQuestion on genuine judgment calls. Record non-obvious decisions in the living doc. Log clean rounds too — loop state lives in the doc, not the conversation.
 4. **Re-review** — a fix in one dimension can break another, so the whole pass runs again.
 
-Do not declare done on a round that still has open findings. Every dimension must come back clean in the same round.
+Do not declare done on a round that still has open findings. Every dimension must come back clean in the same round. A pass that cannot complete (missing rubric, unreadable deliverable, unassessable dimension) is incomplete, never clean — "could not verify" is a finding, not an absence of findings: log it, fix the input, re-run.

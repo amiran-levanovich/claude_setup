@@ -4,6 +4,8 @@ The dev-workflow kit is **self-sufficient**: the pre-commit hook, the `agent_doc
 
 > **Principle:** the kit supplies the *method* and the deterministic floor; these tools supply extra *leverage*. Never block on a missing advised tool — fall back and note the absence.
 
+> **Parallel agents get isolated state.** Read-only agents (reviewers, explorers) fan out freely. Agents that *modify the tree* never run in parallel against a shared checkout — shared working state is how parallel agents cross-contaminate. Give each its own git worktree (worktree isolation if the harness offers it), or run them sequentially.
+
 ## The availability check (run by `workflow-init`)
 
 1. Inspect the **skills and tools actually available to you this session** (your available-skills list, agents, and MCP tools).

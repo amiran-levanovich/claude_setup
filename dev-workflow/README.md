@@ -47,7 +47,7 @@ agent_docs/                       # Knowledge base — single source of truth, r
 │   ├── coding_workflow.md        # Language-agnostic TDD lifecycle, Git hygiene, conventional commits
 │   ├── feature_closeout.md       # Post-merge close-out: promote decisions, capture lessons, delete feature doc
 │   ├── orchestration.md          # Advised-tools registry + availability check (run by workflow-init)
-│   └── quickref.md               # 10-rule floor + "when lost" protocol — cheap re-anchor for tight context
+│   └── quickref.md               # 11-rule floor + "when lost" protocol — cheap re-anchor for tight context
 ├── ruby/
 │   ├── building_the_project.md   # Rails greenfield playbook (Phases G0–G4)
 │   ├── code_conventions.md       # Ruby/Rails conventions a linter can't check

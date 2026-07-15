@@ -120,6 +120,8 @@ Repeat until a clean round:
 
 Do not declare done on a round that still has open findings. Every dimension must come back clean in the **same** round.
 
+A pass that **cannot complete** — the rubric is missing, the deliverable or living doc is unreadable, a dimension can't be assessed — is *incomplete*, never clean. "Could not verify" is a finding of its own, not an absence of findings: log what couldn't be checked and why, fix the input, and re-run. A silent gap in the pass reads as a clean bill it never earned.
+
 ---
 
 ## NOTES

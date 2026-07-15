@@ -8,7 +8,7 @@ Re-read this when context is tight, after a compaction, or whenever unsure. It i
 4. **No piece before its rubric**: write the piece's acceptance rubric (from `<domain>/rubric.md`) into the living doc first — it is the test.
 5. **Check before presenting**: verify each piece against its rubric yourself; never present a known miss.
 6. **Update the living doc every piece** — plan, Decisions, Dead ends, Review log. The doc is the memory; the conversation is not.
-7. **Final review loop** over every dimension of `<domain>/rubric.md`. Log every round in the Review log; only a *logged* clean round means done.
+7. **Final review loop** over every dimension of `<domain>/rubric.md`. Log every round in the Review log; only a *logged* clean round means done. A pass that couldn't complete (missing rubric, unassessable dimension) is incomplete, never clean — "could not verify" is a finding.
 8. **Never invent facts** — every claim traces to source material; unknowns are flagged or asked, not fabricated.
 9. **Judgment calls → AskUserQuestion** with options. Never decide silently.
 

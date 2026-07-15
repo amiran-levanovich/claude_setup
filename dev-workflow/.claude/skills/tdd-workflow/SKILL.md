@@ -9,4 +9,4 @@ It is the single, **language-agnostic** source of truth for the day-to-day TDD l
 
 Before planning any feature, check `docs/features/` in the project root for an in-flight doc matching the feature — if one exists, load it and resume from its task list, honoring its logged decisions, instead of re-planning. A missing `docs/features/` directory just means nothing is in flight — plan fresh; don't search elsewhere for feature docs.
 
-If context is tight (post-compaction, near the limit, or you are unsure of the rules), read `agent_docs/core/quickref.md` (same path resolution) — it is the distilled 10-rule floor and the "when lost" protocol.
+If context is tight (post-compaction, near the limit, or you are unsure of the rules), read `agent_docs/core/quickref.md` (same path resolution) — it is the distilled 11-rule floor and the "when lost" protocol.
